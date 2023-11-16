@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BidMasterOnline.Application\BidMasterOnline.Application.csproj" />
+    <ProjectReference Include="..\BidMasterOnline.Domain\BidMasterOnline.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

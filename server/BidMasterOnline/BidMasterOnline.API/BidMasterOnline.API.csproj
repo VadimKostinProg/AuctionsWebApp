@@ -15,4 +15,10 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BidMasterOnline.Application\BidMasterOnline.Application.csproj" />
+    <ProjectReference Include="..\BidMasterOnline.Domain\BidMasterOnline.Domain.csproj" />
+    <ProjectReference Include="..\BidMasterOnline.Infrastructure\BidMasterOnline.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
