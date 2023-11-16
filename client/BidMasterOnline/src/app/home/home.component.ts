@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class HomeComponent {
 
+  placeholder: string = 'Search auction...';
+
+  onSearchPressed(searchTerm: string) {
+    alert(searchTerm);
+  }
 }

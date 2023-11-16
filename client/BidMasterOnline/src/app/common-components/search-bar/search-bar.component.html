@@ -1,1 +1,10 @@
-<p>search-bar works!</p>
+<ng-container>
+    <div class="input-group mb-3 w-100">
+        <input type="text"
+               class="form-control flex-grow-1"
+               [placeholder]="placeholder">
+        <button class="btn btn-outline-secondary"
+                type="button"
+                (click)="onSearchPressed()">Search</button>
+    </div>
+</ng-container>
