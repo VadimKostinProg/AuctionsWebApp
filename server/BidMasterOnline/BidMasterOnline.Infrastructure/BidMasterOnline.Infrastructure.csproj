@@ -11,4 +11,9 @@
     <ProjectReference Include="..\BidMasterOnline.Domain\BidMasterOnline.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DatabaseContext\" />
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+
 </Project>
