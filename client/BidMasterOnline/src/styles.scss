@@ -1,3 +1,18 @@
 * {
     font-size: 36px;
 }
+
+.default-btn-background {
+    border: 0;
+    background-color: orange;
+    color: white;
+}
+
+.default-btn-background:hover {
+    background-color: darkorange;
+}
+
+.default-span-background {
+    background-color: orange;
+    color: white;
+}

@@ -1,9 +1,13 @@
 <ng-container>
     <div class="input-group mb-3 w-100">
+        <span class="input-group-text default-span-background">
+            <i class="bi bi-search"></i>
+        </span>
         <input type="text"
                class="form-control flex-grow-1"
-               [placeholder]="placeholder">
-        <button class="btn btn-outline-secondary"
+               [placeholder]="placeholder"
+               [(ngModel)]="searchTerm">
+        <button class="btn btn-outline-secondary default-btn-background"
                 type="button"
                 (click)="onSearchPressed()">Search</button>
     </div>
