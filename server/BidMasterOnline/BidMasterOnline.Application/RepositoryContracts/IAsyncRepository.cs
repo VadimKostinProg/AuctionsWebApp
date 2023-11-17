@@ -1,4 +1,5 @@
-﻿using BidMasterOnline.Domain.Entities;
+﻿using BidMasterOnline.Application.DTO;
+using BidMasterOnline.Domain.Entities;
 using System.Linq.Expressions;
 
 namespace BidMasterOnline.Application.RepositoryContracts
@@ -13,8 +14,18 @@ namespace BidMasterOnline.Application.RepositoryContracts
         /// </summary>
         /// <typeparam name="T">Type of entities to read.</typeparam>
         /// <param name="disableTracking">Flag for enabling a tracking.</param>
-        /// <returns>Query to select all entities.</returns>
-        Task<IQueryable<T>> GetAllAsync<T>(bool disableTracking = true) where T : EntityBase;
+        /// <returns>Collection IEnumerable of all entities.</returns>
+        Task<IEnumerable<T>> GetAllAsync<T>(bool disableTracking = true) where T : EntityBase;
+
+        /// <summary>
+        /// Method for reading all entities of the specifica type from the data source with applying 
+        /// sorting and paginating specifications.
+        /// </summary>
+        /// <typeparam name="T">Type of entities to read.</typeparam>
+        /// <param name="specifications">Specifications of sorting and paginating to apply.</param>
+        /// <param name="disableTracking">Flag for enabling a tracking.</param>
+        /// <returns>Collection IEnumerable of all entities with applyed specifications.</returns>
+        Task<IEnumerable<T>> GetAllAsync<T>(Specifications specifications, bool disableTracking = true) where T : EntityBase;
 
         /// <summary>
         /// Method for reading entities of the specific type from the data source filtered by predicate.
@@ -22,10 +33,24 @@ namespace BidMasterOnline.Application.RepositoryContracts
         /// <typeparam name="T">Type of entities to read.</typeparam>
         /// <param name="predicate">Expression to filter entities.</param>
         /// <param name="disableTracking">Flag for enabling a tracking.</param>
-        /// <returns>Query to select filtered entities.</returns>
-        Task<IQueryable<T>> GetFilteredAsync<T>(Expression<Func<T, bool>> predicate,
-                                                bool disableTracking = true)
-                                                where T : EntityBase;
+        /// <returns>Collection IEnumerable of filtered entities.</returns>
+        Task<IEnumerable<T>> GetFilteredAsync<T>(Expression<Func<T, bool>> predicate,
+                                                 bool disableTracking = true)
+                                                 where T : EntityBase;
+
+        /// <summary>
+        /// Method for reading entities of the specific type from the data source filtered by predicate 
+        /// with applying sorting and paginating specifications.
+        /// </summary>
+        /// <typeparam name="T">Type of entities to read.</typeparam>
+        /// <param name="predicate">Expression to filter entities.</param>
+        /// <param name="specifications">Specifications of sorting and paginating to apply.</param>
+        /// <param name="disableTracking">Flag for enabling a tracking.</param>
+        /// <returns>Collection IEnumerable of filtered entities with applyed specifications.</returns>
+        Task<IEnumerable<T>> GetFilteredAsync<T>(Expression<Func<T, bool>> predicate,
+                                                 Specifications specifications,
+                                                 bool disableTracking = true)
+                                                 where T : EntityBase;
 
         /// <summary>
         /// Method for searching the entity of the specific type from the data source by its id.
