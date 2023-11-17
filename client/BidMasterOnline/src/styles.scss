@@ -1,11 +1,29 @@
 * {
-    font-size: 36px;
+    font-size: 24px;
+}
+
+.default-background {
+    background-color: orange;
+    color: white;
+}
+
+header {
+    @extend .default-background;
+    display: flex;
+    align-items: center;
+    height: 40px;
+}
+
+footer {
+    @extend .default-background;
+    display: flex;
+    align-items: center;
+    height: 50px;
 }
 
 .default-btn-background {
+    @extend .default-background;
     border: 0;
-    background-color: orange;
-    color: white;
 }
 
 .default-btn-background:hover {
@@ -13,6 +31,9 @@
 }
 
 .default-span-background {
-    background-color: orange;
-    color: white;
+    @extend .default-background;
+}
+
+.cards-container {
+    overflow: scroll;
 }

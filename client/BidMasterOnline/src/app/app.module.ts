@@ -11,6 +11,9 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { SearchBarComponent } from './common-components/search-bar/search-bar.component';
 import { DataTableComponent } from './common-components/data-table/data-table.component';
+import { AuctionFiltersComponent } from './common-components/auction-filters/auction-filters.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AuctionCardComponent } from './auction-card/auction-card.component';
 
 @NgModule({
   declarations: [
@@ -20,13 +23,16 @@ import { DataTableComponent } from './common-components/data-table/data-table.co
     LoginComponent,
     RegisterComponent,
     SearchBarComponent,
-    DataTableComponent
+    DataTableComponent,
+    AuctionFiltersComponent,
+    AuctionCardComponent
   ],
   imports: [
     BrowserModule,
     NgbModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
