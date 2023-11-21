@@ -34,6 +34,8 @@ namespace BidMasterOnline.Domain.Entities
         [Required]
         public Guid StatusId { get; set; }
 
+        public bool IsApproved { get; set; }
+
         [ForeignKey(nameof(AuctionerId))]
         public virtual User Auctioner { get; set; }
 
