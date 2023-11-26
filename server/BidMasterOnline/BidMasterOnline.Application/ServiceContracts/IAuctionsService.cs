@@ -10,7 +10,7 @@ namespace BidMasterOnline.Application.ServiceContracts
         /// <param name="specifications">Specifications of sorting, pagination, filtering by category
         /// start price, current bid and status ty apply.</param>
         /// <returns>Auctions list with applyed specifications.</returns>
-        Task<IEnumerable<AuctionDTO>> GetAuctionsListAsync(AuctionSpecifications specifications);
+        Task<IEnumerable<AuctionDTO>> GetAuctionsListAsync(AuctionSpecificationsDTO specifications);
 
         /// <summary>
         /// Gets auctions information by its identifier.

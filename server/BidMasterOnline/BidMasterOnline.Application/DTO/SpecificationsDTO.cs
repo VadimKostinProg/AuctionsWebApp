@@ -5,7 +5,7 @@ namespace BidMasterOnline.Application.DTO
     /// <summary>
     /// Specifications for sorting and paginating items.
     /// </summary>
-    public class Specifications
+    public class SpecificationsDTO
     {
         // Sorting
         public string SortField { get; set; } = "Id";

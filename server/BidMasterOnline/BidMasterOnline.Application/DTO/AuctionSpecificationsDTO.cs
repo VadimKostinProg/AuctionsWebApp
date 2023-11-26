@@ -2,7 +2,7 @@
 
 namespace BidMasterOnline.Application.DTO
 {
-    public class AuctionSpecifications : Specifications
+    public class AuctionSpecificationsDTO : SpecificationsDTO
     {
         public string? Category { get; set; }
         public decimal? MinStartPrice { get; set; }
