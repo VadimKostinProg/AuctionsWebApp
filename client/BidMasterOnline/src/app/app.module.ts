@@ -14,11 +14,14 @@ import { DataTableComponent } from './common-components/data-table/data-table.co
 import { AuctionFiltersComponent } from './common-components/auction-filters/auction-filters.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuctionCardComponent } from './auction-card/auction-card.component';
+import { SearchComponent } from './search/search.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
+    SearchComponent,
     AuctionComponent,
     LoginComponent,
     RegisterComponent,
@@ -32,7 +35,8 @@ import { AuctionCardComponent } from './auction-card/auction-card.component';
     NgbModule,
     AppRoutingModule,
     FormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

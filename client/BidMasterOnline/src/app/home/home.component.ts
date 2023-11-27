@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuctionsService } from '../services/auctions.service';
 import { AuctionModel } from '../models/auctionModel';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -14,15 +15,15 @@ export class HomeComponent implements OnInit {
   popularAuctions: AuctionModel[];
   endingAuctions: AuctionModel[];
 
-  constructor(private readonly auctionsService: AuctionsService) {
-
+  constructor(private readonly auctionsService: AuctionsService,
+    private readonly router: Router) {
   }
   async ngOnInit(): Promise<void> {
     this.popularAuctions = await this.auctionsService.getPopularAuctions();
     this.endingAuctions = await this.auctionsService.getEndingAuctions();
   }
 
-  onSearchPressed(searchTerm: string) {
-    alert(searchTerm);
+  async onSearchPressed() {
+    await this.router.navigate(['/search'], { queryParamsHandling: 'merge' });
   }
 }

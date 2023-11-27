@@ -1,0 +1,19 @@
+<search-bar [placeholder]="placeholder"
+            (onSubmit)="onSearchOrFilterProceed()"></search-bar>
+
+<auction-filters></auction-filters>
+
+<ng-component *ngIf="auctions.length > 0; else notFound">
+    <h3>Result</h3>
+
+    <auction-card *ngFor="let auction in auctions"
+                  [auction]="auction"></auction-card>
+</ng-component>
+
+<ng-template #notFound>
+    <div class="message-container">
+        <div class="message">
+            <h3>For your request there are not auctions.</h3>
+        </div>
+    </div>
+</ng-template>

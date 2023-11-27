@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { DeepLinkingService } from 'src/app/services/deep-linking.service';
 
 @Component({
   selector: 'search-bar',
@@ -13,9 +14,13 @@ export class SearchBarComponent {
   placeholder: string = 'Search...';
 
   @Output()
-  onSubmit = new EventEmitter<string>();
+  onSubmit = new EventEmitter<void>();
 
-  onSearchPressed() {
-    this.onSubmit.emit(this.searchTerm);
+  constructor(private readonly deepLinkingService: DeepLinkingService) {
+  }
+
+  async onSearchPressed() {
+    await this.deepLinkingService.setQueryParam('searchTerm', this.searchTerm);
+    this.onSubmit.emit();
   }
 }

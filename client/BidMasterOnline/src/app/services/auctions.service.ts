@@ -1,15 +1,25 @@
 import { Injectable } from '@angular/core';
 import { AuctionModel } from '../models/auctionModel';
-import { AuctionSpecificationsModel } from '../models/auctionSpecificationsModel';
+import { Params } from '@angular/router';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuctionsService {
 
-  constructor() { }
+  serverUrl: string = `${environment.apiUrl}/api/auctions`;
 
-  async getAuctions(specifications: AuctionSpecificationsModel): Promise<AuctionModel[]> {
+  constructor(private readonly httpClient: HttpClient) { }
+
+  async getAuctions(specifications: Params): Promise<AuctionModel[]> {
+    const params = new HttpParams({ fromObject: specifications });
+
+    this.httpClient.get(this.serverUrl, { params }).subscribe(response => {
+      console.log('Server Response:', response);
+    });
+
     return [];
   }
 

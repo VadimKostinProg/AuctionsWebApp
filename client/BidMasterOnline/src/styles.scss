@@ -11,14 +11,14 @@ header {
     @extend .default-background;
     display: flex;
     align-items: center;
-    height: 40px;
+    height: 7vh;
 }
 
 footer {
     @extend .default-background;
     display: flex;
     align-items: center;
-    height: 50px;
+    height: 7vh;
 }
 
 .default-btn-background {
@@ -36,4 +36,15 @@ footer {
 
 .cards-container {
     overflow: scroll;
+}
+
+.message-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+}
+
+.message {
+    text-align: center;
 }
