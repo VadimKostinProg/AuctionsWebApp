@@ -8,9 +8,13 @@
                     aria-expanded="false">
                 Category
             </button>
-            <ul class="dropdown-menu">
-                <li>
-                    <p>Categories</p>
+            <ul class="dropdown-menu p-2">
+                <li *ngFor="let category of categories">
+                    <input class="form-check-input radio-button"
+                           type="radio"
+                           name="status"
+                           [value]="category"
+                           (change)="onCategoryChanged($event)" /> {{ category }}
                 </li>
             </ul>
         </div>
@@ -23,11 +27,12 @@
                     aria-expanded="false">
                 Start price
             </button>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu p-2 slider-dropdown">
                 <li>
                     <ngx-slider [(value)]="minStartPrice"
                                 [(highValue)]="maxStartPrice"
-                                [options]="options">
+                                [options]="options"
+                                (userChange)="onStartPriceFilterChange($event)">
                     </ngx-slider>
                 </li>
             </ul>
@@ -41,12 +46,12 @@
                     aria-expanded="false">
                 Current bid
             </button>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu p-2 slider-dropdown">
                 <li>
                     <ngx-slider [(value)]="minCurrentBid"
                                 [(highValue)]="maxCurrentBid"
                                 [options]="options"
-                                (userChange)="">
+                                (userChange)="onCurrentBidFilterChange($event)">
                     </ngx-slider>
                 </li>
             </ul>
@@ -60,8 +65,23 @@
                     aria-expanded="false">
                 Status
             </button>
-            <ul class="dropdown-menu">
-                <li>Statuses</li>
+            <ul class="dropdown-menu p-2">
+                <li>
+                    <input #activeStatusRadio
+                           class="form-check-input radio-button"
+                           type="radio"
+                           name="status"
+                           value="Active"
+                           (change)="onStatusChanged($event)" /> Active
+                </li>
+                <li>
+                    <input #finishedStatusRadio
+                           class="form-check-input radio-button"
+                           type="radio"
+                           name="status"
+                           value="Finished"
+                           (change)="onStatusChanged($event)" /> Finished
+                </li>
             </ul>
         </div>
     </div>

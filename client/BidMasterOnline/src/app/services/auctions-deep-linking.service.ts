@@ -27,7 +27,7 @@ export class AuctionsDeepLinkingService extends DeepLinkingService {
 
   async setStartPriceDiapason(min: number, max: number) {
     await super.setQueryParam('minStartPrice', min);
-    await super.setQueryParam('maxStartPriceE', max);
+    await super.setQueryParam('maxStartPrice', max);
   }
 
   async clearStartPriceDiapason() {

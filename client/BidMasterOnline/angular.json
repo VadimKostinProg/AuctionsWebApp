@@ -20,6 +20,7 @@
             "outputPath": "dist/bid-master-online",
             "index": "src/index.html",
             "main": "src/main.ts",
+            "preserveSymlinks": true,
             "polyfills": [
               "zone.js"
             ],
