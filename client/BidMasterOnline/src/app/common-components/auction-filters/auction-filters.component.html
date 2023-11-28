@@ -6,7 +6,7 @@
                     type="button"
                     data-bs-toggle="dropdown"
                     aria-expanded="false">
-                Категорія
+                Category
             </button>
             <ul class="dropdown-menu">
                 <li>
@@ -21,11 +21,14 @@
                     type="button"
                     data-bs-toggle="dropdown"
                     aria-expanded="false">
-                Стартова ціна
+                Start price
             </button>
             <ul class="dropdown-menu">
                 <li>
-                    <p>Slider</p>
+                    <ngx-slider [(value)]="minStartPrice"
+                                [(highValue)]="maxStartPrice"
+                                [options]="options">
+                    </ngx-slider>
                 </li>
             </ul>
         </div>
@@ -36,11 +39,15 @@
                     type="button"
                     data-bs-toggle="dropdown"
                     aria-expanded="false">
-                Поточна ставка
+                Current bid
             </button>
             <ul class="dropdown-menu">
                 <li>
-                    <p>Slider</p>
+                    <ngx-slider [(value)]="minCurrentBid"
+                                [(highValue)]="maxCurrentBid"
+                                [options]="options"
+                                (userChange)="">
+                    </ngx-slider>
                 </li>
             </ul>
         </div>
@@ -51,7 +58,7 @@
                     type="button"
                     data-bs-toggle="dropdown"
                     aria-expanded="false">
-                Статус
+                Status
             </button>
             <ul class="dropdown-menu">
                 <li>Statuses</li>
