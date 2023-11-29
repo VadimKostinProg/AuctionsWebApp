@@ -3,7 +3,7 @@
 namespace BidMasterOnline.Application.DTO
 {
     /// <summary>
-    /// Specifications for sorting and paginating items.
+    /// Specifications for sorting and paginating items. (REQUEST)
     /// </summary>
     public class SpecificationsDTO
     {

@@ -11,5 +11,7 @@ namespace BidMasterOnline.Domain.Entities
         [Required]
         [MaxLength(300)]
         public string Description { get; set; } = null!;
+
+        public bool IsDeleted { get; set; }
     }
 }

@@ -1,9 +1,9 @@
 ﻿namespace BidMasterOnline.Application.ServiceContracts
 {
     /// <summary>
-    /// Service for sending notofocations.
+    /// Service for sending notifications.
     /// </summary>
-    public interface INotofocationsService
+    public interface INotificationsService
     {
         /// <summary>
         /// Sends the notifications to specified user with specified title and message.

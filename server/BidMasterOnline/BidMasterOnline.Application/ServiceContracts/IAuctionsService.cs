@@ -2,6 +2,9 @@
 
 namespace BidMasterOnline.Application.ServiceContracts
 {
+    /// <summary>
+    /// Service for managin tha auctions.
+    /// </summary>
     public interface IAuctionsService
     {
         /// <summary>
@@ -31,6 +34,12 @@ namespace BidMasterOnline.Application.ServiceContracts
         /// </summary>
         /// <param name="request">Object with publishing auctions infromation.</param>
         Task PublishAuctionAsync(AuctionPublishRequestDTO request);
+
+        /// <summary>
+        /// Confirms payment for auction lot by user.
+        /// </summary>
+        /// <param name="id">Identifier of auction to confirm payment for.</param>
+        Task ConfirmPaymentForAuctionAsync(Guid id);
 
         /// <summary>
         /// Cancels active auction.

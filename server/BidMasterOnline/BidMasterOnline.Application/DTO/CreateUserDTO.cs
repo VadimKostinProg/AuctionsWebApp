@@ -1,13 +1,11 @@
 ﻿using BidMasterOnline.Application.Enums;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BidMasterOnline.Application.DTO
 {
+    /// <summary>
+    /// DTO for creating new admin users. (REQUEST)
+    /// </summary>
     public class CreateUserDTO : RegisterDTO
     {
         [Required(ErrorMessage = "User role is required.")]

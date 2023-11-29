@@ -2,6 +2,9 @@
 
 namespace BidMasterOnline.Application.DTO
 {
+    /// <summary>
+    /// DTO for changing user`s password. (REQUEST)
+    /// </summary>
     public class ChangePasswordDTO
     {
         [Required(ErrorMessage = "Id is required.")]

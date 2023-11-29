@@ -8,16 +8,24 @@ namespace BidMasterOnline.Application.ServiceContracts
     public interface IComplaintsService
     {
         /// <summary>
-        /// Gets the list of complaints for users.
+        /// Gets complaints list with applyed specifications.
         /// </summary>
-        /// <returns>Collection IEnumerable of complaints.</returns>
-        Task<IEnumerable<ComplaintDTO>> GetComplaintsForUsersAsync();
+        /// <param name="specifications">Specifications of complaint type, date, sorting and pagination.</param>
+        /// <returns>Collection IEnnumerable of complaints with applyed specifications.</returns>
+        Task<IEnumerable<ComplaintDTO>> GetComplaintsList(ComplaintSpecificationsDTO specifications);
 
         /// <summary>
-        /// Gets the list of complaints for auctions.
+        /// Gets the specified complaint by it`s identifier.
         /// </summary>
-        /// <returns>Collection IEnumerable of complaints.</returns>
-        Task<IEnumerable<ComplaintDTO>> GetComplaintsForAuctionsAsync();
+        /// <param name="id">Identifier of complaint to get.</param>
+        /// <returns>Complaint with passed identifier.</returns>
+        Task<ComplaintDTO> GetComplaintById(Guid id);
+
+        /// <summary>
+        /// Sets new complaint of any type.
+        /// </summary>
+        /// <param name="complaint">Complaint to set.</param>
+        Task SetNewComplaint(SetComplaintDTO complaint);
 
         /// <summary>
         /// Set the status to the complaint as handled.

@@ -15,6 +15,8 @@ namespace BidMasterOnline.Domain.Entities
         [MaxLength(300)]
         public string CommentText { get; set; }
 
+        public bool IsDeleted { get; set; }
+
         [ForeignKey(nameof(UserId))]
         public virtual User User { get; set; }
 

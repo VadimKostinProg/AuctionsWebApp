@@ -2,6 +2,9 @@
 
 namespace BidMasterOnline.Application.DTO
 {
+    /// <summary>
+    /// DTO for registering new customer users. (REQUEST)
+    /// </summary>
     public class RegisterDTO
     {
         [Required(ErrorMessage = "User name is required.")]

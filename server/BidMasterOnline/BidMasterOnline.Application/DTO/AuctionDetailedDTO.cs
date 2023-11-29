@@ -1,5 +1,8 @@
 ﻿namespace BidMasterOnline.Application.DTO
 {
+    /// <summary>
+    /// DTO with detailed information of auction. (RESPONSE)
+    /// </summary>
     public class AuctionDetailedDTO : AuctionDTO
     {
         public DateTime StartDateAndTime { get; set; }

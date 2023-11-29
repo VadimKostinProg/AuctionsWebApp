@@ -1,13 +1,11 @@
 ﻿using BidMasterOnline.Application.Enums;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BidMasterOnline.Application.DTO
 {
+    /// <summary>
+    /// DTO for publishing auction for verification. (REQUEST)
+    /// </summary>
     public class AuctionPublishRequestDTO
     {
         [Required(ErrorMessage = "Lot name is required.")]

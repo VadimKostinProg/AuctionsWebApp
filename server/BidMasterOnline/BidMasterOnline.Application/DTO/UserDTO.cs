@@ -1,5 +1,8 @@
 ﻿namespace BidMasterOnline.Application.DTO
 {
+    /// <summary>
+    /// DTO for users. (RESPONSE)
+    /// </summary>
     public class UserDTO
     {
         public Guid Id { get; set; }

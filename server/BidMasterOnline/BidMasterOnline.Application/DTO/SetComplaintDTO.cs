@@ -1,22 +1,26 @@
 ﻿using BidMasterOnline.Application.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace BidMasterOnline.Application.DTO
 {
     /// <summary>
-    /// DTO for complaint. (RESPONSE)
+    /// DTO for set new complaint. (REQUEST)
     /// </summary>
-    public class ComplaintDTO
+    public class SetComplaintDTO
     {
-        public Guid AccusingUserId { get; set; }
-        public UserDTO AccusingUser { get; set; }
+        [Required]
         public Guid AccusedUserId { get; set; }
-        public UserDTO AccusedUser { get; set; }
+
+        [Required]
         public Guid AuctionId { get; set; }
-        public AuctionDTO Auction { get; set; }
+
         public Guid? CommentId { get; set; }
-        public CommentDTO? Comment { get; set; }
+
+        [Required]
         public ComplaintType ComplaintType { get; set; }
-        public DateTime DateAndTime { get; set; }
+
+        [Required]
+        [MaxLength(300)]
         public string ComplaintText { get; set; }
     }
 }

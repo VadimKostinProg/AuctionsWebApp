@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BidMasterOnline.Application.DTO
+﻿namespace BidMasterOnline.Application.DTO
 {
+    /// <summary>
+    /// DTO of auction. (RESPONSE)
+    /// </summary>
     public class AuctionDTO
     {
         public Guid Id { get; set; }

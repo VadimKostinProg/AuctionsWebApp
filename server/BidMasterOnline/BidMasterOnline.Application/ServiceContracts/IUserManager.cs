@@ -72,5 +72,11 @@ namespace BidMasterOnline.Application.ServiceContracts
         /// </summary>
         /// <param name="userId">Identifier of user to delete.</param>
         Task DeleteUserAsync(Guid userId);
+
+        /// <summary>
+        /// Recovers deleted user.
+        /// </summary>
+        /// <param name="userId">Identifier of user to recover.</param>
+        Task RecoverUserAsync(Guid userId);
     }
 }

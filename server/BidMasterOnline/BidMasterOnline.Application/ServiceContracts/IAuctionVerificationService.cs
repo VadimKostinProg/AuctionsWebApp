@@ -15,13 +15,6 @@ namespace BidMasterOnline.Application.ServiceContracts
         Task<IEnumerable<AuctionDTO>> GetNotApprovedAuctionsListAsync(SpecificationsDTO specifications);
 
         /// <summary>
-        /// Gets not approved detailed auction by it`s identifier.
-        /// </summary>
-        /// <param name="auctionId">Identifier of the auction.</param>
-        /// <returns>Detailed infromation of auction.</returns>
-        Task<AuctionDetailedDTO> GetNotApprovedAuctionDetailedAsync(Guid auctionId);
-
-        /// <summary>
         /// Approves the specified auction.
         /// </summary>
         /// <param name="auctionId">Identifier of auction to approve.</param>
