@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace BidMasterOnline.Domain.Entities
 {
@@ -13,6 +14,9 @@ namespace BidMasterOnline.Domain.Entities
 
         [Required]
         public Guid AuctionId { get; set; }
+
+        [AllowNull]
+        public Guid? CommentId { get; set; }
 
         [Required]
         public Guid ComplaintTypeId { get; set; }
@@ -35,6 +39,9 @@ namespace BidMasterOnline.Domain.Entities
 
         [ForeignKey(nameof(AuctionId))]
         public virtual Auction Auction { get; set; }
+
+        [ForeignKey(nameof(CommentId))]
+        public virtual Comment Comment { get; set; }
 
         [ForeignKey(nameof(ComplaintTypeId))]
         public virtual ComplaintType ComplaintType { get; set; }
