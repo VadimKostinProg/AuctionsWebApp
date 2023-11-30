@@ -2,7 +2,7 @@
 
 namespace BidMasterOnline.Domain.Entities
 {
-    public class Category
+    public class Category : EntityBase
     {
         [Required]
         [MaxLength(25)]

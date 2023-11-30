@@ -25,7 +25,7 @@ namespace BidMasterOnline.Application.RepositoryContracts
         /// <param name="specification">Specifications for filtering, sorting and pagination to apply.</param>
         /// <param name="disableTracking">Flag for enabling a tracking.</param>
         /// <returns>Collection IEnumerable of entities with applyed specifications.</returns>
-        Task<IEnumerable<T>> GetAsync<T>(ISpecification<T> specification, bool disableTracking) where T : EntityBase;
+        Task<IEnumerable<T>> GetAsync<T>(ISpecification<T> specification, bool disableTracking = true) where T : EntityBase;
 
         /// <summary>
         /// Method for reading entities of the specific type from the data source filtered by predicate.

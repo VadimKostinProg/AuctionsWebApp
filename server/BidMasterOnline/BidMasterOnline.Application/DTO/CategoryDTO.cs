@@ -1,4 +1,6 @@
-﻿namespace BidMasterOnline.Application.DTO
+﻿using BidMasterOnline.Domain.Entities;
+
+namespace BidMasterOnline.Application.DTO
 {
     /// <summary>
     /// DTO for category. (RESPONSE)

@@ -1,5 +1,4 @@
-﻿using BidMasterOnline.Application.DTO;
-using BidMasterOnline.Application.RepositoryContracts;
+﻿using BidMasterOnline.Application.RepositoryContracts;
 using BidMasterOnline.Application.Specifications;
 using BidMasterOnline.Domain.Entities;
 using BidMasterOnline.Infrastructure.DatabaseContext;
@@ -53,7 +52,7 @@ namespace BidMasterOnline.Infrastructure.Repositories
         {
             var query = context.Set<T>().AsQueryable();
 
-            if (!disableTracking)
+            if (disableTracking)
             {
                 query = query.AsNoTracking();
             }
@@ -65,7 +64,7 @@ namespace BidMasterOnline.Infrastructure.Repositories
         {
             var query = context.Set<T>().AsQueryable();
 
-            if (!disableTracking)
+            if (disableTracking)
             {
                 query = query.AsNoTracking();
             }
@@ -73,7 +72,7 @@ namespace BidMasterOnline.Infrastructure.Repositories
             return await query.ToListAsync();
         }
 
-        public virtual async Task<IEnumerable<T>> GetAsync<T>(ISpecification<T> specification, bool disableTracking) where T : EntityBase
+        public virtual async Task<IEnumerable<T>> GetAsync<T>(ISpecification<T> specification, bool disableTracking = true) where T : EntityBase
         {
             var query = context.Set<T>().AsQueryable();
 
@@ -82,7 +81,7 @@ namespace BidMasterOnline.Infrastructure.Repositories
                 query = query.ApplySpecifications(specification);
             }
 
-            if (!disableTracking)
+            if (disableTracking)
             {
                 query = query.AsNoTracking();
             }
@@ -94,7 +93,7 @@ namespace BidMasterOnline.Infrastructure.Repositories
         {
             var query = context.Set<T>().AsQueryable();
 
-            if (!disableTracking)
+            if (disableTracking)
             {
                 query = query.AsNoTracking();
             }
@@ -106,7 +105,7 @@ namespace BidMasterOnline.Infrastructure.Repositories
         {
             var query = context.Set<T>().Where(predicate);
 
-            if (!disableTracking)
+            if (disableTracking)
             {
                 query = query.AsNoTracking();
             }
