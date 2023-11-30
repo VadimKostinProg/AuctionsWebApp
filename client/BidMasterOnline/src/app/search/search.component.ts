@@ -12,7 +12,7 @@ import { AuctionModel } from '../models/auctionModel';
 export class SearchComponent implements OnInit {
   placeholder = 'Search...';
 
-  auctions: AuctionModel[];
+  auctions: AuctionModel[] = [];
 
   constructor(private readonly auctionsService: AuctionsService,
     private readonly auctionsDeepLinkingService: AuctionsDeepLinkingService) {
@@ -25,6 +25,8 @@ export class SearchComponent implements OnInit {
   async onSearchOrFilterProceed() {
     const queryParams = this.auctionsDeepLinkingService.getAllQueryParams();
 
-    this.auctions = await this.auctionsService.getAuctions({ specifications: queryParams });
+    this.auctionsService.getAuctionsList({ specifications: queryParams }).subscribe((auctions) => {
+        this.auctions = auctions;
+    });
   }
 }

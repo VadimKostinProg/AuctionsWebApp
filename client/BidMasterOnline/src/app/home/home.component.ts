@@ -12,15 +12,19 @@ export class HomeComponent implements OnInit {
 
   placeholder: string = 'Search auction...';
 
-  popularAuctions: AuctionModel[];
-  endingAuctions: AuctionModel[];
+  popularAuctions: AuctionModel[] = [];
+  finishingAuctions: AuctionModel[] = [];
 
   constructor(private readonly auctionsService: AuctionsService,
     private readonly router: Router) {
   }
-  async ngOnInit(): Promise<void> {
-    this.popularAuctions = await this.auctionsService.getPopularAuctions();
-    this.endingAuctions = await this.auctionsService.getEndingAuctions();
+  ngOnInit() {
+    this.auctionsService.getPopularAuctions().subscribe((auctions) => {
+      this.popularAuctions = auctions;
+    });
+    this.auctionsService.getFinishingAuctions().subscribe((auctions) => {
+      this.finishingAuctions = auctions;
+    });
   }
 
   async onSearchPressed() {

@@ -8,17 +8,23 @@
 }
 
 header {
-    @extend .default-background;
     display: flex;
     align-items: center;
     height: 7vh;
 }
 
 footer {
-    @extend .default-background;
     display: flex;
     align-items: center;
     height: 7vh;
+}
+
+a {
+    text-decoration: none;
+}
+
+.login-link {
+    margin: 0 3vh 0 3vh;
 }
 
 .default-btn-background {
@@ -27,6 +33,10 @@ footer {
 }
 
 .default-btn-background:hover {
+    background-color: darkorange;
+}
+
+.default-btn-background:focus {
     background-color: darkorange;
 }
 
