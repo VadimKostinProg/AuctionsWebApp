@@ -28,8 +28,7 @@ namespace BidMasterOnline.Domain.Entities
         [MaxLength(300)]
         public string ComplaintText { get; set; } = null!;
 
-        [Required]
-        public Guid StatusId { get; set; }
+        public bool IsHandled { get; set; }
 
         [ForeignKey(nameof(AccusedUserId))]
         public virtual User AccusedUser { get; set; }
@@ -45,8 +44,5 @@ namespace BidMasterOnline.Domain.Entities
 
         [ForeignKey(nameof(ComplaintTypeId))]
         public virtual ComplaintType ComplaintType { get; set; }
-
-        [ForeignKey(nameof(StatusId))]
-        public virtual ComplaintStatus Status { get; set; }
     }
 }

@@ -11,7 +11,6 @@ namespace BidMasterOnline.Infrastructure.DatabaseContext
         public virtual DbSet<Bid> Bids { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Complaint> Complaints { get; set; }
-        public virtual DbSet<ComplaintStatus> ComplaintsStatuses { get; set; }
         public virtual DbSet<ComplaintType> ComplaintTypes { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<User> Users { get; set; }
