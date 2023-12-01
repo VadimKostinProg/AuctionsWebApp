@@ -33,7 +33,7 @@ export class DeepLinkingService {
 
   async clearQueryParam(key: string) {
     const params = { ...this.route.snapshot.queryParams };
-    delete params[key];
+    params[key] = null;
 
     const navigationExtras: NavigationExtras = {
       queryParams: params,

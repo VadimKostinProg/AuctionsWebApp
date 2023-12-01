@@ -6,16 +6,16 @@ import { DeepLinkingService } from './deep-linking.service';
 })
 export class AuctionsDeepLinkingService extends DeepLinkingService {
 
-  getCategory() {
-    return super.getQueryParam('category');
+  getCategoryId() {
+    return super.getQueryParam('categoryId');
   }
 
-  async setCategory(value: string) {
-    await super.setQueryParam('category', value);
+  async setCategoryId(value: string) {
+    await super.setQueryParam('categoryId', value);
   }
 
-  async clearCategory() {
-    await super.clearQueryParam('category');
+  async clearCategoryId() {
+    await super.clearQueryParam('categoryId');
   }
 
   getStartPriceDiapason() {
@@ -60,7 +60,7 @@ export class AuctionsDeepLinkingService extends DeepLinkingService {
     await super.setQueryParam('status', value);
   }
 
-  async clearStatus(value: string) {
+  async clearStatus() {
     await super.clearQueryParam('status');
   }
 }

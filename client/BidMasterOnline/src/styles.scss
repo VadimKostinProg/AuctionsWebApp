@@ -59,8 +59,14 @@ a {
     text-align: center;
 }
 
-.slider-dropdown {
-    width: 60vh;
+.slider-popover {
+    width: 100vh;
+}
+
+.radio-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 input[type="radio"]:checked {
