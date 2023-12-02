@@ -21,6 +21,7 @@ namespace BidMasterOnline.Application.Services
         public async Task<IEnumerable<CategoryDTO>> GetAllCategoriesAsync()
         {
             var specification = new SpecificationBuilder<Category>()
+                .With(x => x.IsDeleted == false)
                 .OrderBy(x => x.Name, Enums.SortOrder.ASC)
                 .Build();
 
