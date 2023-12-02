@@ -1,4 +1,4 @@
-export interface CreateCategoryModel {
-    name: string;
-    description: string;
+export class CreateCategoryModel {
+    public name: string;
+    public description: string;
 }

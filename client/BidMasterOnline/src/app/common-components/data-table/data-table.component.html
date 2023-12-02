@@ -1,1 +1,98 @@
-<p>data-table works!</p>
+<div class="row mb-3">
+    <div class="text-right">
+        <h3>
+            {{ options.title }}
+        </h3>
+    </div>
+
+    <div *ngIf="options.showDeletedData"
+         class="text-left">
+        <input type="checkbox"
+               class="btn-check"
+               id="btncheck1"
+               autocomplete="off"
+               [value]="isCurrentDataDeleted"
+               (click)="onShowDeletedClick()">
+        <label class="btn btn-outline-primary"
+               for="btncheck1">Show deleted</label>
+    </div>
+</div>
+
+<div class="row">
+    <table class="table table-hover">
+        <tr>
+            <th *ngIf="options.showIndexColumn"></th>
+
+            <th *ngFor="let column of options.columnSettings"
+                [ngStyle]="{ 'width': column.width }">
+                <div>
+                    {{ column.title }}
+                </div>
+            </th>
+        </tr>
+
+        <tr *ngFor="let data of tableData; let i = index">
+            <td *ngIf="options.showIndexColumn">
+                <div>
+                    {{ i + 1 }}
+                </div>
+            </td>
+
+            <td *ngFor="let column of option.columnSettings">
+                <div>
+                    {{ data[column.dataPropName] }}
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="row flex justify-content-between">
+    <ng-select [items]="pageSizeOptions"
+               bindLabel="label"
+               bindValue="number"
+               (change)="onPageSizeChanged($event)">
+    </ng-select>
+
+    <nav aria-label="Page navigation example"
+         #paginator>
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link"
+                   href="#"
+                   aria-label="Previous"
+                   onclick="return false"
+                   (click)="decrementPageNumber()">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link"
+                   href="#">
+                    1
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link"
+                   href="#">
+                    2
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link"
+                   href="#">
+                    3
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link"
+                   href="#"
+                   aria-label="Next"
+                   onclick="return false"
+                   (click)="incrementPageNumber()">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
