@@ -18,6 +18,17 @@ namespace BidMasterOnline.Application.Services
             _mapper = mapper;
         }
 
+        public async Task<IEnumerable<CategoryDTO>> GetAllCategoriesAsync()
+        {
+            var specification = new SpecificationBuilder<Category>()
+                .OrderBy(x => x.Name, Enums.SortOrder.ASC)
+                .Build();
+
+            var categories = await _repository.GetAsync<Category>(specification);
+
+            return categories.Select(x => this._mapper.Map<CategoryDTO>(x)).ToList();
+        }
+
         public async Task CreateNewCategoryAsync(CreateCategoryDTO category)
         {
             // Validating category
@@ -56,11 +67,24 @@ namespace BidMasterOnline.Application.Services
             await _repository.UpdateAsync(category);
         }
 
-        public async Task<IEnumerable<CategoryDTO>> GetCategoriesListAsync(CategorySpecificationsDTO specifications)
+        public async Task<ListModel<CategoryDTO>> GetCategoriesListAsync(CategorySpecificationsDTO specifications)
         {
+            if (specifications is null)
+                throw new ArgumentNullException("Specifications is null.");
+
             var categories = await _repository.GetAsync<Category>(this.GetSpecification(specifications));
 
-            return categories.Select(x => this._mapper.Map<CategoryDTO>(x)).ToList();
+            var totalCount = await _repository.Count<Category>();
+
+            var totalPages = (long)Math.Ceiling((double)totalCount / specifications.PageSize);
+
+            var list = new ListModel<CategoryDTO>()
+            {
+                List = categories.Select(x => this._mapper.Map<CategoryDTO>(x)).ToList(),
+                TotalPages = totalPages
+            };
+
+            return list;
         }
 
         // Method for creating ISpecification for CategorySpecificationsDTO
@@ -70,23 +94,23 @@ namespace BidMasterOnline.Application.Services
 
             builder.With(x => x.IsDeleted == isDeleted);
 
-            if (specifications is not null)
-            {
-                if (!string.IsNullOrEmpty(specifications.Name))
-                    builder.With(x => x.Name.Contains(specifications.Name));
+            if (!string.IsNullOrEmpty(specifications.Name))
+                builder.With(x => x.Name.Contains(specifications.Name));
 
+            if (!string.IsNullOrEmpty(specifications.SortField))
+            {
                 switch (specifications.SortField)
                 {
                     case "Id":
-                        builder.OrderBy(x => x.Id, specifications.SortOrder);
+                        builder.OrderBy(x => x.Id, specifications.SortOrder ?? Enums.SortOrder.ASC);
                         break;
                     case "Name":
-                        builder.OrderBy(x => x.Name, specifications.SortOrder);
+                        builder.OrderBy(x => x.Name, specifications.SortOrder ?? Enums.SortOrder.ASC);
                         break;
                 }
-
-                builder.WithPagination(specifications.PageSize, specifications.PageNumber);
             }
+
+            builder.WithPagination(specifications.PageSize, specifications.PageNumber);
 
             return builder.Build();
         }
@@ -101,11 +125,24 @@ namespace BidMasterOnline.Application.Services
             return this._mapper.Map<CategoryDTO>(category);
         }
 
-        public async Task<IEnumerable<CategoryDTO>> GetDeletedCategoriesListAsync(CategorySpecificationsDTO specifications)
+        public async Task<ListModel<CategoryDTO>> GetDeletedCategoriesListAsync(CategorySpecificationsDTO specifications)
         {
+            if (specifications is null)
+                throw new ArgumentNullException("Specifications is null.");
+
             var categories = await _repository.GetAsync<Category>(this.GetSpecification(specifications, isDeleted: true));
 
-            return categories.Select(x => this._mapper.Map<CategoryDTO>(x)).ToList();
+            var totalCount = await _repository.Count<Category>();
+
+            var totalPages = (long)Math.Ceiling((double)totalCount / specifications.PageSize);
+
+            var list = new ListModel<CategoryDTO>()
+            {
+                List = categories.Select(x => this._mapper.Map<CategoryDTO>(x)).ToList(),
+                TotalPages = totalPages
+            };
+
+            return list;
         }
 
         public async Task RecoverCategoryAsync(Guid id)
@@ -145,7 +182,7 @@ namespace BidMasterOnline.Application.Services
                 throw new ArgumentNullException("Description cannot be blank.");
 
             if (await _repository.AnyAsync<Category>(x => x.Id != category.Id &&
-                                                          x.Name == category.Name && 
+                                                          x.Name == category.Name &&
                                                           x.IsDeleted == false))
                 throw new ArgumentException("Category with the same name already exists.");
 

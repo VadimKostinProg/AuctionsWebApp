@@ -12,7 +12,7 @@ namespace BidMasterOnline.Application.ServiceContracts
         /// </summary>
         /// <param name="specifications">Specifications of sorting and pagination to apply.</param>
         /// <returns>Auctions list with applyed specifications.</returns>
-        Task<IEnumerable<AuctionDTO>> GetNotApprovedAuctionsListAsync(SpecificationsDTO specifications);
+        Task<ListModel<AuctionDTO>> GetNotApprovedAuctionsListAsync(SpecificationsDTO specifications);
 
         /// <summary>
         /// Approves the specified auction.

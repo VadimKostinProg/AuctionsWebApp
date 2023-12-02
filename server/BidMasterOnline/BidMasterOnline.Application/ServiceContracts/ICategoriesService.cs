@@ -8,18 +8,24 @@ namespace BidMasterOnline.Application.ServiceContracts
     public interface ICategoriesService
     {
         /// <summary>
+        /// Gets all categories of auction lots.
+        /// </summary>
+        /// <returns>Collection IEnumerable of all categories.</returns>
+        Task<IEnumerable<CategoryDTO>> GetAllCategoriesAsync();
+
+        /// <summary>
         /// Gets the list of categories with applyed specifications.
         /// </summary>
         /// <param name="specifications">Specifications for filtering, sorting and pagination to apply.</param>
-        /// <returns>Collection IEnumerable of categories with applyed specifications.</returns>
-        Task<IEnumerable<CategoryDTO>> GetCategoriesListAsync(CategorySpecificationsDTO specifications);
+        /// <returns>List of categories with applyed specifications.</returns>
+        Task<ListModel<CategoryDTO>> GetCategoriesListAsync(CategorySpecificationsDTO specifications);
 
         /// <summary>
         /// Gets the list of deleted categories with applyed specifications.
         /// </summary>
         /// <param name="specifications">Specifications for filtering, sorting and pagination to apply.</param>
-        /// <returns>Collection IEnumerable of deleted categories with applyed specifications.</returns>
-        Task<IEnumerable<CategoryDTO>> GetDeletedCategoriesListAsync(CategorySpecificationsDTO specifications);
+        /// <returns>List of deleted categories with applyed specifications.</returns>
+        Task<ListModel<CategoryDTO>> GetDeletedCategoriesListAsync(CategorySpecificationsDTO specifications);
 
         /// <summary>
         /// Gets the specified category by it`s identifier.

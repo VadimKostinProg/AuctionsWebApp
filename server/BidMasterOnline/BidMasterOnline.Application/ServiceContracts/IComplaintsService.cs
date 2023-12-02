@@ -11,8 +11,8 @@ namespace BidMasterOnline.Application.ServiceContracts
         /// Gets complaints list with applyed specifications.
         /// </summary>
         /// <param name="specifications">Specifications of complaint type, date, sorting and pagination.</param>
-        /// <returns>Collection IEnnumerable of complaints with applyed specifications.</returns>
-        Task<IEnumerable<ComplaintDTO>> GetComplaintsList(ComplaintSpecificationsDTO specifications);
+        /// <returns>List of complaints with applyed specifications.</returns>
+        Task<ListModel<ComplaintDTO>> GetComplaintsList(ComplaintSpecificationsDTO specifications);
 
         /// <summary>
         /// Gets the specified complaint by it`s identifier.

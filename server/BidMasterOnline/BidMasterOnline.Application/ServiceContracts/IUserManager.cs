@@ -13,7 +13,7 @@ namespace BidMasterOnline.Application.ServiceContracts
         /// <param name="specifications">Specifications of sorting, pagination, filtering by user role and 
         /// status to apply.</param>
         /// <returns>Users list with applyed specifications.</returns>
-        Task<IEnumerable<UserDTO>> GetUsersListAsync(UserSpecificationsDTO specifications);
+        Task<ListModel<UserDTO>> GetUsersListAsync(UserSpecificationsDTO specifications);
 
         /// <summary>
         /// Gets users information by it`s identifier.

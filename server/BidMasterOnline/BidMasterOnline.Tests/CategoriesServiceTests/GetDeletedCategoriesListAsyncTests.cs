@@ -12,22 +12,21 @@ namespace BidMasterOnline.Tests.CategoriesServiceTests
     public class GetDeletedCategoriesListAsyncTests : CategoriesServiceTestsBase
     {
         [Fact]
-        public async Task GetDeletedCategoriesListAsync_NullSpecification_ReturnsAllCategories()
+        public async Task GetDeletedCategoriesListAsync_NullSpecification_ThrowsArgumentNullException()
         {
             // Arrange
             var categories = this.GetTestCategories(count: 20, isDeleted: true);
 
             CategorySpecificationsDTO specification = null;
 
-            repositoryMock.Setup(x => x.GetAsync<Category>(It.IsAny<ISpecification<Category>>(), true))
-                .ReturnsAsync(categories);
-
-            // Act
-            var categoriesList = await this.service.GetDeletedCategoriesListAsync(specification);
-
             // Assert
-            categoriesList.Should().NotBeNull();
-            categoriesList.Count().Should().Be(categories.Count());
+            var action = async () =>
+            {
+                // Act
+                var categoriesList = await this.service.GetDeletedCategoriesListAsync(specification);
+            };
+
+            await action.Should().ThrowAsync<ArgumentNullException>();
         }
 
         [Fact]
@@ -55,15 +54,20 @@ namespace BidMasterOnline.Tests.CategoriesServiceTests
 
             var expectedCategoriesDTO = expectedCategoriesList.Select(x => mapper.Map<CategoryDTO>(x)).ToList();
 
+            var expectedTotalPages = (long)Math.Ceiling((double)categories.Count / specificationsDTO.PageSize);
+
             repositoryMock.Setup(x => x.GetAsync<Category>(It.IsAny<ISpecification<Category>>(), true))
                 .ReturnsAsync(expectedCategoriesList);
+            repositoryMock.Setup(x => x.Count<Category>())
+                .ReturnsAsync(categories.Count);
 
             // Act
             var categoriesList = await service.GetDeletedCategoriesListAsync(specificationsDTO);
 
             // Assert
             categoriesList.Should().NotBeNull();
-            categoriesList.Should().BeEquivalentTo(expectedCategoriesDTO);
+            categoriesList.List.Should().BeEquivalentTo(expectedCategoriesDTO);
+            categoriesList.TotalPages.Should().Be(expectedTotalPages);
         }
     }
 }

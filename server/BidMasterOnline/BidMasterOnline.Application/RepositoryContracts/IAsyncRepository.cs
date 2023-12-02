@@ -11,6 +11,13 @@ namespace BidMasterOnline.Application.RepositoryContracts
     public interface IAsyncRepository
     {
         /// <summary>
+        /// Method for count total amount of the passed entity.
+        /// </summary>
+        /// <typeparam name="T">Type of entity to count amount.</typeparam>
+        /// <returns>Amount of all entities of the passed type.</returns>
+        Task<long> Count<T>() where T : EntityBase;
+
+        /// <summary>
         /// Method for reading all entities of the specific type from the data source.
         /// </summary>
         /// <typeparam name="T">Type of entities to read.</typeparam>

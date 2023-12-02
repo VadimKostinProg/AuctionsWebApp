@@ -8,8 +8,8 @@ namespace BidMasterOnline.Application.DTO
     public class SpecificationsDTO
     {
         // Sorting
-        public string SortField { get; set; } = "Id";
-        public SortOrder SortOrder { get; set; } = SortOrder.ASC;
+        public string? SortField { get; set; }
+        public SortOrder? SortOrder { get; set; }
 
         // Pagination
         public int PageNumber { get; set; } = 1;
