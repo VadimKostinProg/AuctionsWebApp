@@ -12,6 +12,6 @@
         public DateTime FinishDateAndTime { get; set; }
         public decimal StartPrice { get; set; }
         public decimal CurrentBid { get; set; }
-        public string ImageUrl { get; set; }
+        public List<string> ImageUrls { get; set; }
     }
 }

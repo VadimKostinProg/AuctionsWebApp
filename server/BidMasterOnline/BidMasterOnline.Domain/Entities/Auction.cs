@@ -51,5 +51,7 @@ namespace BidMasterOnline.Domain.Entities
         public virtual AuctionStatus Status { get; set; }
 
         public virtual ICollection<Bid> Bids { get; set; }
+
+        public virtual ICollection<Image> Images { get; set; }
     }
 }
