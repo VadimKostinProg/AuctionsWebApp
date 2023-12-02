@@ -31,7 +31,7 @@
             </th>
         </tr>
 
-        <tr *ngFor="let data of tableData; let i = index">
+        <tr *ngFor="let row of tableData.data; let i = index">
             <td *ngIf="options.showIndexColumn">
                 <div>
                     {{ i + 1 }}
@@ -40,7 +40,7 @@
 
             <td *ngFor="let column of option.columnSettings">
                 <div>
-                    {{ data[column.dataPropName] }}
+                    {{ row[column.dataPropName] }}
                 </div>
             </td>
         </tr>
@@ -57,7 +57,8 @@
     <nav aria-label="Page navigation example"
          #paginator>
         <ul class="pagination">
-            <li class="page-item">
+            <li class="page-item"
+                [ngClass]="(this.pagination.pageNumber == 0)? 'disabled' : ''">
                 <a class="page-link"
                    href="#"
                    aria-label="Previous"
@@ -66,25 +67,17 @@
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
-            <li class="page-item">
+            <li *ngFor="let page in tableData.totalPages"
+                class="page-item">
                 <a class="page-link"
+                   onclick="return false"
+                   (click)="onPageNumberChanged(page)"
                    href="#">
-                    1
+                    {{ page }}
                 </a>
             </li>
-            <li class="page-item">
-                <a class="page-link"
-                   href="#">
-                    2
-                </a>
-            </li>
-            <li class="page-item">
-                <a class="page-link"
-                   href="#">
-                    3
-                </a>
-            </li>
-            <li class="page-item">
+            <li class="page-item"
+                [ngClass]="(this.pagination.pageNumber == tableDate.totalPages)? 'disabled' : ''">
                 <a class="page-link"
                    href="#"
                    aria-label="Next"

@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { CategoryModel } from '../models/categoryModel';
 import { Observable, catchError, throwError } from 'rxjs';
 import { CreateCategoryModel } from '../models/createCategoryModel';
+import { ListModel } from '../models/listModel';
 
 @Injectable({
   providedIn: 'root'
@@ -15,19 +16,23 @@ export class CategoriesService {
 
   constructor(private readonly httpClient: HttpClient) { }
 
-  GetCategoriesList(specifications: Params): Observable<CategoryModel[]> {
-    const params = new HttpParams({ fromObject: specifications });
-
-    return this.httpClient.get<CategoryModel[]>(this.baseUrl, { params });
+  getAllCategories(): Observable<CategoryModel[]> {
+    return this.httpClient.get<CategoryModel[]>(this.baseUrl);
   }
 
-  GetDeletedCategoriesList(specifications: Params): Observable<CategoryModel[]> {
+  getCategoriesList(specifications: Params): Observable<ListModel<CategoryModel>> {
     const params = new HttpParams({ fromObject: specifications });
 
-    return this.httpClient.get<CategoryModel[]>(`${this.baseUrl}/deleted`, { params });
+    return this.httpClient.get<ListModel<CategoryModel>>(`${this.baseUrl}/list`, { params });
   }
 
-  GetCategoryById(id: string) {
+  getDeletedCategoriesList(specifications: Params): Observable<ListModel<CategoryModel>> {
+    const params = new HttpParams({ fromObject: specifications });
+
+    return this.httpClient.get<ListModel<CategoryModel>>(`${this.baseUrl}/list/deleted`, { params });
+  }
+
+  getCategoryById(id: string) {
     return this.httpClient.get<CategoryModel[]>(`${this.baseUrl}/${id}`).pipe(
       catchError((error: HttpErrorResponse) => {
         // TODO: show modal window
@@ -37,7 +42,7 @@ export class CategoriesService {
     );
   }
 
-  CreateNewCategory(category: CreateCategoryModel) {
+  createNewCategory(category: CreateCategoryModel) {
     return this.httpClient.post(this.baseUrl, category).pipe(
       catchError((error: HttpErrorResponse) => {
         // TODO: show modal window
@@ -47,7 +52,7 @@ export class CategoriesService {
     );
   }
 
-  UpdateCategory(category: CategoryModel) {
+  updateCategory(category: CategoryModel) {
     return this.httpClient.put(this.baseUrl, category).pipe(
       catchError((error: HttpErrorResponse) => {
         // TODO: show modal window
@@ -57,7 +62,7 @@ export class CategoriesService {
     );
   }
 
-  DeleteCategory(id: string) {
+  deleteCategory(id: string) {
     return this.httpClient.delete(`${this.baseUrl}/${id}`).pipe(
       catchError((error: HttpErrorResponse) => {
         // TODO: show modal window
@@ -67,7 +72,7 @@ export class CategoriesService {
     );
   }
 
-  RecoverCategory(id: string) {
+  recoverCategory(id: string) {
     return this.httpClient.post(`${this.baseUrl}/${id}/recover`, {}).pipe(
       catchError((error: HttpErrorResponse) => {
         // TODO: show modal window

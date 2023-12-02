@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { DataTableOptionsModel } from 'src/app/models/dataTableOptionsModel';
+import { ListModel } from 'src/app/models/listModel';
 import { PaginationModel } from 'src/app/models/paginationModel';
 import { SortingModel } from 'src/app/models/sortingModel';
 import { DeepLinkingService } from 'src/app/services/deep-linking.service';
@@ -21,7 +22,7 @@ export class DataTableComponent implements OnInit, OnDestroy {
   // Real url to send request to
   actualUrl: string;
 
-  tableData: any[];
+  tableData: ListModel<any>;
 
   isCurrentDataDeleted: boolean = false;
 
@@ -76,8 +77,8 @@ export class DataTableComponent implements OnInit, OnDestroy {
     const specifications = await this.deepLinkingService.getAllQueryParams();
     const params = new HttpParams({ fromObject: specifications });
 
-    this.httpClient.get<any[]>(this.actualUrl, { params }).subscribe((data) => {
-      this.tableData = data;
+    this.httpClient.get(this.actualUrl, { params }).subscribe((data) => {
+      this.tableData = data as ListModel<any>;
     });
   }
 
@@ -95,6 +96,14 @@ export class DataTableComponent implements OnInit, OnDestroy {
 
   async decrementPageNumber() {
     this.pagination.pageNumber--;
+
+    await this.deepLinkingService.setPaginationParams(this.pagination);
+
+    await this.reloadDatatable();
+  }
+
+  async onPageNumberChanged(pageNumber: number) {
+    this.pagination.pageNumber = pageNumber;
 
     await this.deepLinkingService.setPaginationParams(this.pagination);
 
