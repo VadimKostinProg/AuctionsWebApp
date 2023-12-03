@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
 namespace BidMasterOnline.Domain.Entities
@@ -32,8 +33,15 @@ namespace BidMasterOnline.Domain.Entities
         public DateTime? UnblockDateTime { get; set; }
 
         [Required]
+        public Guid RoleId { get; set; }
+
+        [Required]
         public Guid UserStatusId { get; set; }
 
-        public virtual ICollection<UserRole> UserRoles { get; set; }
+        [ForeignKey(nameof(RoleId))]
+        public virtual Role Role { get; set; }
+
+        [ForeignKey(nameof(UserStatusId))]
+        public virtual UserStatus UserStatus { get; set; }
     }
 }

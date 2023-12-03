@@ -19,7 +19,10 @@ namespace BidMasterOnline.Application.DTO
 
         [Required(ErrorMessage = "Auction finish type is required.")]
         public AuctionFinishType FinishType { get; set; }
-        public DateTime? FinishDateTime { get; set; }
+
+        [Required(ErrorMessage = "Auction finish time is required.")]
+        public DateTime FinishDateTime { get; set; }
+
         public TimeSpan? FinishTimeInterval { get; set; }
 
         [Required(ErrorMessage = "Start price is required.")]

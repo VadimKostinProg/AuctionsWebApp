@@ -1,7 +1,7 @@
 ﻿namespace BidMasterOnline.Application.DTO
 {
     /// <summary>
-    /// DTO for category specifications for filtering, sorting and paginating.
+    /// DTO for category specifications for filtering, sorting and paginating. (REQUEST)
     /// </summary>
     public class CategorySpecificationsDTO : SpecificationsDTO
     {

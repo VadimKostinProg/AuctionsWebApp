@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace BidMasterOnline.Domain.Entities
 {
@@ -24,6 +25,9 @@ namespace BidMasterOnline.Domain.Entities
 
         [Required]
         public DateTime FinishDateTime { get; set; }
+
+        [AllowNull]
+        public TimeSpan? FinishInterval { get; set; }
 
         [Required]
         public decimal StartPrice { get; set; }
@@ -50,8 +54,8 @@ namespace BidMasterOnline.Domain.Entities
         [ForeignKey(nameof(StatusId))]
         public virtual AuctionStatus Status { get; set; }
 
-        public virtual ICollection<Bid> Bids { get; set; }
-
         public virtual ICollection<Image> Images { get; set; }
+
+        public virtual ICollection<Bid> Bids { get; set; }
     }
 }

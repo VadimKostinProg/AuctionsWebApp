@@ -1,4 +1,6 @@
-﻿namespace BidMasterOnline.Application.DTO
+﻿using BidMasterOnline.Application.Enums;
+
+namespace BidMasterOnline.Application.DTO
 {
     /// <summary>
     /// DTO for users. (RESPONSE)
@@ -10,5 +12,6 @@
         public string FullName { get; set; }
         public string Email { get; set; }
         public string ImageUrl { get; set; }
+        public UserStatus Status { get; set; }
     }
 }

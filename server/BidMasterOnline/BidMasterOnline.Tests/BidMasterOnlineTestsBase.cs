@@ -1,4 +1,5 @@
 ﻿using AutoFixture;
+using BidMasterOnline.Application.Enums;
 using BidMasterOnline.Domain.Entities;
 
 namespace BidMasterOnline.Tests
@@ -12,13 +13,9 @@ namespace BidMasterOnline.Tests
 
         public Category GetTestCategory(bool isDeleted = false)
         {
-            return new Category
-            {
-                Id = Guid.NewGuid(),
-                Name = fixture.Create<string>(),
-                Description = fixture.Create<string>(),
-                IsDeleted = isDeleted
-            };
+            return fixture.Build<Category>()
+                .With(x => x.IsDeleted, isDeleted)
+                .Create();
         }
 
         public IEnumerable<Category> GetTestCategories(int count = 10, bool isDeleted = false)
@@ -26,6 +23,75 @@ namespace BidMasterOnline.Tests
             for (int i = 0; i < count; i++)
             {
                 yield return this.GetTestCategory(isDeleted);
+            }
+        }
+
+        public Auction GetTestAuction(Application.Enums.AuctionStatus auctionStatus = Application.Enums.AuctionStatus.Active,
+            Application.Enums.AuctionFinishType auctionFinishType = Application.Enums.AuctionFinishType.StaticFinishTime)
+        {
+            var status = new Domain.Entities.AuctionStatus()
+            {
+                Id = Guid.NewGuid(),
+                Name = auctionStatus.ToString()
+            };
+
+            var finishType = new Domain.Entities.AuctionFinishType()
+            {
+                Id = Guid.NewGuid(),
+                Name = auctionFinishType.ToString()
+            };
+
+            var auctioner = this.GetTestUser();
+
+            return fixture.Build<Auction>()
+                .With(x => x.AuctionerId, auctioner.Id)
+                .With(x => x.Auctioner, auctioner)
+                .With(x => x.StatusId, status.Id)
+                .With(x => x.Status, status)
+                .With(x => x.FinishTypeId, finishType.Id)
+                .With(x => x.FinishType, finishType)
+                .With(x => x.Bids, new List<Bid>())
+                .Create();
+        }
+
+        public User GetTestUser(Application.Enums.UserStatus userStatus = Application.Enums.UserStatus.Active)
+        {
+            var status = new Domain.Entities.UserStatus()
+            {
+                Id = Guid.NewGuid(),
+                Name = userStatus.ToString()
+            };
+
+            var role = new Role()
+            {
+                Id = Guid.NewGuid(),
+                Name = UserRole.Customer.ToString()
+            };
+
+            return fixture.Build<User>()
+                .With(x => x.RoleId, role.Id)
+                .With(x => x.Role, role)
+                .With(x => x.UserStatusId, status.Id)
+                .With(x => x.UserStatus, status)
+                .Create();
+        }
+
+        public Bid GetTestBid(Auction auction, User bidder, bool isWinning = false)
+        {
+            return fixture.Build<Bid>()
+                .With(x => x.AuctionId, auction.Id)
+                .With(x => x.Auction, auction)
+                .With(x => x.BidderId, bidder.Id)
+                .With(x => x.Bidder, bidder)
+                .With(x => x.IsWinning, isWinning)
+                .Create();
+        }
+
+        public IEnumerable<Bid> GetTestBids(Auction auction, User bidder, int count = 10)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                yield return this.GetTestBid(auction, bidder);
             }
         }
     }

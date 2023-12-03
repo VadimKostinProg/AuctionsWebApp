@@ -27,9 +27,14 @@ namespace BidMasterOnline.Infrastructure.Repositories
             return await context.Set<T>().AnyAsync(expression);
         }
 
-        public virtual async Task<long> Count<T>() where T : EntityBase
+        public virtual async Task<long> CountAsync<T>() where T : EntityBase
         {
             return await context.Set<T>().CountAsync();
+        }
+
+        public virtual async Task<long> CountAsync<T>(Expression<Func<T, bool>> predicate) where T : EntityBase
+        {
+            return await context.Set<T>().CountAsync(predicate);
         }
 
         public virtual async Task<bool> DeleteAsync<T>(Guid id) where T : EntityBase

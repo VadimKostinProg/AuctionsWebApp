@@ -71,11 +71,11 @@ namespace BidMasterOnline.Application.Services
         public async Task<ListModel<CategoryDTO>> GetCategoriesListAsync(CategorySpecificationsDTO specifications)
         {
             if (specifications is null)
-                throw new ArgumentNullException("Specifications is null.");
+                throw new ArgumentNullException("Specifications are null.");
 
             var categories = await _repository.GetAsync<Category>(this.GetSpecification(specifications));
 
-            var totalCount = await _repository.Count<Category>();
+            var totalCount = await _repository.CountAsync<Category>();
 
             var totalPages = (long)Math.Ceiling((double)totalCount / specifications.PageSize);
 
@@ -129,11 +129,11 @@ namespace BidMasterOnline.Application.Services
         public async Task<ListModel<CategoryDTO>> GetDeletedCategoriesListAsync(CategorySpecificationsDTO specifications)
         {
             if (specifications is null)
-                throw new ArgumentNullException("Specifications is null.");
+                throw new ArgumentNullException("Specifications are null.");
 
             var categories = await _repository.GetAsync<Category>(this.GetSpecification(specifications, isDeleted: true));
 
-            var totalCount = await _repository.Count<Category>();
+            var totalCount = await _repository.CountAsync<Category>();
 
             var totalPages = (long)Math.Ceiling((double)totalCount / specifications.PageSize);
 

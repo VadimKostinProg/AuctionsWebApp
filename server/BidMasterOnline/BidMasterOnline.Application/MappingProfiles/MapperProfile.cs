@@ -10,10 +10,8 @@ namespace BidMasterOnline.Application.MappingProfiles
         {
             CreateMap<Category, CategoryDTO>()
                 .ReverseMap();
-            CreateMap<CreateCategoryDTO, Category>()
-                .ReverseMap();
-            CreateMap<UpdateCategoryDTO, Category>()
-                .ReverseMap();
+            CreateMap<CreateCategoryDTO, Category>();
+            CreateMap<UpdateCategoryDTO, Category>();
         }
     }
 }

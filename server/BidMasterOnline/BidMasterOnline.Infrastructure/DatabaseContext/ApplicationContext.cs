@@ -14,7 +14,6 @@ namespace BidMasterOnline.Infrastructure.DatabaseContext
         public virtual DbSet<ComplaintType> ComplaintTypes { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<UserRole> UserRoles { get; set; }
         public virtual DbSet<UserStatus> UserStatuses { get; set; }
 
         public ApplicationContext(DbContextOptions options) : base(options) { }

@@ -61,7 +61,7 @@ namespace BidMasterOnline.Tests.CategoriesServiceTests
 
             repositoryMock.Setup(x => x.GetAsync<Category>(It.IsAny<ISpecification<Category>>(), true))
                 .ReturnsAsync(expectedCategoriesList);
-            repositoryMock.Setup(x => x.Count<Category>())
+            repositoryMock.Setup(x => x.CountAsync<Category>())
                 .ReturnsAsync(categories.Count);
 
             // Act
