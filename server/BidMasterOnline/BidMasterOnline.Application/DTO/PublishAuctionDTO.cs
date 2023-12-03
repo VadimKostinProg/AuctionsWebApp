@@ -6,7 +6,7 @@ namespace BidMasterOnline.Application.DTO
     /// <summary>
     /// DTO for publishing auction for verification. (REQUEST)
     /// </summary>
-    public class AuctionPublishRequestDTO
+    public class PublishAuctionDTO
     {
         [Required(ErrorMessage = "Lot name is required.")]
         public string Name { get; set; } = null!;

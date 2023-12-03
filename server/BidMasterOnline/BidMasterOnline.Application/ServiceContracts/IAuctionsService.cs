@@ -23,23 +23,23 @@ namespace BidMasterOnline.Application.ServiceContracts
         Task<AuctionDTO> GetAuctionByIdAsync(Guid id);
 
         /// <summary>
-        /// Gets detailed auctions information by identifier.
+        /// Gets auction detailed information by identifier.
         /// </summary>
         /// <param name="id">Identifier of auction to get information of.</param>
         /// <returns>Detailed infromation of auction.</returns>
-        Task<AuctionDetailedDTO> GetAuctionDetailedByIdAsync(Guid id);
+        Task<AuctionDetailsDTO> GetAuctionDetailsByIdAsync(Guid id);
 
         /// <summary>
         /// Published auction for futher verification.
         /// </summary>
         /// <param name="request">Object with publishing auctions infromation.</param>
-        Task PublishAuctionAsync(AuctionPublishRequestDTO request);
+        Task PublishAuctionAsync(PublishAuctionDTO request);
 
         /// <summary>
         /// Confirms payment for auction lot by user.
         /// </summary>
-        /// <param name="id">Identifier of auction to confirm payment for.</param>
-        Task ConfirmPaymentForAuctionAsync(Guid id);
+        /// <param name="auctionId">Identifier of auction to confirm payment for.</param>
+        Task ConfirmPaymentForAuctionAsync(Guid auctionId);
 
         /// <summary>
         /// Cancels active auction.
@@ -51,7 +51,8 @@ namespace BidMasterOnline.Application.ServiceContracts
         /// Recovers canceled auction.
         /// </summary>
         /// <param name="auctionId">Identifier of auction to cancel.</param>
+        /// <param name="newFinishTime">New auction finish time, which sets optionaly.</param>
         /// <returns></returns>
-        Task RecoverAuctionAsync(Guid auctionId);
+        Task RecoverAuctionAsync(Guid auctionId, DateTime? newFinishTime);
     }
 }
