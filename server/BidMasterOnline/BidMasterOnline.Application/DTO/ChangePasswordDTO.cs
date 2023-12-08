@@ -7,9 +7,6 @@ namespace BidMasterOnline.Application.DTO
     /// </summary>
     public class ChangePasswordDTO
     {
-        [Required(ErrorMessage = "Id is required.")]
-        public Guid UserId { get; set; }
-
         [Required(ErrorMessage = "Current password is required")]
         public string CurrentPassword { get; set; } = null!;
 

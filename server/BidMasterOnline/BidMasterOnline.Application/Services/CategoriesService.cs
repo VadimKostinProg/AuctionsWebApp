@@ -73,9 +73,13 @@ namespace BidMasterOnline.Application.Services
             if (specifications is null)
                 throw new ArgumentNullException("Specifications are null.");
 
-            var categories = await _repository.GetAsync<Category>(this.GetSpecification(specifications));
+            var specification = this.GetSpecification(specifications);
 
-            var totalCount = await _repository.CountAsync<Category>();
+            var categories = await _repository.GetAsync<Category>(specification);
+
+            var totalCount = specification.Predicate is null ? 
+                await _repository.CountAsync<Category>() :
+                await _repository.CountAsync<Category>(specification.Predicate);
 
             var totalPages = (long)Math.Ceiling((double)totalCount / specifications.PageSize);
 
@@ -131,9 +135,13 @@ namespace BidMasterOnline.Application.Services
             if (specifications is null)
                 throw new ArgumentNullException("Specifications are null.");
 
-            var categories = await _repository.GetAsync<Category>(this.GetSpecification(specifications, isDeleted: true));
+            var specification = this.GetSpecification(specifications, isDeleted: true);
 
-            var totalCount = await _repository.CountAsync<Category>();
+            var categories = await _repository.GetAsync<Category>(specification);
+
+            var totalCount = specification.Predicate is null ?
+                await _repository.CountAsync<Category>() :
+                await _repository.CountAsync<Category>(specification.Predicate);
 
             var totalPages = (long)Math.Ceiling((double)totalCount / specifications.PageSize);
 

@@ -51,7 +51,7 @@ namespace BidMasterOnline.Tests.BidsServiceTests
 
             repositoryMock.Setup(x => x.GetByIdAsync<Auction>(auction.Id, false))
                 .ReturnsAsync(auction);
-            jwtServiceMock.Setup(x => x.GetAuthorizedUserAsync())
+            authServiceMock.Setup(x => x.GetAuthenticatedUserAsync())
                 .ReturnsAsync(authorizedUserDTO);
 
 
@@ -88,7 +88,7 @@ namespace BidMasterOnline.Tests.BidsServiceTests
 
             repositoryMock.Setup(x => x.GetByIdAsync<Auction>(It.IsAny<Guid>(), false))
                 .ReturnsAsync(null as Auction);
-            jwtServiceMock.Setup(x => x.GetAuthorizedUserAsync())
+            authServiceMock.Setup(x => x.GetAuthenticatedUserAsync())
                 .ReturnsAsync(authorizedUserDTO);
 
             // Assert
@@ -121,7 +121,7 @@ namespace BidMasterOnline.Tests.BidsServiceTests
 
             repositoryMock.Setup(x => x.GetByIdAsync<Auction>(auction.Id, false))
                 .ReturnsAsync(auction);
-            jwtServiceMock.Setup(x => x.GetAuthorizedUserAsync())
+            authServiceMock.Setup(x => x.GetAuthenticatedUserAsync())
                 .ReturnsAsync(authorizedUserDTO);
 
             var bid = fixture.Build<SetBidDTO>()
@@ -158,7 +158,7 @@ namespace BidMasterOnline.Tests.BidsServiceTests
 
             repositoryMock.Setup(x => x.GetByIdAsync<Auction>(auction.Id, false))
                 .ReturnsAsync(auction);
-            jwtServiceMock.Setup(x => x.GetAuthorizedUserAsync())
+            authServiceMock.Setup(x => x.GetAuthenticatedUserAsync())
                 .ReturnsAsync(authorizedUserDTO);
 
             var bid = fixture.Build<SetBidDTO>()
@@ -201,7 +201,7 @@ namespace BidMasterOnline.Tests.BidsServiceTests
 
             repositoryMock.Setup(x => x.GetByIdAsync<Auction>(auction.Id, false))
                 .ReturnsAsync(auction);
-            jwtServiceMock.Setup(x => x.GetAuthorizedUserAsync())
+            authServiceMock.Setup(x => x.GetAuthenticatedUserAsync())
                 .ReturnsAsync(authorizedUserDTO);
 
             var bidToSet = fixture.Build<SetBidDTO>()
@@ -243,7 +243,7 @@ namespace BidMasterOnline.Tests.BidsServiceTests
 
             repositoryMock.Setup(x => x.GetByIdAsync<Auction>(auction.Id, false))
                 .ReturnsAsync(auction);
-            jwtServiceMock.Setup(x => x.GetAuthorizedUserAsync())
+            authServiceMock.Setup(x => x.GetAuthenticatedUserAsync())
                 .ReturnsAsync(authorizedUserDTO);
 
             var bidToSet = fixture.Build<SetBidDTO>()
@@ -287,7 +287,7 @@ namespace BidMasterOnline.Tests.BidsServiceTests
                 .ReturnsAsync(auction);
             repositoryMock.Setup(x => x.AddAsync<Bid>(It.IsAny<Bid>()))
                 .Returns(Task.CompletedTask);
-            jwtServiceMock.Setup(x => x.GetAuthorizedUserAsync())
+            authServiceMock.Setup(x => x.GetAuthenticatedUserAsync())
                 .ReturnsAsync(authorizedUserDTO);
 
             var bidToSet = fixture.Build<SetBidDTO>()
@@ -333,7 +333,7 @@ namespace BidMasterOnline.Tests.BidsServiceTests
                 .Returns(Task.CompletedTask);
             repositoryMock.Setup(x => x.UpdateAsync<Auction>(It.IsAny<Auction>()))
                 .Returns(Task.CompletedTask);
-            jwtServiceMock.Setup(x => x.GetAuthorizedUserAsync())
+            authServiceMock.Setup(x => x.GetAuthenticatedUserAsync())
                 .ReturnsAsync(authorizedUserDTO);
 
             var bidToSet = fixture.Build<SetBidDTO>()

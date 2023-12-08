@@ -54,7 +54,7 @@ namespace BidMasterOnline.Domain.Entities
         [ForeignKey(nameof(StatusId))]
         public virtual AuctionStatus Status { get; set; }
 
-        public virtual ICollection<Image> Images { get; set; }
+        public virtual ICollection<AuctionImage> Images { get; set; }
 
         public virtual ICollection<Bid> Bids { get; set; }
     }

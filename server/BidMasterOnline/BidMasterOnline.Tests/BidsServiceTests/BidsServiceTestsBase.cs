@@ -10,13 +10,13 @@ namespace BidMasterOnline.Tests.BidsServiceTests
     public abstract class BidsServiceTestsBase : ServiceTestsBase
     {
         protected readonly IBidsService service;
-        protected readonly Mock<IJWTService> jwtServiceMock;
+        protected readonly Mock<IAuthService> authServiceMock;
 
         public BidsServiceTestsBase()
         {
-            this.jwtServiceMock = new Mock<IJWTService>();
+            this.authServiceMock = new Mock<IAuthService>();
 
-            service = new BidsService(this.repositoryMock.Object, jwtServiceMock.Object);
+            service = new BidsService(this.repositoryMock.Object, authServiceMock.Object);
         }
     }
 }

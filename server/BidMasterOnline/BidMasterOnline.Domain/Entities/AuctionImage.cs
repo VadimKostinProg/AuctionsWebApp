@@ -2,7 +2,7 @@
 
 namespace BidMasterOnline.Domain.Entities
 {
-    public class Image : EntityBase
+    public class AuctionImage : EntityBase
     {
         [Required]
         public Guid AuctionId { get; set; }

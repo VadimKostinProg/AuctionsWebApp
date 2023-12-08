@@ -3,6 +3,7 @@ using BidMasterOnline.Application.Specifications;
 using BidMasterOnline.Domain.Entities;
 using FluentAssertions;
 using Moq;
+using System.Linq.Expressions;
 
 namespace BidMasterOnline.Tests.CategoriesServiceTests
 {
@@ -58,7 +59,7 @@ namespace BidMasterOnline.Tests.CategoriesServiceTests
 
             repositoryMock.Setup(x => x.GetAsync<Category>(It.IsAny<ISpecification<Category>>(), true))
                 .ReturnsAsync(expectedCategoriesList);
-            repositoryMock.Setup(x => x.CountAsync<Category>())
+            repositoryMock.Setup(x => x.CountAsync<Category>(It.IsAny<Expression<Func<Category, bool>>>()))
                 .ReturnsAsync(categories.Count);
 
             // Act

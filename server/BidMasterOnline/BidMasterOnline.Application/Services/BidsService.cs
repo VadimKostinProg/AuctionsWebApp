@@ -11,12 +11,12 @@ namespace BidMasterOnline.Application.Services
     public class BidsService : IBidsService
     {
         private readonly IAsyncRepository _repository;
-        private readonly IJWTService _jwtService;
+        private readonly IAuthService _authService;
 
-        public BidsService(IAsyncRepository repository, IJWTService jwtService)
+        public BidsService(IAsyncRepository repository, IAuthService jwtService)
         {
             _repository = repository;
-            _jwtService = jwtService;
+            _authService = jwtService;
         }
 
         public async Task<ListModel<BidDTO>> GetBidsListForAuctionAsync(Guid auctionId, SpecificationsDTO specifications)
@@ -78,9 +78,7 @@ namespace BidMasterOnline.Application.Services
 
             var bids = await _repository.GetAsync<Bid>(specification, disableTracking: false);
 
-            var totalCount = specifications.OnlyWinning ?
-                await _repository.CountAsync<Bid>(x => x.BidderId == userId && x.IsWinning == true) :
-                await _repository.CountAsync<Bid>(x => x.BidderId == userId);
+            var totalCount = await _repository.CountAsync<Bid>(specification.Predicate);
 
             var totalPages = (long)Math.Ceiling((double)totalCount / specifications.PageSize);
 
@@ -109,7 +107,7 @@ namespace BidMasterOnline.Application.Services
             if (bid is null)
                 throw new ArgumentNullException("Bid is null.");
 
-            var user = await _jwtService.GetAuthorizedUserAsync();
+            var user = await _authService.GetAuthenticatedUserAsync();
 
             if (user.Status == Enums.UserStatus.Blocked)
                 throw new UserBlockedException("Account is blocked.");

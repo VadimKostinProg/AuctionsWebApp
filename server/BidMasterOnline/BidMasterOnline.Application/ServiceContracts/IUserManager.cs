@@ -1,4 +1,5 @@
 ﻿using BidMasterOnline.Application.DTO;
+using BidMasterOnline.Application.Enums;
 
 namespace BidMasterOnline.Application.ServiceContracts
 {
@@ -26,21 +27,8 @@ namespace BidMasterOnline.Application.ServiceContracts
         /// Create new user of specified role.
         /// </summary>
         /// <param name="request">Information of user to create.</param>
-        Task CreateUserAsync(CreateUserDTO request);
-
-        /// <summary>
-        /// Applyes user login.
-        /// </summary>
-        /// <param name="login">Users login information.</param>
-        /// <returns>Auhtentication information of user with authorisation token.</returns>
-        Task<AuthenticationDTO> LoginAsync(LoginDTO login);
-
-        /// <summary>
-        /// Applyes registration for user.
-        /// </summary>
-        /// <param name="register">Users registration information.</param>
-        /// <returns>Auhtentication information of user with authorisation token.</returns>
-        Task<AuthenticationDTO> RegisterAsync(RegisterDTO register);
+        /// <param name="role">Role of user to create.</param>
+        Task CreateUserAsync(CreateUserDTO request, UserRole role);
 
         /// <summary>
         /// Changes the password of the specified user.
@@ -72,11 +60,5 @@ namespace BidMasterOnline.Application.ServiceContracts
         /// </summary>
         /// <param name="userId">Identifier of user to delete.</param>
         Task DeleteUserAsync(Guid userId);
-
-        /// <summary>
-        /// Recovers deleted user.
-        /// </summary>
-        /// <param name="userId">Identifier of user to recover.</param>
-        Task RecoverUserAsync(Guid userId);
     }
 }

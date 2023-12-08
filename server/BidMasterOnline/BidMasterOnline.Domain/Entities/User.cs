@@ -38,6 +38,9 @@ namespace BidMasterOnline.Domain.Entities
         [Required]
         public Guid UserStatusId { get; set; }
 
+        [AllowNull]
+        public string? ImageUrl { get; set; }
+
         [ForeignKey(nameof(RoleId))]
         public virtual Role Role { get; set; }
 
