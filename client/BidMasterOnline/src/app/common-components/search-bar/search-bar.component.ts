@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AuctionsDeepLinkingService } from 'src/app/services/auctions-deep-linking.service';
 import { DeepLinkingService } from 'src/app/services/deep-linking.service';
 
 @Component({
@@ -6,9 +7,9 @@ import { DeepLinkingService } from 'src/app/services/deep-linking.service';
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.scss']
 })
-export class SearchBarComponent {
+export class SearchBarComponent implements OnInit {
 
-  searchTerm: string = '';
+  searchTerm: string;
 
   @Input()
   placeholder: string = 'Search...';
@@ -16,11 +17,19 @@ export class SearchBarComponent {
   @Output()
   onSubmit = new EventEmitter<void>();
 
-  constructor(private readonly deepLinkingService: DeepLinkingService) {
+  constructor(private readonly auctionsDeepLinkingService: AuctionsDeepLinkingService) {
+  }
+
+  async ngOnInit(): Promise<void> {
+    this.searchTerm = await this.auctionsDeepLinkingService.getSearchTerm() || null;
   }
 
   async onSearchPressed() {
-    await this.deepLinkingService.setQueryParam('searchTerm', this.searchTerm);
+    if (this.searchTerm !== null && this.searchTerm !== '')
+      await this.auctionsDeepLinkingService.setQueryParam('searchTerm', this.searchTerm);
+    else
+      await this.auctionsDeepLinkingService.clearSearchTerm();
+
     this.onSubmit.emit();
   }
 }

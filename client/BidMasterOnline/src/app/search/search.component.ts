@@ -10,7 +10,7 @@ import { AuctionModel } from '../models/auctionModel';
   styleUrl: './search.component.scss'
 })
 export class SearchComponent implements OnInit {
-  placeholder = 'Search...';
+  placeholder = 'Search auction...';
 
   auctions: AuctionModel[] = [];
 

@@ -1,1 +1,166 @@
-<p>create-account works!</p>
+<div class="margin-auto">
+    <div class="custom-form-container">
+        <form [formGroup]="createAccountForm"
+              (ngSubmit)="onSubmit()"
+              enctype="multipart/form-data">
+            <h2>Create Account</h2>
+
+            <div class="form-field flex mb-2">
+                <div>
+                    <label for="image"
+                           class="form-label pt">Photo:</label>
+                </div>
+
+                <div class="flex-1">
+                    <input type="file"
+                           id="image"
+                           class="form-control"
+                           formControlName="image"
+                           accept=".png, .jpg, .jpeg" />
+                </div>
+            </div>
+
+            <div class="form-field flex mb-2">
+                <div>
+                    <label for="username"
+                           class="form-label pt">Username:</label>
+                </div>
+
+                <div class="flex-1">
+                    <input type="text"
+                           id="username"
+                           class="form-control"
+                           formControlName="username" />
+                </div>
+
+                <div *ngIf="!username?.valid && (username?.dirty || username?.touched)">
+                    <span class="text-danger">Username is required.</span>
+                </div>
+            </div>
+
+            <div class="form-field flex mb-2">
+                <div>
+                    <label for="name"
+                           class="form-label pt">Name:</label>
+                </div>
+
+                <div class="flex-1">
+                    <input type="text"
+                           id="name"
+                           class="form-control"
+                           formControlName="name" />
+                </div>
+
+                <div *ngIf="!name?.valid && (name?.dirty || name?.touched)">
+                    <span class="text-danger">Name is required.</span>
+                </div>
+            </div>
+
+            <div class="form-field flex mb-2">
+                <div>
+                    <label for="surname"
+                           class="form-label pt">Surname:</label>
+                </div>
+
+                <div class="flex-1">
+                    <input type="text"
+                           id="surname"
+                           class="form-control"
+                           formControlName="surname" />
+                </div>
+
+                <div *ngIf="!surname?.valid && (surname?.dirty || surname?.touched)">
+                    <span class="text-danger">Surname is required.</span>
+                </div>
+            </div>
+
+            <div class="form-field flex mb-2">
+                <div>
+                    <label for="email"
+                           class="form-label pt">Email:</label>
+                </div>
+
+                <div class="flex-1">
+                    <input type="text"
+                           id="email"
+                           class="form-control"
+                           formControlName="email" />
+                </div>
+
+                <div *ngIf="!email?.valid && (email?.dirty || email?.touched)">
+                    <div *ngIf="email?.errors?.['required']">
+                        <span class="text-danger">Email is required.</span>
+                    </div>
+                    <div *ngIf="email?.errors?.['email']">
+                        <span class="text-danger">Incorrect format of email.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-field flex mb-2">
+                <div>
+                    <label for="password"
+                           class="form-label pt">Password:</label>
+                </div>
+
+                <div class="flex-1">
+                    <input type="password"
+                           id="password"
+                           class="form-control"
+                           formControlName="password" />
+                </div>
+
+                <div *ngIf="!password?.valid && (password?.dirty || password?.touched)">
+                    <span class="text-danger">Password is required.</span>
+                </div>
+            </div>
+
+            <div class="form-field flex mb-3">
+                <div>
+                    <label for="confirmPassword"
+                           class="form-label pt">Confirm password:</label>
+                </div>
+
+                <div class="flex-1">
+                    <input type="password"
+                           id="confirmPassword"
+                           class="form-control"
+                           formControlName="confirmPassword" />
+                </div>
+
+                <div *ngIf="!confirmPassword?.valid && (confirmPassword?.dirty || confirmPassword?.touched)">
+                    <span class="text-danger">Confirmed password is required.</span>
+                </div>
+
+                <div
+                     *ngIf="confirmPassword?.value !== password?.value && (confirmPassword?.dirty || confirmPassword?.touched)">
+                    <span class="text-danger">Passwords do not match.</span>
+                </div>
+            </div>
+
+            <div *ngIf="error"
+                 class="text-danger">
+                {{ error }}
+            </div>
+
+            <!-- <div class="mb-3">
+                <span>
+                    You have already created account?
+                    <a routerLink="/sign-in">Just sign in!</a>
+                </span>
+            </div> -->
+
+            <div class="form-field">
+                <button type="submit"
+                        class="btn default-btn-background w-100 mb-2">
+                    Create account
+                </button>
+
+                <a class="btn btn-outline w-100"
+                   routerLink="/sign-in">
+                    Sign In
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

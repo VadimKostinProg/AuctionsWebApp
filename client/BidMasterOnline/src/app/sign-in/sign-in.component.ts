@@ -6,8 +6,6 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-in',
-  standalone: true,
-  imports: [CommonModule],
   templateUrl: './sign-in.component.html',
   styleUrl: './sign-in.component.scss'
 })
@@ -22,9 +20,17 @@ export class SignInComponent implements OnInit {
 
   ngOnInit(): void {
     this.signInForm = new FormGroup({
-      email: new FormControl(null, [Validators.required, Validators.email]),
+      username: new FormControl(null, [Validators.required]),
       password: new FormControl(null, [Validators.required]),
     });
+  }
+
+  get username() {
+    return this.signInForm.get('username');
+  }
+
+  get password() {
+    return this.signInForm.get('password');
   }
 
   onSubmit() {
@@ -32,12 +38,16 @@ export class SignInComponent implements OnInit {
       return;
     }
 
+    this.error = undefined;
+
     const signInModel = this.signInForm.value;
 
     this.authService.signIn(signInModel)
       .subscribe(
         (response) => {
           console.log('Authenticated successfully.');
+
+          // TODO: create toaster
 
           this.router.navigate(['/']);
         },
