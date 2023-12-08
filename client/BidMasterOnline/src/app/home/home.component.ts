@@ -18,6 +18,7 @@ export class HomeComponent implements OnInit {
   constructor(private readonly auctionsService: AuctionsService,
     private readonly router: Router) {
   }
+  
   ngOnInit() {
     this.auctionsService.getPopularAuctions().subscribe((auctions) => {
       this.popularAuctions = auctions;

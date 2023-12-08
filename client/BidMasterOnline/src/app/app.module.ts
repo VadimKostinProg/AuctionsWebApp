@@ -7,9 +7,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { AuctionComponent } from './auction/auction.component';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
 import { SearchBarComponent } from './common-components/search-bar/search-bar.component';
+import { SignInComponent } from './sign-in/sign-in.component';
+import { CreateAccountComponent } from './create-account/create-account.component';
 import { DataTableComponent } from './common-components/data-table/data-table.component';
 import { AuctionFiltersComponent } from './common-components/auction-filters/auction-filters.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -24,13 +24,13 @@ import { NgxSliderModule } from 'ngx-slider-v2';
     AppComponent,
     HomeComponent,
     SearchComponent,
+    SignInComponent,
+    CreateAccountComponent,
     AuctionComponent,
-    LoginComponent,
-    RegisterComponent,
     SearchBarComponent,
     DataTableComponent,
     AuctionFiltersComponent,
-    AuctionCardComponent
+    AuctionCardComponent,
   ],
   imports: [
     BrowserModule,
