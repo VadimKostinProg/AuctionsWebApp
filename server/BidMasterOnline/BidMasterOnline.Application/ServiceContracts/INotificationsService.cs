@@ -11,6 +11,6 @@
         /// <param name="email">Email of recipient.</param>
         /// <param name="title">Title of the notification.</param>
         /// <param name="message">Message of the notification.</param>
-        Task SendNotification(string email, string title, string message);
+        Task SendNotificationAsync(string email, string title, string message);
     }
 }

@@ -42,7 +42,7 @@ namespace BidMasterOnline.Application.Services
             return new UserDTO
             {
                 Id = user.Id,
-                UserName = user.UserName,
+                UserName = user.Username,
                 FullName = user.FullName,
                 Email = user.Email,
                 ImageUrl = user.ImageUrl,
@@ -57,7 +57,7 @@ namespace BidMasterOnline.Application.Services
 
             // Find user by passed credentials
             var user = await _repository.FirstOrDefaultAsync<User>(x =>
-                x.UserName == login.UserName || x.Email == login.UserName,
+                x.Username == login.UserName || x.Email == login.UserName,
                 disableTracking: false);
 
             if (user is null)

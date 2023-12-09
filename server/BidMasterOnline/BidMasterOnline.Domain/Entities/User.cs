@@ -8,7 +8,7 @@ namespace BidMasterOnline.Domain.Entities
     {
         [Required]
         [MaxLength(30)]
-        public string UserName { get; set; } = null!;
+        public string Username { get; set; } = null!;
 
         [Required]
         [MaxLength(50)]

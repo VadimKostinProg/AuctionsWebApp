@@ -39,7 +39,7 @@ namespace BidMasterOnline.Tests.BidsServiceTests
             var authorizedUserDTO = new UserDTO
             {
                 Id = authorizedUser.Id,
-                UserName = authorizedUser.UserName,
+                UserName = authorizedUser.Username,
                 FullName = authorizedUser.FullName,
                 Email = authorizedUser.Email,
                 Status = Enum.Parse<Application.Enums.UserStatus>(authorizedUser.UserStatus.Name),
@@ -79,7 +79,7 @@ namespace BidMasterOnline.Tests.BidsServiceTests
             var authorizedUserDTO = new UserDTO
             {
                 Id = authorizedUser.Id,
-                UserName = authorizedUser.UserName,
+                UserName = authorizedUser.Username,
                 FullName = authorizedUser.FullName,
                 Email = authorizedUser.Email,
                 Status = Enum.Parse<Application.Enums.UserStatus>(authorizedUser.UserStatus.Name),
@@ -109,7 +109,7 @@ namespace BidMasterOnline.Tests.BidsServiceTests
             var authorizedUserDTO = new UserDTO
             {
                 Id = authorizedUser.Id,
-                UserName = authorizedUser.UserName,
+                UserName = authorizedUser.Username,
                 FullName = authorizedUser.FullName,
                 Email = authorizedUser.Email,
                 Status = Enum.Parse<Application.Enums.UserStatus>(authorizedUser.UserStatus.Name),
@@ -146,7 +146,7 @@ namespace BidMasterOnline.Tests.BidsServiceTests
             var authorizedUserDTO = new UserDTO
             {
                 Id = authorizedUser.Id,
-                UserName = authorizedUser.UserName,
+                UserName = authorizedUser.Username,
                 FullName = authorizedUser.FullName,
                 Email = authorizedUser.Email,
                 Status = Enum.Parse<Application.Enums.UserStatus>(authorizedUser.UserStatus.Name),
@@ -185,7 +185,7 @@ namespace BidMasterOnline.Tests.BidsServiceTests
             var authorizedUserDTO = new UserDTO
             {
                 Id = authorizedUser.Id,
-                UserName = authorizedUser.UserName,
+                UserName = authorizedUser.Username,
                 FullName = authorizedUser.FullName,
                 Email = authorizedUser.Email,
                 Status = Enum.Parse<Application.Enums.UserStatus>(authorizedUser.UserStatus.Name),
@@ -229,7 +229,7 @@ namespace BidMasterOnline.Tests.BidsServiceTests
             var authorizedUserDTO = new UserDTO
             {
                 Id = authorizedUser.Id,
-                UserName = authorizedUser.UserName,
+                UserName = authorizedUser.Username,
                 FullName = authorizedUser.FullName,
                 Email = authorizedUser.Email,
                 Status = Enum.Parse<Application.Enums.UserStatus>(authorizedUser.UserStatus.Name),
@@ -271,7 +271,7 @@ namespace BidMasterOnline.Tests.BidsServiceTests
             var authorizedUserDTO = new UserDTO
             {
                 Id = authorizedUser.Id,
-                UserName = authorizedUser.UserName,
+                UserName = authorizedUser.Username,
                 FullName = authorizedUser.FullName,
                 Email = authorizedUser.Email,
                 Status = Enum.Parse<Application.Enums.UserStatus>(authorizedUser.UserStatus.Name),
@@ -315,7 +315,7 @@ namespace BidMasterOnline.Tests.BidsServiceTests
             var authorizedUserDTO = new UserDTO
             {
                 Id = authorizedUser.Id,
-                UserName = authorizedUser.UserName,
+                UserName = authorizedUser.Username,
                 FullName = authorizedUser.FullName,
                 Email = authorizedUser.Email,
                 Status = Enum.Parse<Application.Enums.UserStatus>(authorizedUser.UserStatus.Name),

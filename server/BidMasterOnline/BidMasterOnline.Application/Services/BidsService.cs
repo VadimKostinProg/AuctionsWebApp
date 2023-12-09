@@ -47,7 +47,7 @@ namespace BidMasterOnline.Application.Services
                     AuctionId = x.AuctionId,
                     AuctionName = x.Auction.Name,
                     BidderId = x.BidderId,
-                    BidderUserName = x.Bidder.UserName,
+                    BidderUserName = x.Bidder.Username,
                     DateAndTime = x.DateAndTime,
                     Amount = x.Amount
                 })
@@ -90,7 +90,7 @@ namespace BidMasterOnline.Application.Services
                     AuctionId = x.AuctionId,
                     AuctionName = x.Auction.Name,
                     BidderId = x.BidderId,
-                    BidderUserName = x.Bidder.UserName,
+                    BidderUserName = x.Bidder.Username,
                     DateAndTime = x.DateAndTime,
                     Amount = x.Amount
                 })

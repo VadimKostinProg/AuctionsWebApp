@@ -85,7 +85,7 @@ namespace BidMasterOnline.Tests.BidsServiceTests
                 {
                     Id = x.Id,
                     BidderId = x.BidderId,
-                    BidderUserName = x.Bidder.UserName,
+                    BidderUserName = x.Bidder.Username,
                     AuctionId = x.AuctionId,
                     AuctionName = x.Auction.Name,
                     DateAndTime = x.DateAndTime,

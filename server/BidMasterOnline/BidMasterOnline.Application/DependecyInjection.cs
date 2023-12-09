@@ -13,7 +13,15 @@ namespace BidMasterOnline.Application
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
             services.AddScoped<ICategoriesService, CategoriesService>();
+            services.AddScoped<IBidsService, BidsService>();
+            services.AddScoped<IAuthService, AuthService>();
+            
             services.AddScoped<SessionContext>();
+
+            services.AddScoped<IPeriodicTaskService, PeriodicTaskService>();
+            services.AddSingleton<PeriodicHostedService>();
+            services.AddHostedService(provider =>
+                provider.GetRequiredService<PeriodicHostedService>());
 
             return services;
         }

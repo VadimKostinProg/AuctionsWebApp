@@ -44,8 +44,8 @@ namespace BidMasterOnline.Tests
             var auctioner = this.GetTestUser();
 
             return fixture.Build<Auction>()
-                .With(x => x.AuctionerId, auctioner.Id)
-                .With(x => x.Auctioner, auctioner)
+                .With(x => x.AuctionistId, auctioner.Id)
+                .With(x => x.Auctionist, auctioner)
                 .With(x => x.StatusId, status.Id)
                 .With(x => x.Status, status)
                 .With(x => x.FinishTypeId, finishType.Id)

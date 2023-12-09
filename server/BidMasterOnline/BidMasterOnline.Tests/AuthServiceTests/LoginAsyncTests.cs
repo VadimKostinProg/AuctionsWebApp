@@ -53,7 +53,7 @@ namespace BidMasterOnline.Tests.AuthServiceTests
             var user = this.GetTestUser();
 
             var login = fixture.Build<LoginDTO>()
-                .With(x => x.UserName, user.UserName)
+                .With(x => x.UserName, user.Username)
                 .Create();
 
             repositoryMock.Setup(x => x.FirstOrDefaultAsync<User>(It.IsAny<Expression<Func<User, bool>>>(), false))
@@ -90,7 +90,7 @@ namespace BidMasterOnline.Tests.AuthServiceTests
 
             var login = new LoginDTO
             {
-                UserName = user.UserName,
+                UserName = user.Username,
                 Password = inputPassword
             };
 

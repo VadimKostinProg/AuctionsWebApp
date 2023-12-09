@@ -11,7 +11,7 @@ namespace BidMasterOnline.Domain.Entities
         public string Name { get; set; } = null!;
 
         [Required]
-        public Guid AuctionerId { get; set; }
+        public Guid AuctionistId { get; set; }
 
         [Required]
         public Guid CategoryId { get; set; }
@@ -42,8 +42,11 @@ namespace BidMasterOnline.Domain.Entities
 
         public bool IsPayed { get; set; }
 
-        [ForeignKey(nameof(AuctionerId))]
-        public virtual User Auctioner { get; set; }
+        [AllowNull]
+        public DateTime? PaymentDateTime { get; set; }
+
+        [ForeignKey(nameof(AuctionistId))]
+        public virtual User Auctionist { get; set; }
 
         [ForeignKey(nameof(CategoryId))]
         public virtual Category Category { get; set; }
