@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuctionModel } from '../models/auctionModel';
+import { AuctionModel } from '../../models/auctionModel';
 
 @Component({
   selector: 'auction-card',

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuctionsDeepLinkingService } from '../services/auctions-deep-linking.service';
-import { AuctionsService } from '../services/auctions.service';
-import { AuctionModel } from '../models/auctionModel';
+import { AuctionsDeepLinkingService } from '../../services/auctions-deep-linking.service';
+import { AuctionsService } from '../../services/auctions.service';
+import { AuctionModel } from '../../models/auctionModel';
 
 @Component({
   selector: 'app-search',
@@ -26,7 +26,7 @@ export class SearchComponent implements OnInit {
     const queryParams = this.auctionsDeepLinkingService.getAllQueryParams();
 
     this.auctionsService.getAuctionsList({ specifications: queryParams }).subscribe((auctions) => {
-        this.auctions = auctions;
+      this.auctions = auctions;
     });
   }
 }
