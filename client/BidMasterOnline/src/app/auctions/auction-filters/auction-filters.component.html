@@ -1,0 +1,109 @@
+<ng-container>
+    <div class="d-flex justify-content-between w-75">
+        <div class="flex-fill">
+            <ng-template #categoryPopContent>
+                <div *ngFor="let category of categories"
+                     class="radio-container">
+                    <div>
+                        <input class="form-check-input"
+                               type="radio"
+                               name="exampleRadios"
+                               id="radioOption1"
+                               [value]="category.id"
+                               [checked]="category.id == chosenCategoryId"
+                               (click)="onCategoryChanged($event)"> {{ category.name }}
+                    </div>
+                </div>
+            </ng-template>
+
+            <button type="button"
+                    class="btn default-btn-background w-75"
+                    placement="bottom"
+                    [ngbPopover]="categoryPopContent">
+                Category
+            </button>
+        </div>
+
+        <div class="flex-fill">
+            <ng-template #startPricePopContent>
+                <ngx-slider [(value)]="minStartPrice"
+                            [(highValue)]="maxStartPrice"
+                            [options]="options"
+                            (userChange)="onStartPriceFilterChange($event)">
+                </ngx-slider>
+
+                <button *ngIf="startPriceChanged"
+                        class="btn"
+                        (click)="clearStartPrice()">
+                    Cleare
+                </button>
+            </ng-template>
+
+            <button type="button"
+                    class="btn default-btn-background w-75"
+                    placement="bottom"
+                    [ngbPopover]="startPricePopContent"
+                    container="body"
+                    popoverClass="slider-popover">
+                Start price
+            </button>
+        </div>
+
+        <div class="flex-fill">
+            <ng-template #currentBidPopContent>
+                <ngx-slider [(value)]="minCurrentBid"
+                            [(highValue)]="maxCurrentBid"
+                            [options]="options"
+                            (userChange)="onCurrentBidFilterChange($event)">
+                </ngx-slider>
+
+                <button *ngIf="currentBidChanged"
+                        class="btn"
+                        (click)="clearCurrentBid()">
+                    Cleare
+                </button>
+            </ng-template>
+
+            <button type="button"
+                    class="btn default-btn-background w-75"
+                    placement="bottom"
+                    [ngbPopover]="currentBidPopContent"
+                    container="body"
+                    popoverClass="slider-popover">
+                Current bid
+            </button>
+        </div>
+
+        <div class="flex-fill">
+            <ng-template #statusPopContent>
+                <div class="radio-container">
+                    <div>
+                        <input #activeStatusRadio
+                               class="form-check-input radio-button"
+                               type="radio"
+                               name="status"
+                               value="Active"
+                               [checked]="chosenStatus == 'Active'"
+                               (click)="onStatusChanged($event)" /> Active
+                    </div>
+                    <div>
+                        <input #finishedStatusRadio
+                               class="form-check-input radio-button"
+                               type="radio"
+                               name="status"
+                               value="Finished"
+                               [checked]="chosenStatus == 'Finished'"
+                               (click)="onStatusChanged($event)" /> Finished
+                    </div>
+                </div>
+            </ng-template>
+
+            <button type="button"
+                    class="btn default-btn-background w-75"
+                    placement="bottom"
+                    [ngbPopover]="statusPopContent">
+                Status
+            </button>
+        </div>
+    </div>
+</ng-container>

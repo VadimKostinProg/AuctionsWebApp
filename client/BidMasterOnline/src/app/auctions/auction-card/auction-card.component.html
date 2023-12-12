@@ -1,0 +1,12 @@
+<div class="card">
+    <img [src]="auction.imageUrl"
+         class="card-img-top">
+    <div class="card-body">
+        <h5 class="card-title">{{ auction.name }}</h5>
+        <p class="card-text">
+            <span style="color: red;"> {{ auction.currentBid }} </span> / {{ auction.startPrice }}
+        </p>
+        <button class="btn btn-primary"
+                (click)="onDetailsClick()">Детальніше</button>
+    </div>
+</div>
