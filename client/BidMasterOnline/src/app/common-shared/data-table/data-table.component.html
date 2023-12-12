@@ -5,16 +5,25 @@
         </h3>
     </div>
 
-    <div *ngIf="options.showDeletedData"
-         class="text-left">
-        <input type="checkbox"
-               class="btn-check"
-               id="btncheck1"
-               autocomplete="off"
-               [value]="isCurrentDataDeleted"
-               (click)="onShowDeletedClick()">
-        <label class="btn btn-outline-primary"
-               for="btncheck1">Show deleted</label>
+    <div class="data-table-buttons-header-container">
+        <div *ngIf="options.showDeletedData"
+             class="text-left">
+            <input type="checkbox"
+                   class="btn-check"
+                   id="btncheck1"
+                   autocomplete="off"
+                   [value]="isCurrentDataDeleted"
+                   (click)="onShowDeletedClick()">
+            <label class="btn btn-outline-primary"
+                   for="btncheck1">Show deleted</label>
+        </div>
+
+        <div *ngIf="options.allowCreating"
+             class="btn default-btn-background"
+             data-toggle="modal"
+             data-target="#createModal">
+            Create
+        </div>
     </div>
 </div>
 
@@ -29,6 +38,8 @@
                     {{ column.title }}
                 </div>
             </th>
+
+            <th *ngIf="options.showActionsColumn"></th>
         </tr>
 
         <tr *ngFor="let row of tableData.data; let i = index">
@@ -43,15 +54,36 @@
                     {{ row[column.dataPropName] }}
                 </div>
             </td>
+
+            <th *ngIf="options.showActionsColumn">
+                <ng-template #actionsPopContent>
+                    <button *ngFor="let action in options.actionNames"
+                            class="btn"
+                            (click)="onActionClicked(action, row)"
+                            data-toggle="modal"
+                            data-target="'#' + action + 'Modal'">
+                        {{ action }}
+                    </button>
+                </ng-template>
+
+                <button type="button"
+                        class="btn default-btn-background w-75"
+                        placement="bottom"
+                        [ngbPopover]="actionsPopContent">
+                    <i class="bi bi-three-dots"></i>
+                </button>
+            </th>
         </tr>
     </table>
 </div>
 
 <div class="row flex justify-content-between">
-    <ng-select [items]="pageSizeOptions"
-               bindLabel="label"
-               bindValue="number"
+    <ng-select [(ngModel)]="pagination.pageSize"
                (change)="onPageSizeChanged($event)">
+        <ng-option *ngFor="let size in pageSizeOptions"
+                   [value]="size">
+            {{ size }}
+        </ng-option>
     </ng-select>
 
     <nav aria-label="Page navigation example"
@@ -89,3 +121,5 @@
         </ul>
     </nav>
 </div>
+
+<ng-content></ng-content>

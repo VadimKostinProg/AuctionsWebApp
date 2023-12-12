@@ -10,6 +10,7 @@ import { UserAccountsModule } from './user-accounts/user-accounts.module';
 import { CommonSharedModule } from './common-shared/common-shared.module';
 import { AuctionsModule } from './auctions/auctions.module';
 import { GeneralModule } from './general/general.module';
+import { AdminModule } from './admin/admin.module';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { GeneralModule } from './general/general.module';
     UserAccountsModule,
     CommonSharedModule,
     AuctionsModule,
+    AdminModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,

@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 })
 export class AuctionsService {
 
-  baseUrl: string = `${environment.apiUrl}/api/auctions`;
+  baseUrl: string = `${environment.apiUrl}/api/v1/auctions`;
 
   constructor(private readonly httpClient: HttpClient) { }
 

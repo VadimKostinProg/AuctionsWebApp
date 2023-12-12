@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { ActionClickedModel } from 'src/app/models/actionClickedModel';
 import { DataTableOptionsModel } from 'src/app/models/dataTableOptionsModel';
 import { ListModel } from 'src/app/models/listModel';
 import { PaginationModel } from 'src/app/models/paginationModel';
@@ -7,7 +8,7 @@ import { SortingModel } from 'src/app/models/sortingModel';
 import { DeepLinkingService } from 'src/app/services/deep-linking.service';
 
 @Component({
-  selector: 'app-data-table',
+  selector: 'data-table',
   templateUrl: './data-table.component.html',
   styleUrls: ['./data-table.component.scss']
 })
@@ -18,6 +19,12 @@ export class DataTableComponent implements OnInit, OnDestroy {
 
   @Input()
   apiUrl: string;
+
+  @Output()
+  onCreate = new EventEmitter<void>();
+
+  @Output()
+  onAction = new EventEmitter<ActionClickedModel<any>>();
 
   // Real url to send request to
   actualUrl: string;
@@ -30,24 +37,7 @@ export class DataTableComponent implements OnInit, OnDestroy {
 
   pagination: PaginationModel;
 
-  pageSizeOptions = [
-    {
-      number: 10,
-      label: '10'
-    },
-    {
-      number: 25,
-      label: '25'
-    },
-    {
-      number: 50,
-      label: '50'
-    },
-    {
-      number: 100,
-      label: '100'
-    },
-  ]
+  pageSizeOptions = [10, 25, 50, 75];
 
   constructor(
     private readonly deepLinkingService: DeepLinkingService,
@@ -124,6 +114,19 @@ export class DataTableComponent implements OnInit, OnDestroy {
     await this.deepLinkingService.setPaginationParams(this.pagination);
 
     await this.reloadDatatable();
+  }
+
+  onCreateClicked() {
+    this.onCreate.emit();
+  }
+
+  onActionClicked(actionName: string, row: any) {
+    var actionClickedModel = {
+      actionName: actionName,
+      actionObject: row
+    } as ActionClickedModel<any>;
+
+    this.onAction.emit(actionClickedModel);
   }
 
   async ngOnDestroy() {

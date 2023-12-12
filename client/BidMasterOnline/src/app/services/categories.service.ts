@@ -12,9 +12,13 @@ import { ListModel } from '../models/listModel';
 })
 export class CategoriesService {
 
-  baseUrl: string = `${environment.apiUrl}/api/categories`;
+  baseUrl: string = `${environment.apiUrl}/api/v1/categories`;
 
   constructor(private readonly httpClient: HttpClient) { }
+
+  getCategoriesApiUrl() {
+    return this.baseUrl;
+  }
 
   getAllCategories(): Observable<CategoryModel[]> {
     return this.httpClient.get<CategoryModel[]>(this.baseUrl);

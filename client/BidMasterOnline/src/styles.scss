@@ -91,9 +91,17 @@ input[type="radio"]:checked {
     }
 }
 
-.header-container {
+.flex-between-container {
     display: flex;
     justify-content: space-between;
+}
+
+.header-container {
+    @extend .flex-between-container;
+}
+
+.data-table-buttons-header-container {
+    @extend .header-container;
 }
 
 @media screen and (max-width: 990px) {
