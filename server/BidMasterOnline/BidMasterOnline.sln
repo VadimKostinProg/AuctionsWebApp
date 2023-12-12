@@ -3,7 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BidMasterOnline.API", "BidMasterOnline.API\BidMasterOnline.API.csproj", "{5B38178B-8D28-44AA-9C2E-C7E8C3D54EDD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BidMasterOnline.API", "BidMasterOnline.API\BidMasterOnline.API.csproj", "{5B38178B-8D28-44AA-9C2E-C7E8C3D54EDD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BidMasterOnline.Domain", "BidMasterOnline.Domain\BidMasterOnline.Domain.csproj", "{1BB65F86-D53F-4F66-8D9B-A541E2A4950F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BidMasterOnline.Application", "BidMasterOnline.Application\BidMasterOnline.Application.csproj", "{F4CCB794-340E-4128-BB46-568784D97011}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BidMasterOnline.Infrastructure", "BidMasterOnline.Infrastructure\BidMasterOnline.Infrastructure.csproj", "{E0D12DFF-5E97-4C10-B536-623B5FD50EC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BidMasterOnline.Tests", "BidMasterOnline.Tests\BidMasterOnline.Tests.csproj", "{90FA4747-68A5-423F-ABC0-EEDAF17DDC25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +23,22 @@ Global
 		{5B38178B-8D28-44AA-9C2E-C7E8C3D54EDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B38178B-8D28-44AA-9C2E-C7E8C3D54EDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B38178B-8D28-44AA-9C2E-C7E8C3D54EDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BB65F86-D53F-4F66-8D9B-A541E2A4950F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BB65F86-D53F-4F66-8D9B-A541E2A4950F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BB65F86-D53F-4F66-8D9B-A541E2A4950F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BB65F86-D53F-4F66-8D9B-A541E2A4950F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4CCB794-340E-4128-BB46-568784D97011}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4CCB794-340E-4128-BB46-568784D97011}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4CCB794-340E-4128-BB46-568784D97011}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4CCB794-340E-4128-BB46-568784D97011}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0D12DFF-5E97-4C10-B536-623B5FD50EC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0D12DFF-5E97-4C10-B536-623B5FD50EC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0D12DFF-5E97-4C10-B536-623B5FD50EC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0D12DFF-5E97-4C10-B536-623B5FD50EC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90FA4747-68A5-423F-ABC0-EEDAF17DDC25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90FA4747-68A5-423F-ABC0-EEDAF17DDC25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90FA4747-68A5-423F-ABC0-EEDAF17DDC25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90FA4747-68A5-423F-ABC0-EEDAF17DDC25}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -7,12 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.14" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\BidMasterOnline.Application\BidMasterOnline.Application.csproj" />
+    <ProjectReference Include="..\BidMasterOnline.Domain\BidMasterOnline.Domain.csproj" />
+    <ProjectReference Include="..\BidMasterOnline.Infrastructure\BidMasterOnline.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
