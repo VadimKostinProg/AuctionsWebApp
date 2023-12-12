@@ -19,7 +19,7 @@ namespace BidMasterOnline.Tests.CategoriesServiceTests
 
             var expectedCategories = categories.Select(x => mapper.Map<CategoryDTO>(x)).ToList();
 
-            repositoryMock.Setup(x => x.GetAsync<Category>(It.IsAny<ISpecification<Category>>(), true))
+            repositoryMock.Setup(x => x.GetAsync<Category>(It.IsAny<ISpecification<Category>>(), false))
                 .ReturnsAsync(categories);
 
             // Act

@@ -31,7 +31,7 @@ namespace BidMasterOnline.Application.RepositoryContracts
         /// <typeparam name="T">Type of entities to read.</typeparam>
         /// <param name="disableTracking">Flag for enabling a tracking.</param>
         /// <returns>Collection IEnumerable of all entities.</returns>
-        Task<IEnumerable<T>> GetAllAsync<T>(bool disableTracking = true) where T : EntityBase;
+        Task<IEnumerable<T>> GetAllAsync<T>(bool disableTracking = false) where T : EntityBase;
 
         /// <summary>
         /// Method for reading entities of the specific type for the data source with the applyed specifications.
@@ -40,7 +40,7 @@ namespace BidMasterOnline.Application.RepositoryContracts
         /// <param name="specification">Specifications for filtering, sorting and pagination to apply.</param>
         /// <param name="disableTracking">Flag for enabling a tracking.</param>
         /// <returns>Collection IEnumerable of entities with applyed specifications.</returns>
-        Task<IEnumerable<T>> GetAsync<T>(ISpecification<T> specification, bool disableTracking = true) where T : EntityBase;
+        Task<IEnumerable<T>> GetAsync<T>(ISpecification<T> specification, bool disableTracking = false) where T : EntityBase;
 
         /// <summary>
         /// Method for reading entities of the specific type from the data source filtered by predicate.
@@ -50,7 +50,7 @@ namespace BidMasterOnline.Application.RepositoryContracts
         /// <param name="disableTracking">Flag for enabling a tracking.</param>
         /// <returns>Collection IEnumerable of filtered entities.</returns>
         Task<IEnumerable<T>> GetFilteredAsync<T>(Expression<Func<T, bool>> predicate,
-                                                 bool disableTracking = true)
+                                                 bool disableTracking = false)
                                                  where T : EntityBase;
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace BidMasterOnline.Application.RepositoryContracts
         /// <param name="id">Guid of the entity.</param>
         /// <param name="disableTracking">Flag for enabling a tracking.</param>
         /// <returns>Found entity of the specific type, null - if entity with passed id was not found.</returns>
-        Task<T?> GetByIdAsync<T>(Guid id, bool disableTracking = true) where T : EntityBase;
+        Task<T?> GetByIdAsync<T>(Guid id, bool disableTracking = false) where T : EntityBase;
 
         /// <summary>
         /// Method for searching the entity of the specific type from the data source by specific criteria.
@@ -69,7 +69,7 @@ namespace BidMasterOnline.Application.RepositoryContracts
         /// <param name="expression">Expression to search.</param>
         /// <param name="disableTracking">Flag for enabling a tracking.</param>
         /// <returns>Found entity of the specific type, null - if any entity with passed criteria was not found.</returns>
-        Task<T?> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> expression, bool disableTracking = true) where T : EntityBase;
+        Task<T?> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> expression, bool disableTracking = false) where T : EntityBase;
 
         /// <summary>
         /// Method for checking if the data source contains the entity that fits passed expression.

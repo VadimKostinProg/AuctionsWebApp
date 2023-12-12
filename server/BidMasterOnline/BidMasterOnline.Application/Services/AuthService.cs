@@ -1,5 +1,4 @@
 ﻿using BidMasterOnline.Application.DTO;
-using BidMasterOnline.Application.Enums;
 using BidMasterOnline.Application.Helpers;
 using BidMasterOnline.Application.RepositoryContracts;
 using BidMasterOnline.Application.ServiceContracts;
@@ -29,6 +28,21 @@ namespace BidMasterOnline.Application.Services
 
         public async Task<UserDTO> GetAuthenticatedUserAsync()
         {
+            var user = await this.GetAuthenticatedUserEntityAsync();
+
+            return new UserDTO
+            {
+                Id = user.Id,
+                Username = user.Username,
+                FullName = user.FullName,
+                Email = user.Email,
+                ImageUrl = user.ImageUrl,
+                Status = Enum.Parse<Enums.UserStatus>(user.UserStatus.Name)
+            };
+        }
+
+        public async Task<User> GetAuthenticatedUserEntityAsync()
+        {
             if (_sessionContext.UserId is null)
                 throw new AuthenticationException("User is not authenticated.");
 
@@ -39,15 +53,7 @@ namespace BidMasterOnline.Application.Services
             if (user is null)
                 throw new UnauthorizedAccessException("User with such claims does not exist.");
 
-            return new UserDTO
-            {
-                Id = user.Id,
-                UserName = user.Username,
-                FullName = user.FullName,
-                Email = user.Email,
-                ImageUrl = user.ImageUrl,
-                Status = Enum.Parse<Enums.UserStatus>(user.UserStatus.Name)
-            };
+            return user;
         }
 
         public async Task<AuthenticationDTO> LoginAsync(LoginDTO login)

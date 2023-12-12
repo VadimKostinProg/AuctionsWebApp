@@ -76,6 +76,12 @@ namespace BidMasterOnline.Tests
                 .Create();
         }
 
+        public IEnumerable<User> GetTestUsers(Application.Enums.UserStatus userStatus = Application.Enums.UserStatus.Active, int count = 10)
+        {
+            for (int i = 0; i < count; i++) 
+                yield return GetTestUser(userStatus);
+        }
+
         public Bid GetTestBid(Auction auction, User bidder, bool isWinning = false)
         {
             return fixture.Build<Bid>()

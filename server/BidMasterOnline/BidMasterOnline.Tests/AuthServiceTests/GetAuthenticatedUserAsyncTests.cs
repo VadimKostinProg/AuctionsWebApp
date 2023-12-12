@@ -64,7 +64,7 @@ namespace BidMasterOnline.Tests.AuthServiceTests
             // Assert
             authenticatedUser.Should().NotBeNull();
             authenticatedUser.Id.Should().Be(user.Id);
-            authenticatedUser.UserName.Should().Be(user.Username);
+            authenticatedUser.Username.Should().Be(user.Username);
             authenticatedUser.FullName.Should().Be(user.FullName);
             authenticatedUser.Email.Should().Be(user.Email);
             authenticatedUser.ImageUrl.Should().Be(user.ImageUrl);

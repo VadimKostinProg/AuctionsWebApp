@@ -4,7 +4,7 @@
     {
         ComplaintOnAuctionContent,
         ComplaintOnUserNonPayemnt,
-        ComplaintOnUserNonPrividingLot,
+        ComplaintOnUserNonProvidingLot,
         ComplaintOnUserComment
     }
 }

@@ -34,7 +34,7 @@ namespace BidMasterOnline.Tests.CategoriesServiceTests
             // Arrange
             var categoryToUpdate = fixture.Create<UpdateCategoryDTO>();
 
-            repositoryMock.Setup(x => x.GetByIdAsync<Category>(It.IsAny<Guid>(), true))
+            repositoryMock.Setup(x => x.GetByIdAsync<Category>(It.IsAny<Guid>(), false))
                 .ReturnsAsync(null as Category);
 
             // Assert
@@ -57,7 +57,7 @@ namespace BidMasterOnline.Tests.CategoriesServiceTests
 
             var existantCategory = this.GetTestCategory();
 
-            repositoryMock.Setup(x => x.GetByIdAsync<Category>(It.IsAny<Guid>(), true))
+            repositoryMock.Setup(x => x.GetByIdAsync<Category>(It.IsAny<Guid>(), false))
                 .ReturnsAsync(existantCategory);
 
             // Assert
@@ -80,7 +80,7 @@ namespace BidMasterOnline.Tests.CategoriesServiceTests
 
             var existantCategory = this.GetTestCategory();
 
-            repositoryMock.Setup(x => x.GetByIdAsync<Category>(It.IsAny<Guid>(), true))
+            repositoryMock.Setup(x => x.GetByIdAsync<Category>(It.IsAny<Guid>(), false))
                 .ReturnsAsync(existantCategory);
 
             // Assert
@@ -104,7 +104,7 @@ namespace BidMasterOnline.Tests.CategoriesServiceTests
             repositoryMock.Setup(x => x.AnyAsync<Category>(It.IsAny<Expression<Func<Category, bool>>>()))
                 .ReturnsAsync(true);
 
-            repositoryMock.Setup(x => x.GetByIdAsync<Category>(It.IsAny<Guid>(), true))
+            repositoryMock.Setup(x => x.GetByIdAsync<Category>(It.IsAny<Guid>(), false))
                 .ReturnsAsync(existantCategory);
 
             // Assert
@@ -127,7 +127,7 @@ namespace BidMasterOnline.Tests.CategoriesServiceTests
 
             repositoryMock.Setup(x => x.AnyAsync<Category>(It.IsAny<Expression<Func<Category, bool>>>()))
                 .ReturnsAsync(false);
-            repositoryMock.Setup(x => x.GetByIdAsync<Category>(It.IsAny<Guid>(), true))
+            repositoryMock.Setup(x => x.GetByIdAsync<Category>(It.IsAny<Guid>(), false))
                 .ReturnsAsync(existantCategory);
             repositoryMock.Setup(x => x.UpdateAsync<Category>(It.IsAny<Category>()))
                 .Returns(Task.CompletedTask);

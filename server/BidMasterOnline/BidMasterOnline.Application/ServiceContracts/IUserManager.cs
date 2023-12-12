@@ -37,17 +37,11 @@ namespace BidMasterOnline.Application.ServiceContracts
         Task ChangePasswordAsync(ChangePasswordDTO request);
 
         /// <summary>
-        /// Blocks the specified user.
-        /// </summary>
-        /// <param name="userId">Identified of user to block.</param>
-        Task BlockUserAsync(Guid userId);
-
-        /// <summary>
         /// Blocks the specified user for the specified amount of days.
         /// </summary>
         /// <param name="userId">Identifier of user to block.</param>
         /// <param name="days">Amount of days to block.</param>
-        Task BlockUserAsync(Guid userId, int days);
+        Task BlockUserAsync(Guid userId, int? days);
 
         /// <summary>
         /// Unblocks the specified user.

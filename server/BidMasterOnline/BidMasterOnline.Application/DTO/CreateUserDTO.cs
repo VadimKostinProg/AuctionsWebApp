@@ -9,7 +9,7 @@ namespace BidMasterOnline.Application.DTO
     public class CreateUserDTO
     {
         [Required(ErrorMessage = "User name is required.")]
-        public string UserName { get; set; } = null!;
+        public string Username { get; set; } = null!;
 
         [Required(ErrorMessage = "Full name is required.")]
         public string FullName { get; set; } = null!;

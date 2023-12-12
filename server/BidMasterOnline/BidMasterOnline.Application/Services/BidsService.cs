@@ -33,7 +33,7 @@ namespace BidMasterOnline.Application.Services
                 .WithPagination(specifications.PageSize, specifications.PageNumber)
                 .Build();
 
-            var bids = await _repository.GetAsync<Bid>(specification, disableTracking: false);
+            var bids = await _repository.GetAsync<Bid>(specification);
 
             var totalCount = await _repository.CountAsync<Bid>(x => x.AuctionId == auctionId);
 
@@ -76,7 +76,7 @@ namespace BidMasterOnline.Application.Services
 
             var specification = specificationBuilder.Build();
 
-            var bids = await _repository.GetAsync<Bid>(specification, disableTracking: false);
+            var bids = await _repository.GetAsync<Bid>(specification);
 
             var totalCount = await _repository.CountAsync<Bid>(specification.Predicate);
 
@@ -112,7 +112,7 @@ namespace BidMasterOnline.Application.Services
             if (user.Status == Enums.UserStatus.Blocked)
                 throw new UserBlockedException("Account is blocked.");
 
-            var auction = await _repository.GetByIdAsync<Auction>(bid.AuctionId, disableTracking: false);
+            var auction = await _repository.GetByIdAsync<Auction>(bid.AuctionId);
 
             if (auction is null)
                 throw new KeyNotFoundException("Auction with such id does not exist.");
@@ -122,6 +122,9 @@ namespace BidMasterOnline.Application.Services
 
             if (auction.Status.Name == Enums.AuctionStatus.Canceled.ToString())
                 throw new InvalidOperationException("Auction is canceled.");
+
+            if (auction.AuctionistId == user.Id)
+                throw new InvalidOperationException("Cannot set a bid as an acutionist.");
 
             if (auction.Bids.Any() && auction.Bids.Max(x => x.Amount) > bid.Amount)
                 throw new ArgumentException("Bid is less than previous one.");

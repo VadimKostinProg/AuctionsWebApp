@@ -20,7 +20,7 @@ namespace BidMasterOnline.Tests.CategoriesServiceTests
 
             CategorySpecificationsDTO specification = null;
 
-            repositoryMock.Setup(x => x.GetAsync<Category>(It.IsAny<ISpecification<Category>>(), true))
+            repositoryMock.Setup(x => x.GetAsync<Category>(It.IsAny<ISpecification<Category>>(), false))
                 .ReturnsAsync(categories);
 
             // Assert
@@ -60,7 +60,7 @@ namespace BidMasterOnline.Tests.CategoriesServiceTests
 
             var expectedTotalPages = (long)Math.Ceiling((double)categories.Count / specificationsDTO.PageSize);
 
-            repositoryMock.Setup(x => x.GetAsync<Category>(It.IsAny<ISpecification<Category>>(), true))
+            repositoryMock.Setup(x => x.GetAsync<Category>(It.IsAny<ISpecification<Category>>(), false))
                 .ReturnsAsync(expectedCategoriesList);
             repositoryMock.Setup(x => x.CountAsync<Category>(It.IsAny<Expression<Func<Category, bool>>>()))
                 .ReturnsAsync(categories.Count);

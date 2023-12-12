@@ -58,7 +58,7 @@ namespace BidMasterOnline.Infrastructure.Repositories
             return await context.SaveChangesAsync();
         }
 
-        public virtual async Task<T?> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> expression, bool disableTracking = true) where T : EntityBase
+        public virtual async Task<T?> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> expression, bool disableTracking = false) where T : EntityBase
         {
             var query = context.Set<T>().AsQueryable();
 
@@ -70,7 +70,7 @@ namespace BidMasterOnline.Infrastructure.Repositories
             return await query.FirstOrDefaultAsync(expression);
         }
 
-        public virtual async Task<IEnumerable<T>> GetAllAsync<T>(bool disableTracking = true) where T : EntityBase
+        public virtual async Task<IEnumerable<T>> GetAllAsync<T>(bool disableTracking = false) where T : EntityBase
         {
             var query = context.Set<T>().AsQueryable();
 
@@ -82,7 +82,7 @@ namespace BidMasterOnline.Infrastructure.Repositories
             return await query.ToListAsync();
         }
 
-        public virtual async Task<IEnumerable<T>> GetAsync<T>(ISpecification<T> specification, bool disableTracking = true) where T : EntityBase
+        public virtual async Task<IEnumerable<T>> GetAsync<T>(ISpecification<T> specification, bool disableTracking = false) where T : EntityBase
         {
             var query = context.Set<T>().AsQueryable();
 
@@ -99,7 +99,7 @@ namespace BidMasterOnline.Infrastructure.Repositories
             return await query.ToListAsync();
         }
 
-        public virtual async Task<T?> GetByIdAsync<T>(Guid id, bool disableTracking = true) where T : EntityBase
+        public virtual async Task<T?> GetByIdAsync<T>(Guid id, bool disableTracking = false) where T : EntityBase
         {
             var query = context.Set<T>().AsQueryable();
 
@@ -111,7 +111,7 @@ namespace BidMasterOnline.Infrastructure.Repositories
             return await query.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public virtual async Task<IEnumerable<T>> GetFilteredAsync<T>(Expression<Func<T, bool>> predicate, bool disableTracking = true) where T : EntityBase
+        public virtual async Task<IEnumerable<T>> GetFilteredAsync<T>(Expression<Func<T, bool>> predicate, bool disableTracking = false) where T : EntityBase
         {
             var query = context.Set<T>().Where(predicate);
 

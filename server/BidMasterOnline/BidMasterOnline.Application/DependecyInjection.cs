@@ -12,9 +12,16 @@ namespace BidMasterOnline.Application
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
+            services.AddScoped<IAuctionsService, AuctionsService>();
+            services.AddScoped<IAuctionVerificationService, AuctionVerificationService>();
             services.AddScoped<ICategoriesService, CategoriesService>();
             services.AddScoped<IBidsService, BidsService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<ICommentsService, CommentsService>();
+            services.AddScoped<IComplaintsService, ComplaintsService>();
+            services.AddScoped<IImagesService, ImagesService>();
+            services.AddScoped<INotificationsService, NotificationsService>();
+            services.AddScoped<IUserManager, UserManager>();
             
             services.AddScoped<SessionContext>();
 

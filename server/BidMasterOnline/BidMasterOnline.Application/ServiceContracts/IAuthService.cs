@@ -1,4 +1,5 @@
 ﻿using BidMasterOnline.Application.DTO;
+using BidMasterOnline.Domain.Entities;
 
 namespace BidMasterOnline.Application.ServiceContracts
 {
@@ -19,5 +20,11 @@ namespace BidMasterOnline.Application.ServiceContracts
         /// </summary>
         /// <returns>Authenticated user.</returns>
         Task<UserDTO> GetAuthenticatedUserAsync();
+
+        /// <summary>
+        /// Gets the entity of the authenticated user.
+        /// </summary>
+        /// <returns>Entity of the authenticated user.</returns>
+        Task<User> GetAuthenticatedUserEntityAsync();
     }
 }

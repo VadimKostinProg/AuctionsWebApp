@@ -30,6 +30,12 @@ namespace BidMasterOnline.Application.Specifications
 
         public SpecificationBuilder<T> WithPagination(int pageSize, int pageNumber)
         {
+            if (pageSize < 1)
+                throw new ArgumentException("Page size must be at least 1.");
+
+            if (pageNumber < 1)
+                throw new ArgumentException("Page number must be at least 1.");
+
             this._isPaginationEnabled = true;
 
             this._take = pageSize;

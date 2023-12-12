@@ -16,7 +16,7 @@ namespace BidMasterOnline.Tests.CategoriesServiceTests
             // Arrange
             var idToPass = Guid.NewGuid();
 
-            repositoryMock.Setup(x => x.GetByIdAsync<Category>(idToPass, true))
+            repositoryMock.Setup(x => x.GetByIdAsync<Category>(idToPass, false))
                 .ReturnsAsync(null as Category);
 
             // Assert
@@ -37,7 +37,7 @@ namespace BidMasterOnline.Tests.CategoriesServiceTests
 
             var idToPass = categoryToRecover.Id;
 
-            repositoryMock.Setup(x => x.GetByIdAsync<Category>(idToPass, true))
+            repositoryMock.Setup(x => x.GetByIdAsync<Category>(idToPass, false))
                 .ReturnsAsync(categoryToRecover);
 
             // Assert
@@ -58,7 +58,7 @@ namespace BidMasterOnline.Tests.CategoriesServiceTests
 
             var idToPass = categoryToRecover.Id;
 
-            repositoryMock.Setup(x => x.GetByIdAsync<Category>(idToPass, true))
+            repositoryMock.Setup(x => x.GetByIdAsync<Category>(idToPass, false))
                 .ReturnsAsync(categoryToRecover);
             repositoryMock.Setup(x => x.AnyAsync<Category>(It.IsAny<Expression<Func<Category, bool>>>()))
                 .ReturnsAsync(true);
@@ -81,7 +81,7 @@ namespace BidMasterOnline.Tests.CategoriesServiceTests
 
             var idToPass = categoryToRecover.Id;
 
-            repositoryMock.Setup(x => x.GetByIdAsync<Category>(idToPass, true))
+            repositoryMock.Setup(x => x.GetByIdAsync<Category>(idToPass, false))
                 .ReturnsAsync(categoryToRecover);
             repositoryMock.Setup(x => x.AnyAsync<Category>(It.IsAny<Expression<Func<Category, bool>>>()))
                 .ReturnsAsync(false);

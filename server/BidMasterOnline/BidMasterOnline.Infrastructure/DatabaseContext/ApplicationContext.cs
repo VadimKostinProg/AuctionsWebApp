@@ -1,4 +1,5 @@
-﻿using BidMasterOnline.Domain.Entities;
+﻿using BidMasterOnline.Application.Constants;
+using BidMasterOnline.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace BidMasterOnline.Infrastructure.DatabaseContext
@@ -23,6 +24,13 @@ namespace BidMasterOnline.Infrastructure.DatabaseContext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // Seed Data 
+            modelBuilder.Entity<Role>().HasData(new List<Role>
+            {
+                new Role { Name = UserRoles.Customer },
+                new Role { Name = UserRoles.Customer },
+            });
         }
     }
 }
