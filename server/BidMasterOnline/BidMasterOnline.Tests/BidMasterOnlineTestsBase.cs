@@ -78,7 +78,7 @@ namespace BidMasterOnline.Tests
 
         public IEnumerable<User> GetTestUsers(Application.Enums.UserStatus userStatus = Application.Enums.UserStatus.Active, int count = 10)
         {
-            for (int i = 0; i < count; i++) 
+            for (int i = 0; i < count; i++)
                 yield return GetTestUser(userStatus);
         }
 
@@ -99,6 +99,24 @@ namespace BidMasterOnline.Tests
             {
                 yield return this.GetTestBid(auction, bidder);
             }
+        }
+
+        public TechnicalSupportRequest GetTestTechnicalSupportRequest(User user, bool isHandled = false)
+        {
+            return new TechnicalSupportRequest
+            {
+                UserId = user.Id,
+                DateAndTime = DateTime.UtcNow,
+                RequestText = fixture.Create<string>(),
+                IsHandled = isHandled,
+                User = user,
+            };
+        }
+
+        public IEnumerable<TechnicalSupportRequest> GetTechnicalSupportRequests(User user, int count = 10, bool isHandled = false)
+        {
+            for (int i = 0; i < count; i++)
+                yield return GetTestTechnicalSupportRequest(user, isHandled);
         }
     }
 }

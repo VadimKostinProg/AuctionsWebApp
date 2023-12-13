@@ -5,12 +5,12 @@ namespace BidMasterOnline.Application.Services
 {
     public class ComplaintsService : IComplaintsService
     {
-        public Task<ComplaintDTO> GetComplaintById(Guid id)
+        public Task<ComplaintDTO> GetComplaintByIdAsync(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ListModel<ComplaintDTO>> GetComplaintsList(ComplaintSpecificationsDTO specifications)
+        public Task<ListModel<ComplaintDTO>> GetComplaintsListAsync(ComplaintSpecificationsDTO specifications)
         {
             throw new NotImplementedException();
         }
@@ -20,7 +20,7 @@ namespace BidMasterOnline.Application.Services
             throw new NotImplementedException();
         }
 
-        public Task SetNewComplaint(SetComplaintDTO complaint)
+        public Task SetNewComplaintAsync(SetComplaintDTO complaint)
         {
             throw new NotImplementedException();
         }

@@ -5,7 +5,7 @@ namespace BidMasterOnline.Domain.Entities
     public class Role : EntityBase
     {
         [Required]
-        [MaxLength(10)]
+        [MaxLength(30)]
         public string Name { get; set; } = null!;
     }
 }

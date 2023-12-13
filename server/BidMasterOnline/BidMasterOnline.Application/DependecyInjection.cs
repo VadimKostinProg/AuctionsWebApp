@@ -22,6 +22,7 @@ namespace BidMasterOnline.Application
             services.AddScoped<IImagesService, ImagesService>();
             services.AddScoped<INotificationsService, NotificationsService>();
             services.AddScoped<IUserManager, UserManager>();
+            services.AddScoped<ITechnicalSupportRequestsService, TechnicalSupportRequestsService>();
             
             services.AddScoped<SessionContext>();
 

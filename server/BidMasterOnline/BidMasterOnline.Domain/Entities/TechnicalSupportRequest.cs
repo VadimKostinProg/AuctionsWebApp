@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BidMasterOnline.Domain.Entities
 {
@@ -16,5 +17,8 @@ namespace BidMasterOnline.Domain.Entities
 
         [Required]
         public bool IsHandled { get; set; }
+
+        [ForeignKey(nameof(UserId))]
+        public virtual User User { get; set; }
     }
 }
