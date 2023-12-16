@@ -46,6 +46,15 @@ export class DeepLinkingService {
     await this.router.navigate([], navigationExtras);
   }
 
+  async clearAllQueryParams() {
+    const navigationExtras: NavigationExtras = {
+      queryParams: [],
+      queryParamsHandling: 'merge',
+    };
+
+    await this.router.navigate([], navigationExtras);
+  }
+
   async getSortingParams(): Promise<SortingModel> {
     const sortField = await this.getQueryParam('sortField');
     const sortDirection = await this.getQueryParam('sortDirection') as SortDirectionEnum;

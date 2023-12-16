@@ -15,6 +15,13 @@ namespace BidMasterOnline.Application.ServiceContracts
         Task<ListModel<AuctionDTO>> GetNotApprovedAuctionsListAsync(SpecificationsDTO specifications);
 
         /// <summary>
+        /// Gets not approved auctions details by its identifier.
+        /// </summary>
+        /// <param name="id">Identifier of the auction.</param>
+        /// <returns>Details of the not approved auction with passed identifier.</returns>
+        Task<AuctionDetailsDTO> GetNotApprovedAuctionDetailsByIdAsync(Guid id);
+
+        /// <summary>
         /// Approves the specified auction.
         /// </summary>
         /// <param name="auctionId">Identifier of auction to approve.</param>
@@ -23,7 +30,7 @@ namespace BidMasterOnline.Application.ServiceContracts
         /// <summary>
         /// Rejects the specified auction.
         /// </summary>
-        /// <param name="auctionId">Identifier of auction to reject.</param>
-        Task RejectAuctionAsync(Guid auctionId);
+        /// <param name="request">Information of the auction and rejection reason.</param>
+        Task RejectAuctionAsync(RejectAuctionDTO request);
     }
 }

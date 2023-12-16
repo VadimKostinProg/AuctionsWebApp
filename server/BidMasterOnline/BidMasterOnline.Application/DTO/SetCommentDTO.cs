@@ -8,14 +8,7 @@ namespace BidMasterOnline.Application.DTO
     public class SetCommentDTO
     {
         [Required]
-        public Guid UserId { get; set; }
-
-        [Required]
         public Guid AuctionId { get; set; }
-
-        [Required]
-        [Range(1, 10)]
-        public int Score { get; set; }
 
         [Required]
         [MaxLength(300)]

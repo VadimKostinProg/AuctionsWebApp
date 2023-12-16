@@ -21,13 +21,6 @@ namespace BidMasterOnline.Application.ServiceContracts
         Task<ListModel<CategoryDTO>> GetCategoriesListAsync(CategorySpecificationsDTO specifications);
 
         /// <summary>
-        /// Gets the list of deleted categories with applyed specifications.
-        /// </summary>
-        /// <param name="specifications">Specifications for filtering, sorting and pagination to apply.</param>
-        /// <returns>List of deleted categories with applyed specifications.</returns>
-        Task<ListModel<CategoryDTO>> GetDeletedCategoriesListAsync(CategorySpecificationsDTO specifications);
-
-        /// <summary>
         /// Gets the specified category by it`s identifier.
         /// </summary>
         /// <param name="id">Identifier of category to get.</param>
@@ -51,11 +44,5 @@ namespace BidMasterOnline.Application.ServiceContracts
         /// </summary>
         /// <param name="id">Identifier of category ot delete.</param>
         Task DeleteCategoryAsync(Guid id);
-
-        /// <summary>
-        /// Recovers deleted category.
-        /// </summary>
-        /// <param name="id">Identifier of category to recover.</param>
-        Task RecoverCategoryAsync(Guid id);
     }
 }

@@ -72,6 +72,14 @@ namespace BidMasterOnline.Application.RepositoryContracts
         Task<T?> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> expression, bool disableTracking = false) where T : EntityBase;
 
         /// <summary>
+        /// Method for checking if the data source contains any row of the passed entity.
+        /// </summary>
+        /// <typeparam name="T">Type of entity to check.</typeparam>
+        /// <returns>True - if the data source contains at least one row of the passed entity, 
+        /// otherwise - false.</returns>
+        Task<bool> AnyAsync<T>() where T : EntityBase;
+
+        /// <summary>
         /// Method for checking if the data source contains the entity that fits passed expression.
         /// </summary>
         /// <typeparam name="T">Type of entity to check.</typeparam>
@@ -95,7 +103,15 @@ namespace BidMasterOnline.Application.RepositoryContracts
         Task UpdateAsync<T>(T entity) where T : EntityBase;
 
         /// <summary>
-        /// Method for deleting existent entity form the data source.
+        /// Method for deletin existent entity form the data source.
+        /// </summary>
+        /// <typeparam name="T">Type of entity to delete</typeparam>
+        /// <param name="entity">Entity to delete.</param>
+        /// <returns>True - if deleting was successfull, otherwise - false.</returns>
+        Task<bool> DeleteAsync<T>(T entity) where T : EntityBase;
+
+        /// <summary>
+        /// Method for deleting existent entity form the data source by its identifier.
         /// </summary>
         /// <typeparam name="T">Type of entity to delete.</typeparam>
         /// <param name="id">Guid of entity to delete.</param>

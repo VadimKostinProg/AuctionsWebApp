@@ -6,8 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BidMasterOnline.API.Controllers
 {
-    [Route("api/technical-support")]
+    [Route("api/v{version:apiVersion}/technical-support")]
     [ApiController]
+    [ApiVersion("1.0")]
     public class TechnicalSupportController : ControllerBase
     {
         private readonly ITechnicalSupportRequestsService _technicalSupportRequestsService;

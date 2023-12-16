@@ -8,6 +8,9 @@ namespace BidMasterOnline.Domain.Entities
         public Guid AuctionId { get; set; }
 
         [Required]
-        public string ImageUrl { get; set; }
+        public string Url { get; set; }
+
+        [Required]
+        public string PublicId { get; set; }
     }
 }

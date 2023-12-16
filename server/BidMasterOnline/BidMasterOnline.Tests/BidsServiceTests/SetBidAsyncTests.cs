@@ -32,7 +32,7 @@ namespace BidMasterOnline.Tests.BidsServiceTests
         }
 
         [Fact]
-        public async Task SetBidAsync_UserIsBlocked_ThrowsUserBlockedException()
+        public async Task SetBidAsync_UserIsBlocked_ThrowsForbiddenException()
         {
             // Arrange
             var authorizedUser = this.GetTestUser(Application.Enums.UserStatus.Blocked);
@@ -66,7 +66,7 @@ namespace BidMasterOnline.Tests.BidsServiceTests
                 await service.SetBidAsync(bid);
             };
 
-            await action.Should().ThrowAsync<UserBlockedException>();
+            await action.Should().ThrowAsync<ForbiddenException>();
         }
 
         [Fact]

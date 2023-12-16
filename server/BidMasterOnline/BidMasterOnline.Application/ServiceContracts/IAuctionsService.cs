@@ -30,6 +30,12 @@ namespace BidMasterOnline.Application.ServiceContracts
         Task<AuctionDetailsDTO> GetAuctionDetailsByIdAsync(Guid id);
 
         /// <summary>
+        /// Sets the score for the specified auction by user.
+        /// </summary>
+        /// <param name="request">Information of auction and score to set.</param>
+        Task SetAuctionScoreAsync(SetAuctionScoreDTO request);
+
+        /// <summary>
         /// Published auction for futher verification.
         /// </summary>
         /// <param name="request">Object with publishing auctions infromation.</param>
@@ -51,8 +57,7 @@ namespace BidMasterOnline.Application.ServiceContracts
         /// Recovers canceled auction.
         /// </summary>
         /// <param name="auctionId">Identifier of auction to cancel.</param>
-        /// <param name="newFinishTime">New auction finish time, which sets optionaly.</param>
         /// <returns></returns>
-        Task RecoverAuctionAsync(Guid auctionId, DateTime? newFinishTime);
+        Task RecoverAuctionAsync(Guid auctionId);
     }
 }

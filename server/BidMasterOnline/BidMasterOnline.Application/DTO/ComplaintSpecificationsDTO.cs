@@ -7,7 +7,6 @@ namespace BidMasterOnline.Application.DTO
     /// </summary>
     public class ComplaintSpecificationsDTO : SpecificationsDTO
     {
-        public DateOnly? Date { get; set; }
         public ComplaintType Type { get; set; }
     }
 }

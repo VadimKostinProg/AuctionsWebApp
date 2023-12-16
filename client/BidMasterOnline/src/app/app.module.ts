@@ -4,13 +4,16 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { UserAccountsModule } from './user-accounts/user-accounts.module';
 import { CommonSharedModule } from './common-shared/common-shared.module';
 import { AuctionsModule } from './auctions/auctions.module';
 import { GeneralModule } from './general/general.module';
 import { AdminModule } from './admin/admin.module';
+import { JwtInterceptorService } from './services/jwt-interceptor.service';
+import { JwtModule } from '@auth0/angular-jwt';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -27,8 +30,26 @@ import { AdminModule } from './admin/admin.module';
     BrowserAnimationsModule,
     HttpClientModule,
     FontAwesomeModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => {
+          if (sessionStorage.getItem('authenticatedUser') != null) {
+            return JSON.parse(sessionStorage.getItem('authenticatedUser') as string).token;
+          }
+
+          return null;
+        }
+      }
+    }),
+    NgbModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

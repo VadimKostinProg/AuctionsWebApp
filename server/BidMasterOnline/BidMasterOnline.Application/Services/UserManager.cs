@@ -12,11 +12,13 @@ namespace BidMasterOnline.Application.Services
     public class UserManager : IUserManager
     {
         private readonly IAsyncRepository _repository;
+        private readonly IImagesService _imagesService;
         private readonly IAuthService _authService;
 
-        public UserManager(IAsyncRepository repository, IAuthService authService)
+        public UserManager(IAsyncRepository repository, IImagesService imagesService, IAuthService authService)
         {
             _repository = repository;
+            _imagesService = imagesService;
             _authService = authService;
         }
 
@@ -60,6 +62,8 @@ namespace BidMasterOnline.Application.Services
             if (string.IsNullOrEmpty(request.NewPassword))
                 throw new ArgumentNullException("New password is blank.");
 
+            PasswordComplexityValidator.Validate(request.NewPassword);
+
             var authenticatedUser = await _authService.GetAuthenticatedUserEntityAsync();
 
             if (authenticatedUser.UserStatus.Name == Enums.UserStatus.Deleted.ToString())
@@ -96,6 +100,8 @@ namespace BidMasterOnline.Application.Services
             if (string.IsNullOrEmpty(request.Password))
                 throw new ArgumentNullException("Password is blank.");
 
+            PasswordComplexityValidator.Validate(request.Password);
+
             if (await _repository.AnyAsync<User>(x => x.Username == request.Username))
                 throw new ArgumentException("User with such username already exists.");
 
@@ -120,6 +126,14 @@ namespace BidMasterOnline.Application.Services
                 RoleId = roleToAssign!.Id,
                 UserStatusId = status!.Id,
             };
+
+            if (request.Image is not null)
+            {
+                var uploadResult = await _imagesService.AddImageAsync(request.Image);
+
+                user.ImageUrl = uploadResult.SecureUrl.AbsoluteUri;
+                user.ImagePublicId = uploadResult.PublicId;
+            }
 
             await _repository.AddAsync(user);
         }
@@ -248,6 +262,18 @@ namespace BidMasterOnline.Application.Services
 
             user.UserStatusId = status!.Id;
             user.UnblockDateTime = null;
+
+            await _repository.UpdateAsync(user);
+        }
+
+        public async Task DeleteUserAsync()
+        {
+            var user = await _authService.GetAuthenticatedUserEntityAsync();
+
+            var status = await _repository.FirstOrDefaultAsync<Domain.Entities.UserStatus>(x =>
+                x.Name == Enums.UserStatus.Deleted.ToString());
+
+            user.UserStatusId = status!.Id;
 
             await _repository.UpdateAsync(user);
         }

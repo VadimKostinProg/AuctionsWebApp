@@ -17,7 +17,7 @@ export class CategoriesService {
   constructor(private readonly httpClient: HttpClient) { }
 
   getCategoriesApiUrl() {
-    return this.baseUrl;
+    return `${this.baseUrl}/list`;
   }
 
   getAllCategories(): Observable<CategoryModel[]> {
@@ -28,12 +28,6 @@ export class CategoriesService {
     const params = new HttpParams({ fromObject: specifications });
 
     return this.httpClient.get<ListModel<CategoryModel>>(`${this.baseUrl}/list`, { params });
-  }
-
-  getDeletedCategoriesList(specifications: Params): Observable<ListModel<CategoryModel>> {
-    const params = new HttpParams({ fromObject: specifications });
-
-    return this.httpClient.get<ListModel<CategoryModel>>(`${this.baseUrl}/list/deleted`, { params });
   }
 
   getCategoryById(id: string) {
@@ -47,13 +41,7 @@ export class CategoriesService {
   }
 
   createNewCategory(category: CreateCategoryModel) {
-    return this.httpClient.post(this.baseUrl, category).pipe(
-      catchError((error: HttpErrorResponse) => {
-        // TODO: show modal window
-        alert(error.message);
-        return throwError(() => new Error(error.message));
-      })
-    );
+    return this.httpClient.post(this.baseUrl, category);
   }
 
   updateCategory(category: CategoryModel) {

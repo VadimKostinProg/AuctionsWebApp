@@ -40,21 +40,13 @@ namespace BidMasterOnline.API.Controllers
             return Ok(await _categoriesService.GetCategoriesListAsync(specifications));
         }
 
-        [HttpGet("list/deleted")]
-        [Authorize(Roles = UserRoles.Admin)]
-        public async Task<ActionResult<ListModel<CategoryDTO>>> GetDeletedCategoriesList(
-            [FromQuery] CategorySpecificationsDTO specifications)
-        {
-            return Ok(await _categoriesService.GetDeletedCategoriesListAsync(specifications));
-        }
-
         [HttpPost]
         [Authorize(Roles = UserRoles.Admin)]
         public async Task<ActionResult<string>> CreateNewCategory([FromBody] CreateCategoryDTO category)
         {
             await _categoriesService.CreateNewCategoryAsync(category);
 
-            return Ok($"Category ${category.Name} has been created successfully.");
+            return Ok(new { Message = $"Category {category.Name} has been created successfully." });
         }
 
         [HttpPut]
@@ -63,7 +55,7 @@ namespace BidMasterOnline.API.Controllers
         {
             await _categoriesService.UpdateCategoryAsync(category);
 
-            return Ok($"Category ${category.Name} has been updated successfully.");
+            return Ok(new { Message = $"Category {category.Name} has been updated successfully."});
         }
 
         [HttpDelete("{id}")]
@@ -72,16 +64,7 @@ namespace BidMasterOnline.API.Controllers
         {
             await _categoriesService.DeleteCategoryAsync(id);
 
-            return Ok("Category has been deleted succesffully.");
-        }
-
-        [HttpPost("{id}")]
-        [Authorize(Roles = UserRoles.Admin)]
-        public async Task<ActionResult<string>> RecoverAsync([FromRoute] Guid id)
-        {
-            await _categoriesService.RecoverCategoryAsync(id);
-
-            return Ok("Category has been recovered successfully.");
+            return Ok(new { Message = "Category has been deleted succesffully." });
         }
     }
 }

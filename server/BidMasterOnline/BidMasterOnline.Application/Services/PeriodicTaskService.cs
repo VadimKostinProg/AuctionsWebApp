@@ -24,9 +24,8 @@ namespace BidMasterOnline.Application.Services
         {
             _logger.LogInformation("--> PeriodicTaskService: Performing periodic operation has started.");
 
-            _logger.LogInformation("--> PeriodicTaskService: applying finished status to auctions.");
-            var auctionsAmount = await ApplyAuctionFinishingAsync();
-            _logger.LogInformation($"--> PeriodicTaskService: {auctionsAmount} auctions were applyed finished status.");
+            await ApplyAuctionFinishingAsync();
+            await ApplyUnblockingUsers();
 
             _logger.LogInformation("--> PeriodicTaskService: Performing periodic operation has finished.");
         }
@@ -34,13 +33,13 @@ namespace BidMasterOnline.Application.Services
         /// <summary>
         /// Applyes finished status to all actually finished auctions and sends the notification to the aucitonist and winner.
         /// </summary>
-        /// <returns>Amount of finished auctions.</returns>
-        private async Task<int> ApplyAuctionFinishingAsync()
+        private async Task ApplyAuctionFinishingAsync()
         {
-            var today = DateTime.UtcNow;
+            var now = DateTime.Now;
+
             var specification = new SpecificationBuilder<Auction>()
                 .With(x => x.Status.Name == Enums.AuctionStatus.Active.ToString())
-                .With(x => x.FinishDateTime < today)
+                .With(x => x.FinishDateTime < now)
                 .Build();
 
             var auctionsToFinish = await _repository.GetAsync(specification, disableTracking: false);
@@ -73,7 +72,36 @@ namespace BidMasterOnline.Application.Services
                 }
             }
 
-            return auctionsToFinish.Count();
+
+            _logger.LogInformation($"--> PeriodicTaskService: {auctionsToFinish.Count()} auctions has been applyed finished status to.");
+        }
+
+        /// <summary>
+        /// Applyes unblocking of the temporary blocked users.
+        /// </summary>
+        private async Task ApplyUnblockingUsers()
+        {
+            var now = DateTime.Now;
+
+            var specification = new SpecificationBuilder<User>()
+                .With(x => x.UnblockDateTime != null && x.UnblockDateTime < now)
+                .Build();
+
+            var blockedUsers = await _repository.GetAsync<User>(specification);
+
+            var activeStatus = await _repository.FirstOrDefaultAsync<UserStatus>(x => 
+                x.Name == Enums.UserStatus.Active.ToString());
+
+            foreach(var blockedUser in blockedUsers)
+            {
+                blockedUser.UserStatusId = activeStatus!.Id;
+                blockedUser.UnblockDateTime = null;
+
+                await _repository.UpdateAsync(blockedUser);
+            }
+
+
+            _logger.LogInformation($"--> PeriodicTaskService: {blockedUsers.Count()} users has been unblocked.");
         }
     }
 }

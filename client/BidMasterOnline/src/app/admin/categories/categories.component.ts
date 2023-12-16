@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CategoriesService } from 'src/app/services/categories.service';
 import { DataTableOptionsModel } from 'src/app/models/dataTableOptionsModel';
-import { ActionClickedModel } from 'src/app/models/actionClickedModel';
 import { CategoryModel } from 'src/app/models/categoryModel';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { DeepLinkingService } from 'src/app/services/deep-linking.service';
+import { CreateCategoryModel } from 'src/app/models/createCategoryModel';
+import { DataTableComponent } from 'src/app/common-shared/data-table/data-table.component';
 
 @Component({
   selector: 'app-categories',
@@ -12,16 +14,55 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class CategoriesComponent implements OnInit {
 
+  @ViewChild(DataTableComponent)
+  dateTable: DataTableComponent;
+
   options: DataTableOptionsModel = {
     title: 'Categories',
+    resourceName: 'category',
     showIndexColumn: true,
     showDeletedData: true,
     allowCreating: true,
-    showActionsColumn: true,
-    actionNames: [
-      "Edit",
-      "Delete"
-    ],
+    createFormOptions: {
+      form: new FormGroup({
+        name: new FormControl(null, [Validators.required]),
+        description: new FormControl(null, [Validators.required])
+      }),
+      properties: [
+        {
+          label: 'Name',
+          propName: 'name'
+        },
+        {
+          label: 'Description',
+          propName: 'description'
+        }
+      ],
+    },
+    allowEdit: true,
+    editFormOptions: {
+      form: new FormGroup({
+        id: new FormControl(null, [Validators.required]),
+        name: new FormControl(null, [Validators.required]),
+        description: new FormControl(null, [Validators.required])
+      }),
+      properties: [
+        {
+          label: 'Id',
+          propName: 'id'
+        },
+        {
+          label: 'Name',
+          propName: 'name'
+        },
+        {
+          label: 'Description',
+          propName: 'description'
+        }
+      ],
+    },
+    allowDelete: true,
+    emptyListDisplayLabel: 'There list of categories is empty.',
     columnSettings: [
       {
         title: 'Name',
@@ -42,7 +83,8 @@ export class CategoriesComponent implements OnInit {
 
   error: string;
 
-  constructor(private readonly categoriesService: CategoriesService) {
+  constructor(private readonly categoriesService: CategoriesService,
+    private readonly deepLinkingService: DeepLinkingService) {
 
   }
 
@@ -54,35 +96,33 @@ export class CategoriesComponent implements OnInit {
     });
   }
 
-  getCategoriesApiUrl() {
-    return this.categoriesService.getCategoriesApiUrl();
-  }
-
   onCreateCategory() {
-    this.categoryForm = new FormGroup({
-      id: new FormControl(null, [Validators.required]),
-      username: new FormControl(null, [Validators.required]),
-      password: new FormControl(null, [Validators.required]),
+    if (!this.options.createFormOptions.form.valid) {
+      return;
+    }
+    var category = this.options.createFormOptions.form.value;
+
+    this.categoriesService.createNewCategory(category).subscribe(
+      async (response) => {
+        // TODO: add toaster
+
+        console.log(response);
+
+        await this.dateTable.reloadDatatable();
+      },
+      (error) => {
+        // TODO: add toaster
+        console.log(error);
+      }
+    )
+
+    this.options.createFormOptions.form = new FormGroup({
+      name: new FormControl(null, [Validators.required]),
+      description: new FormControl(null, [Validators.required])
     });
   }
 
-  get id() {
-    return this.categoryForm.get('id');
-  }
-
-  get name() {
-    return this.categoryForm.get('name');
-  }
-
-  get description() {
-    return this.categoryForm.get('description');
-  }
-
-  onCreateSubmit() {
-
-  }
-
-  onActionForCategory(actionModel: ActionClickedModel<CategoryModel>) {
-
+  getCategoriesApiUrl() {
+    return this.categoriesService.getCategoriesApiUrl();
   }
 }

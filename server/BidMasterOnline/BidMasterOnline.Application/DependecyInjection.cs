@@ -1,4 +1,5 @@
-﻿using BidMasterOnline.Application.ServiceContracts;
+﻿using BidMasterOnline.Application.Initializers;
+using BidMasterOnline.Application.ServiceContracts;
 using BidMasterOnline.Application.Services;
 using BidMasterOnline.Application.Sessions;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +24,8 @@ namespace BidMasterOnline.Application
             services.AddScoped<INotificationsService, NotificationsService>();
             services.AddScoped<IUserManager, UserManager>();
             services.AddScoped<ITechnicalSupportRequestsService, TechnicalSupportRequestsService>();
+
+            services.AddScoped<UsersInitializer>();
             
             services.AddScoped<SessionContext>();
 

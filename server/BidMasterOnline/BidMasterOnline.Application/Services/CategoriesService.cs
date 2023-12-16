@@ -42,7 +42,7 @@ namespace BidMasterOnline.Application.Services
             if (string.IsNullOrEmpty(category.Description))
                 throw new ArgumentNullException("Description cannot be blank.");
 
-            if (await _repository.AnyAsync<Category>(x => x.Name == category.Name && x.IsDeleted == false))
+            if (await _repository.AnyAsync<Category>(x => x.Name == category.Name && !x.IsDeleted))
                 throw new ArgumentException("Category with the same name already exists.");
 
             // Creating new category
@@ -55,13 +55,10 @@ namespace BidMasterOnline.Application.Services
         public async Task DeleteCategoryAsync(Guid id)
         {
             // Validating category
-            var category = await _repository.GetByIdAsync<Category>(id);
+            var category = await _repository.FirstOrDefaultAsync<Category>(x => x.Id == id && !x.IsDeleted);
 
             if (category is null)
                 throw new KeyNotFoundException("Category with such id does not exist.");
-
-            if (category.IsDeleted)
-                throw new InvalidOperationException("Category has already been deleted.");
 
             // Deleting category
             category.IsDeleted = true;
@@ -93,11 +90,11 @@ namespace BidMasterOnline.Application.Services
         }
 
         // Method for creating ISpecification for CategorySpecificationsDTO
-        private ISpecification<Category> GetSpecification(CategorySpecificationsDTO specifications, bool isDeleted = false)
+        private ISpecification<Category> GetSpecification(CategorySpecificationsDTO specifications)
         {
             var builder = new SpecificationBuilder<Category>();
 
-            builder.With(x => x.IsDeleted == isDeleted);
+            builder.With(x => !x.IsDeleted);
 
             if (!string.IsNullOrEmpty(specifications.Name))
                 builder.With(x => x.Name.Contains(specifications.Name));
@@ -122,55 +119,12 @@ namespace BidMasterOnline.Application.Services
 
         public async Task<CategoryDTO> GetCategoryByIdAsync(Guid id)
         {
-            var category = await _repository.GetByIdAsync<Category>(id);
+            var category = await _repository.FirstOrDefaultAsync<Category>(x => x.Id == id && !x.IsDeleted);
 
             if (category is null)
                 throw new KeyNotFoundException("Category with such Id does not exist.");
 
             return this._mapper.Map<CategoryDTO>(category);
-        }
-
-        public async Task<ListModel<CategoryDTO>> GetDeletedCategoriesListAsync(CategorySpecificationsDTO specifications)
-        {
-            if (specifications is null)
-                throw new ArgumentNullException("Specifications are null.");
-
-            var specification = this.GetSpecification(specifications, isDeleted: true);
-
-            var categories = await _repository.GetAsync<Category>(specification);
-
-            var totalCount = specification.Predicate is null ?
-                await _repository.CountAsync<Category>() :
-                await _repository.CountAsync<Category>(specification.Predicate);
-
-            var totalPages = (long)Math.Ceiling((double)totalCount / specifications.PageSize);
-
-            var list = new ListModel<CategoryDTO>()
-            {
-                List = categories.Select(x => this._mapper.Map<CategoryDTO>(x)).ToList(),
-                TotalPages = totalPages
-            };
-
-            return list;
-        }
-
-        public async Task RecoverCategoryAsync(Guid id)
-        {
-            // Validating category
-            var category = await _repository.GetByIdAsync<Category>(id);
-
-            if (category is null)
-                throw new KeyNotFoundException("Category with such id does not exist.");
-
-            if (!category.IsDeleted)
-                throw new InvalidOperationException("Category is not deleted to recover it.");
-
-            if (await _repository.AnyAsync<Category>(x => x.Name == category.Name && x.IsDeleted == false))
-                throw new InvalidOperationException("Cannot recover the category: another category with the same name alreay exists.");
-
-            // Deleting category
-            category.IsDeleted = false;
-            await _repository.UpdateAsync(category);
         }
 
         public async Task UpdateCategoryAsync(UpdateCategoryDTO category)

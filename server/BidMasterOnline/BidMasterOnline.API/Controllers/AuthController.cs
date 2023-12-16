@@ -1,11 +1,12 @@
 ﻿using BidMasterOnline.Application.DTO;
 using BidMasterOnline.Application.ServiceContracts;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BidMasterOnline.API.Controllers
 {
-    [Route("api/v{varsion:apiVersion}/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
     public class AuthController : ControllerBase

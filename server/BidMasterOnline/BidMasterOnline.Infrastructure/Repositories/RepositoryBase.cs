@@ -22,6 +22,11 @@ namespace BidMasterOnline.Infrastructure.Repositories
             await context.SaveChangesAsync();
         }
 
+        public async Task<bool> AnyAsync<T>() where T : EntityBase
+        {
+            return await context.Set<T>().AnyAsync();
+        }
+
         public virtual async Task<bool> AnyAsync<T>(Expression<Func<T, bool>> expression) where T : EntityBase
         {
             return await context.Set<T>().AnyAsync(expression);
@@ -52,6 +57,15 @@ namespace BidMasterOnline.Infrastructure.Repositories
             return true;
         }
 
+        public async Task<bool> DeleteAsync<T>(T entity) where T : EntityBase
+        {
+            context.Set<T>().Remove(entity);
+
+            var deletedCount = await context.SaveChangesAsync();
+
+            return deletedCount > 0;
+        }
+
         public virtual async Task<int> DeleteManyAsync<T>(IEnumerable<T> entities) where T : EntityBase
         {
             context.Set<T>().RemoveRange(entities);
@@ -70,7 +84,7 @@ namespace BidMasterOnline.Infrastructure.Repositories
             return await query.FirstOrDefaultAsync(expression);
         }
 
-        public virtual async Task<IEnumerable<T>> GetAllAsync<T>(bool disableTracking = false) where T : EntityBase
+        public virtual Task<IEnumerable<T>> GetAllAsync<T>(bool disableTracking = false) where T : EntityBase
         {
             var query = context.Set<T>().AsQueryable();
 
@@ -79,10 +93,10 @@ namespace BidMasterOnline.Infrastructure.Repositories
                 query = query.AsNoTracking();
             }
 
-            return await query.ToListAsync();
+            return Task.FromResult(query.ToList().AsEnumerable());
         }
 
-        public virtual async Task<IEnumerable<T>> GetAsync<T>(ISpecification<T> specification, bool disableTracking = false) where T : EntityBase
+        public virtual Task<IEnumerable<T>> GetAsync<T>(ISpecification<T> specification, bool disableTracking = false) where T : EntityBase
         {
             var query = context.Set<T>().AsQueryable();
 
@@ -96,7 +110,7 @@ namespace BidMasterOnline.Infrastructure.Repositories
                 query = query.AsNoTracking();
             }
 
-            return await query.ToListAsync();
+            return Task.FromResult(query.ToList().AsEnumerable());
         }
 
         public virtual async Task<T?> GetByIdAsync<T>(Guid id, bool disableTracking = false) where T : EntityBase
@@ -111,7 +125,7 @@ namespace BidMasterOnline.Infrastructure.Repositories
             return await query.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public virtual async Task<IEnumerable<T>> GetFilteredAsync<T>(Expression<Func<T, bool>> predicate, bool disableTracking = false) where T : EntityBase
+        public virtual Task<IEnumerable<T>> GetFilteredAsync<T>(Expression<Func<T, bool>> predicate, bool disableTracking = false) where T : EntityBase
         {
             var query = context.Set<T>().Where(predicate);
 
@@ -120,7 +134,7 @@ namespace BidMasterOnline.Infrastructure.Repositories
                 query = query.AsNoTracking();
             }
 
-            return await query.ToListAsync();
+            return Task.FromResult(query.ToList().AsEnumerable());
         }
 
         public virtual async Task UpdateAsync<T>(T entity) where T : EntityBase

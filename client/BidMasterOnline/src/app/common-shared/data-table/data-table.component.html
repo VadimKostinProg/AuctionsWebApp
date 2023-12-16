@@ -1,125 +1,153 @@
-<div class="row mb-3">
-    <div class="text-right">
-        <h3>
-            {{ options.title }}
-        </h3>
-    </div>
-
-    <div class="data-table-buttons-header-container">
-        <div *ngIf="options.showDeletedData"
-             class="text-left">
-            <input type="checkbox"
-                   class="btn-check"
-                   id="btncheck1"
-                   autocomplete="off"
-                   [value]="isCurrentDataDeleted"
-                   (click)="onShowDeletedClick()">
-            <label class="btn btn-outline-primary"
-                   for="btncheck1">Show deleted</label>
+<div *ngIf="options && tableData">
+    <div class="row mb-3">
+        <div class="text-right">
+            <h3>
+                {{ options.title }}
+            </h3>
         </div>
 
         <div *ngIf="options.allowCreating"
-             class="btn default-btn-background"
-             data-toggle="modal"
-             data-target="#createModal">
-            Create
+             class="text-end">
+            <button class="btn btn-lg btn-outline-primary"
+                    (click)="open(createModal)">Create</button>
         </div>
-    </div>
-</div>
 
-<div class="row">
-    <table class="table table-hover">
-        <tr>
-            <th *ngIf="options.showIndexColumn"></th>
+        <div *ngIf="tableData.list.length > 0; else emptyList">
+            <div class="row">
+                <table class="table table-hover">
+                    <tr>
+                        <th *ngIf="options.showIndexColumn"></th>
 
-            <th *ngFor="let column of options.columnSettings"
-                [ngStyle]="{ 'width': column.width }">
-                <div>
-                    {{ column.title }}
-                </div>
-            </th>
+                        <th *ngFor="let column of options.columnSettings"
+                            [ngStyle]="{ 'width': column.width }">
+                            <div>
+                                {{ column.title }}
+                            </div>
+                        </th>
 
-            <th *ngIf="options.showActionsColumn"></th>
-        </tr>
+                        <th *ngIf="options.allowEdit || options.allowDelete"></th>
+                    </tr>
 
-        <tr *ngFor="let row of tableData.data; let i = index">
-            <td *ngIf="options.showIndexColumn">
-                <div>
-                    {{ i + 1 }}
-                </div>
-            </td>
+                    <tr *ngFor="let row of tableData.list; let i = index">
+                        <td *ngIf="options.showIndexColumn">
+                            <div>
+                                {{ i + 1 }}
+                            </div>
+                        </td>
 
-            <td *ngFor="let column of options.columnSettings">
-                <div>
-                    {{ row[column.dataPropName] }}
-                </div>
-            </td>
+                        <td *ngFor="let column of options.columnSettings">
+                            <div>
+                                {{ row[column.dataPropName] }}
+                            </div>
+                        </td>
 
-            <th *ngIf="options.showActionsColumn">
-                <ng-template #actionsPopContent>
-                    <button *ngFor="let action in options.actionNames"
-                            class="btn"
-                            (click)="onActionClicked(action, row)"
-                            data-toggle="modal"
-                            data-target="'#' + action + 'Modal'">
-                        {{ action }}
-                    </button>
-                </ng-template>
+                        <th *ngIf="options.allowEdit || options.allowDelete">
+                            <ng-template #actionsPopContent>
+                                <button *ngIf="options.allowEdit"
+                                        class="btn">
+                                    Edit
+                                </button>
+                                <button *ngIf="options.allowDelete"
+                                        class="btn">
+                                    Delete
+                                </button>
+                            </ng-template>
 
+                            <button type="button"
+                                    class="btn default-btn-background w-75"
+                                    placement="bottom"
+                                    [ngbPopover]="actionsPopContent">
+                                <i class="bi bi-three-dots"></i>
+                            </button>
+                        </th>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="flex-between-container">
+                <ng-select [(ngModel)]="pagination.pageSize"
+                           (change)="onPageSizeChanged($event)"
+                           [clearable]="false">
+                    <ng-option *ngFor="let size of pageSizeOptions"
+                               [value]="size">
+                        {{ size }}
+                    </ng-option>
+                </ng-select>
+
+                <nav aria-label="Page navigation example"
+                     #paginator>
+                    <ul class="pagination">
+                        <li class="page-item"
+                            [ngClass]="(this.pagination.pageNumber == 1)? 'disabled' : ''">
+                            <a class="page-link"
+                               href="#"
+                               aria-label="Previous"
+                               onclick="return false"
+                               (click)="decrementPageNumber()">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li *ngFor="let page of pagesList"
+                            class="page-item">
+                            <a class="page-link"
+                               [ngClass]="page == pagination.pageNumber ? 'active' : ''"
+                               onclick="return false"
+                               (click)="onPageNumberChanged(page)"
+                               href="#">
+                                {{ page }}
+                            </a>
+                        </li>
+                        <li class="page-item"
+                            [ngClass]="(this.pagination.pageNumber == tableData.totalPages)? 'disabled' : ''">
+                            <a class="page-link"
+                               href="#"
+                               aria-label="Next"
+                               onclick="return false"
+                               (click)="incrementPageNumber()">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <ng-template #emptyList>
+            <h3>{{ options.emptyListDisplayLabel }}</h3>
+        </ng-template>
+
+        <ng-template #createModal
+                     let-modal>
+            <div class="modal-header">
+                <h4 class="modal-title"
+                    id="modal-basic-title">Create {{ options.resourceName }}</h4>
                 <button type="button"
-                        class="btn default-btn-background w-75"
-                        placement="bottom"
-                        [ngbPopover]="actionsPopContent">
-                    <i class="bi bi-three-dots"></i>
-                </button>
-            </th>
-        </tr>
-    </table>
-</div>
+                        class="btn-close"
+                        aria-label="Close"
+                        (click)="modal.close()"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="options.createFormOptions.form">
+                    <div *ngFor="let prop of options.createFormOptions.properties"
+                         class="form-field flex mb-2">
+                        <div>
+                            <label [for]="prop.propName"
+                                   class="form-label pt">{{ prop.label }}:</label>
+                        </div>
 
-<div class="row flex justify-content-between">
-    <ng-select [(ngModel)]="pagination.pageSize"
-               (change)="onPageSizeChanged($event)">
-        <ng-option *ngFor="let size in pageSizeOptions"
-                   [value]="size">
-            {{ size }}
-        </ng-option>
-    </ng-select>
-
-    <nav aria-label="Page navigation example"
-         #paginator>
-        <ul class="pagination">
-            <li class="page-item"
-                [ngClass]="(this.pagination.pageNumber == 0)? 'disabled' : ''">
-                <a class="page-link"
-                   href="#"
-                   aria-label="Previous"
-                   onclick="return false"
-                   (click)="decrementPageNumber()">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li *ngFor="let page in tableData.totalPages"
-                class="page-item">
-                <a class="page-link"
-                   onclick="return false"
-                   (click)="onPageNumberChanged(page)"
-                   href="#">
-                    {{ page }}
-                </a>
-            </li>
-            <li class="page-item"
-                [ngClass]="(this.pagination.pageNumber == tableData.totalPages)? 'disabled' : ''">
-                <a class="page-link"
-                   href="#"
-                   aria-label="Next"
-                   onclick="return false"
-                   (click)="incrementPageNumber()">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</div>
-
-<ng-content></ng-content>
+                        <div class="flex-1">
+                            <input type="text"
+                                   [id]="prop.propName"
+                                   class="form-control"
+                                   [formControlName]="prop.propName" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button"
+                        class="btn btn-outline-dark"
+                        (click)="onCreateSubmit(modal)">Create</button>
+            </div>
+        </ng-template>
+    </div>

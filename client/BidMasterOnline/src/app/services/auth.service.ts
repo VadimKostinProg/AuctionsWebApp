@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { Observable, catchError, map, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { SignInModel } from '../models/signInModel';
@@ -10,43 +10,28 @@ import { AuthenticationModel } from '../models/authenticationModel';
 })
 export class AuthService {
 
-  baseUrl: string = `${environment.apiUrl}/api/auth`;
+  baseUrl: string = `${environment.apiUrl}/api/v1/auth`;
 
-  userIdKey = 'user-id';
-  tokenKey = 'token';
-  roleKey = 'role';
+  user: AuthenticationModel | null;
 
-  constructor(private readonly httpClient: HttpClient) { }
+  constructor(private readonly httpClient: HttpClient) {
+    this.user = JSON.parse(sessionStorage.getItem('authenticatedUser') as string);
+  }
 
   signIn(signInModel: SignInModel): Observable<AuthenticationModel> {
     return this.httpClient.post<AuthenticationModel>(`${this.baseUrl}/login`, signInModel)
-      .pipe(
-        tap(response => {
-          sessionStorage.setItem(this.userIdKey, response.userId);
-          sessionStorage.setItem(this.tokenKey, response.token);
-          sessionStorage.setItem(this.roleKey, response.role);
-        }),
-        catchError(error => {
-          throw new Error(error);
-        })
-      );
-  }
+      .pipe(map(user => {
+        if (user) {
+          this.user = user;
+          sessionStorage.setItem('authenticatedUser', JSON.stringify(user));
+        }
 
-  getAuthenticatedUserId() {
-    return sessionStorage.getItem(this.userIdKey);
-  }
-
-  getToken() {
-    return sessionStorage.getItem(this.tokenKey);
-  }
-
-  getAuthenticatedUserRole() {
-    return sessionStorage.getItem(this.roleKey);
+        return user;
+      }));
   }
 
   logOut() {
-    sessionStorage.removeItem(this.userIdKey);
-    sessionStorage.removeItem(this.tokenKey);
-    sessionStorage.removeItem(this.roleKey);
+    this.user = null;
+    sessionStorage.removeItem('authenticatedUser');
   }
 }

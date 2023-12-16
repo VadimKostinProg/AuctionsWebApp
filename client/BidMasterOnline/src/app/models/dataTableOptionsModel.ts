@@ -1,11 +1,16 @@
+import { FormOptionsModel } from "./formOptionsModel";
 import { TableColumnSettingsModel } from "./tableColumnSettingsModel";
 
 export class DataTableOptionsModel {
-    title: string;
-    showIndexColumn: boolean;
-    showDeletedData: boolean;
-    allowCreating: boolean;
-    showActionsColumn: boolean;
-    actionNames: string[];
-    columnSettings: TableColumnSettingsModel[];
+    public title: string;
+    public resourceName: string;
+    public showIndexColumn: boolean;
+    public showDeletedData: boolean;
+    public allowCreating: boolean;
+    public createFormOptions: FormOptionsModel;
+    public allowEdit: boolean;
+    public editFormOptions: FormOptionsModel;
+    public allowDelete: boolean;
+    public emptyListDisplayLabel: string;
+    public columnSettings: TableColumnSettingsModel[];
 }

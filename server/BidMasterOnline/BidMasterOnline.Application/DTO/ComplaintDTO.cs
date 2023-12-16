@@ -7,12 +7,13 @@ namespace BidMasterOnline.Application.DTO
     /// </summary>
     public class ComplaintDTO
     {
+        public Guid Id { get; set; }
         public Guid AccusingUserId { get; set; }
-        public UserDTO AccusingUser { get; set; }
+        public string AccusingUsername { get; set; }
         public Guid AccusedUserId { get; set; }
-        public UserDTO AccusedUser { get; set; }
+        public string AccusedUsername { get; set; }
         public Guid AuctionId { get; set; }
-        public AuctionDTO Auction { get; set; }
+        public string AuctionName { get; set; }
         public Guid? CommentId { get; set; }
         public CommentDTO? Comment { get; set; }
         public ComplaintType ComplaintType { get; set; }

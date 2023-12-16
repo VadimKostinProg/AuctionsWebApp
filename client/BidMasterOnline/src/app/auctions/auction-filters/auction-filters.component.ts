@@ -44,9 +44,9 @@ export class AuctionFiltersComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    // this.categoriesService.GetAllCategories().subscribe((categories) => {
-    //   this.categories = categories;
-    // });
+    this.categoriesService.getAllCategories().subscribe((categories) => {
+      this.categories = categories;
+    });
 
     this.categories = [
       {

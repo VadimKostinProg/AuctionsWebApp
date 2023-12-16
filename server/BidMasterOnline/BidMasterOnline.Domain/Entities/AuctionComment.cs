@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BidMasterOnline.Domain.Entities
 {
-    public class Comment : EntityBase 
+    public class AuctionComment : EntityBase 
     {
         [Required]
         public Guid UserId { get; set; }
@@ -12,8 +12,7 @@ namespace BidMasterOnline.Domain.Entities
         public Guid AuctionId { get; set; }
 
         [Required]
-        [Range(1, 10)]
-        public int Score { get; set; }
+        public DateTime DateAndTime { get; set; }
 
         [Required]
         [MaxLength(300)]

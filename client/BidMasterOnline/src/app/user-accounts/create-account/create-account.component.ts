@@ -72,7 +72,7 @@ export class CreateAccountComponent implements OnInit {
       confirmPassword: formModel.confirmPassword
     } as CreateUserModel;
 
-    this.usersService.createUser(user)
+    this.usersService.createCustomer(user)
       .subscribe(
         (message) => {
           console.log(message);

@@ -1,6 +1,7 @@
 ﻿using BidMasterOnline.Domain.Entities;
 using FluentAssertions;
 using Moq;
+using System.Linq.Expressions;
 
 namespace BidMasterOnline.Tests.CategoriesServiceTests
 {
@@ -15,7 +16,7 @@ namespace BidMasterOnline.Tests.CategoriesServiceTests
             // Arrange
             var idToPass = Guid.NewGuid();
 
-            repositoryMock.Setup(x => x.GetByIdAsync<Category>(idToPass, false))
+            repositoryMock.Setup(x => x.FirstOrDefaultAsync<Category>(It.IsAny<Expression<Func<Category, bool>>>(), false))
                 .ReturnsAsync(null as Category);
 
             // Assert
@@ -36,7 +37,7 @@ namespace BidMasterOnline.Tests.CategoriesServiceTests
 
             var idToPass = category.Id;
 
-            repositoryMock.Setup(x => x.GetByIdAsync<Category>(idToPass, false))
+            repositoryMock.Setup(x => x.FirstOrDefaultAsync<Category>(It.IsAny<Expression<Func<Category, bool>>>(), false))
                 .ReturnsAsync(category);
 
             // Act

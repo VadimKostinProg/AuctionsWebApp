@@ -50,6 +50,11 @@ namespace BidMasterOnline.Application.ServiceContracts
         Task UnblockUserAsync(Guid userId);
 
         /// <summary>
+        /// Applyes soft deleting of the currently authenticated user.
+        /// </summary>
+        Task DeleteUserAsync();
+
+        /// <summary>
         /// Applyes soft deleting of the specified user.
         /// </summary>
         /// <param name="userId">Identifier of user to delete.</param>

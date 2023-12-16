@@ -40,7 +40,7 @@ namespace BidMasterOnline.Domain.Entities
         public virtual Auction Auction { get; set; }
 
         [ForeignKey(nameof(CommentId))]
-        public virtual Comment Comment { get; set; }
+        public virtual AuctionComment Comment { get; set; }
 
         [ForeignKey(nameof(ComplaintTypeId))]
         public virtual ComplaintType ComplaintType { get; set; }

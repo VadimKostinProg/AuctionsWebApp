@@ -1,6 +1,7 @@
 ﻿using BidMasterOnline.Domain.Entities;
 using FluentAssertions;
 using Moq;
+using System.Linq.Expressions;
 
 namespace BidMasterOnline.Tests.CategoriesServiceTests
 {
@@ -15,7 +16,7 @@ namespace BidMasterOnline.Tests.CategoriesServiceTests
             // Arrange
             var idToPass = Guid.NewGuid();
 
-            repositoryMock.Setup(x => x.GetByIdAsync<Category>(idToPass, false))
+            repositoryMock.Setup(x => x.FirstOrDefaultAsync<Category>(It.IsAny<Expression<Func<Category, bool>>>(), false))
                 .ReturnsAsync(null as Category);
 
             // Assert
@@ -29,27 +30,6 @@ namespace BidMasterOnline.Tests.CategoriesServiceTests
         }
 
         [Fact]
-        public async Task DeleteCategoryAsync_CategoryIsAlreadyDeleted_ThrowsInvalidOperationException()
-        {
-            // Arrange
-            var categoryToDelete = this.GetTestCategory(isDeleted: true);
-
-            var idToPass = categoryToDelete.Id;
-
-            repositoryMock.Setup(x => x.GetByIdAsync<Category>(idToPass, false))
-                .ReturnsAsync(categoryToDelete);
-
-            // Assert
-            var action = async () =>
-            {
-                // Act
-                await service.DeleteCategoryAsync(idToPass);
-            };
-
-            await action.Should().ThrowAsync<InvalidOperationException>();
-        }
-
-        [Fact]
         public async Task DeleteCategoryAsync_ValidId_SuccessfullCategoryDeleting()
         {
             // Arrange
@@ -57,7 +37,7 @@ namespace BidMasterOnline.Tests.CategoriesServiceTests
 
             var idToPass = categoryToDelete.Id;
 
-            repositoryMock.Setup(x => x.GetByIdAsync<Category>(idToPass, false))
+            repositoryMock.Setup(x => x.FirstOrDefaultAsync<Category>(It.IsAny<Expression<Func<Category, bool>>>(), false))
                 .ReturnsAsync(categoryToDelete);
 
             repositoryMock.Setup(x => x.UpdateAsync<Category>(It.IsAny<Category>()))

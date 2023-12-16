@@ -9,10 +9,11 @@ namespace BidMasterOnline.Infrastructure.DatabaseContext
         public virtual DbSet<Auction> Auctions { get; set; }
         public virtual DbSet<AuctionFinishType> AuctionFinishTypes { get; set; }
         public virtual DbSet<AuctionStatus> AuctionStatuses { get; set; }
+        public virtual DbSet<AuctionScore> AuctionScores { get; set; }
         public virtual DbSet<AuctionImage> AuctionImages { get; set; }
         public virtual DbSet<Bid> Bids { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
-        public virtual DbSet<Comment> Comments { get; set; }
+        public virtual DbSet<AuctionComment> Comments { get; set; }
         public virtual DbSet<Complaint> Complaints { get; set; }
         public virtual DbSet<ComplaintType> ComplaintTypes { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
@@ -20,7 +21,10 @@ namespace BidMasterOnline.Infrastructure.DatabaseContext
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserStatus> UserStatuses { get; set; }
 
-        public ApplicationContext(DbContextOptions options) : base(options) { }
+        public ApplicationContext(DbContextOptions options) : base(options)
+        {
+            this.ChangeTracker.LazyLoadingEnabled = true;
+        }
 
         public ApplicationContext() { }
 
@@ -31,10 +35,11 @@ namespace BidMasterOnline.Infrastructure.DatabaseContext
             modelBuilder.Entity<Auction>().ToTable("Auctions");
             modelBuilder.Entity<AuctionFinishType>().ToTable("AuctionFinishTypes");
             modelBuilder.Entity<AuctionStatus>().ToTable("AuctionStatuses");
+            modelBuilder.Entity<AuctionScore>().ToTable("AuctionScores");
             modelBuilder.Entity<AuctionImage>().ToTable("AuctionImages");
             modelBuilder.Entity<Bid>().ToTable("Bids");
             modelBuilder.Entity<Category>().ToTable("Categories");
-            modelBuilder.Entity<Comment>().ToTable("Comments");
+            modelBuilder.Entity<AuctionComment>().ToTable("Comments");
             modelBuilder.Entity<Complaint>().ToTable("Complaints");
             modelBuilder.Entity<ComplaintType>().ToTable("ComplaintTypes");
             modelBuilder.Entity<Role>().ToTable("Roles");

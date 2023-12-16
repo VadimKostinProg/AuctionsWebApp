@@ -63,7 +63,8 @@ namespace BidMasterOnline.Application.Services
 
             // Find user by passed credentials
             var user = await _repository.FirstOrDefaultAsync<User>(x =>
-                x.Username == login.UserName || x.Email == login.UserName,
+                (x.Username == login.UserName || x.Email == login.UserName) && 
+                x.UserStatus.Name != Enums.UserStatus.Deleted.ToString(),
                 disableTracking: false);
 
             if (user is null)

@@ -47,7 +47,7 @@ namespace BidMasterOnline.Application.Services
                     AuctionId = x.AuctionId,
                     AuctionName = x.Auction.Name,
                     BidderId = x.BidderId,
-                    BidderUserName = x.Bidder.Username,
+                    BidderUsername = x.Bidder.Username,
                     DateAndTime = x.DateAndTime,
                     Amount = x.Amount
                 })
@@ -90,7 +90,7 @@ namespace BidMasterOnline.Application.Services
                     AuctionId = x.AuctionId,
                     AuctionName = x.Auction.Name,
                     BidderId = x.BidderId,
-                    BidderUserName = x.Bidder.Username,
+                    BidderUsername = x.Bidder.Username,
                     DateAndTime = x.DateAndTime,
                     Amount = x.Amount
                 })
@@ -110,7 +110,7 @@ namespace BidMasterOnline.Application.Services
             var user = await _authService.GetAuthenticatedUserAsync();
 
             if (user.Status == Enums.UserStatus.Blocked)
-                throw new UserBlockedException("Account is blocked.");
+                throw new ForbiddenException("Account is blocked.");
 
             var auction = await _repository.GetByIdAsync<Auction>(bid.AuctionId);
 

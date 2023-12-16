@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActionClickedModel } from 'src/app/models/actionClickedModel';
 import { DataTableOptionsModel } from 'src/app/models/dataTableOptionsModel';
 import { ListModel } from 'src/app/models/listModel';
@@ -12,7 +13,7 @@ import { DeepLinkingService } from 'src/app/services/deep-linking.service';
   templateUrl: './data-table.component.html',
   styleUrls: ['./data-table.component.scss']
 })
-export class DataTableComponent implements OnInit, OnDestroy {
+export class DataTableComponent implements OnInit {
 
   @Input()
   options: DataTableOptionsModel;
@@ -26,9 +27,6 @@ export class DataTableComponent implements OnInit, OnDestroy {
   @Output()
   onAction = new EventEmitter<ActionClickedModel<any>>();
 
-  // Real url to send request to
-  actualUrl: string;
-
   tableData: ListModel<any>;
 
   isCurrentDataDeleted: boolean = false;
@@ -37,17 +35,17 @@ export class DataTableComponent implements OnInit, OnDestroy {
 
   pagination: PaginationModel;
 
+  pagesList: number[];
   pageSizeOptions = [10, 25, 50, 75];
 
   constructor(
     private readonly deepLinkingService: DeepLinkingService,
-    private readonly httpClient: HttpClient) {
+    private readonly httpClient: HttpClient,
+    private readonly modalService: NgbModal) {
 
   }
 
   async ngOnInit() {
-    this.actualUrl = this.apiUrl;
-
     this.sorting = await this.deepLinkingService.getSortingParams();
     this.pagination = await this.deepLinkingService.getPaginationParams();
 
@@ -67,21 +65,26 @@ export class DataTableComponent implements OnInit, OnDestroy {
     const specifications = await this.deepLinkingService.getAllQueryParams();
     const params = new HttpParams({ fromObject: specifications });
 
-    this.httpClient.get(this.actualUrl, { params }).subscribe((data) => {
-      this.tableData = data as ListModel<any>;
+    this.httpClient.get(this.apiUrl, { params }).subscribe(async (data: any) => {
+      this.tableData = {
+        list: data.list,
+        totalPages: data.totalPages
+      };
+
+      this.pagesList = [];
+
+      for (let i = 1; i <= this.tableData.totalPages; i++) {
+        this.pagesList.push(i);
+      }
+
+      if (this.pagination.pageNumber > this.tableData.totalPages) {
+        await this.onPageNumberChanged(1);
+      }
     });
   }
 
-  onShowDeletedClick() {
-    if (this.isCurrentDataDeleted) {
-      this.isCurrentDataDeleted = false;
-
-      this.actualUrl = this.apiUrl;
-    } else {
-      this.isCurrentDataDeleted = true;
-
-      this.actualUrl = `${this.apiUrl}/deleted`;
-    }
+  open(content: TemplateRef<any>) {
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' })
   }
 
   async decrementPageNumber() {
@@ -108,29 +111,16 @@ export class DataTableComponent implements OnInit, OnDestroy {
     await this.reloadDatatable();
   }
 
-  async onPageSizeChanged(pageSize: any) {
-    this.pagination.pageSize = pageSize.target.value.number;
+  async onPageSizeChanged(pageSize: number) {
+    this.pagination.pageSize = pageSize;
 
     await this.deepLinkingService.setPaginationParams(this.pagination);
 
     await this.reloadDatatable();
   }
 
-  onCreateClicked() {
+  onCreateSubmit(content: any) {
+    content.close();
     this.onCreate.emit();
-  }
-
-  onActionClicked(actionName: string, row: any) {
-    var actionClickedModel = {
-      actionName: actionName,
-      actionObject: row
-    } as ActionClickedModel<any>;
-
-    this.onAction.emit(actionClickedModel);
-  }
-
-  async ngOnDestroy() {
-    await this.deepLinkingService.clearPaginationParams();
-    await this.deepLinkingService.clearSortingParams();
   }
 }

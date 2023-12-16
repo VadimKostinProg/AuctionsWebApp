@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { DataTableComponent } from './data-table/data-table.component';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -17,6 +17,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     NgbModule,
     NgSelectModule,
     FormsModule,
+    ReactiveFormsModule,
   ],
   exports: [
     SearchBarComponent,

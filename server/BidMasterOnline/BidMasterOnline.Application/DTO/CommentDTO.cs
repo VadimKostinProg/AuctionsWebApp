@@ -8,15 +8,12 @@ namespace BidMasterOnline.Application.DTO
     public class CommentDTO
     {
         public Guid Id { get; set; }
-
         public Guid UserId { get; set; }
-
-        public string UserName { get; set; }
-
+        public string Username { get; set; }
         public Guid AuctionId { get; set; }
-
-        public int Score { get; set; }
-
-        public string CommentText { get; set; }
+        public string AuctionName { get; set; } 
+        public DateTime DateAndTime { get; set; }
+        public string CommentText { get; set; }        
+        public bool IsDeleted { get; set; }
     }
 }

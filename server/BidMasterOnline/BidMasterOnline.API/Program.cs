@@ -1,12 +1,25 @@
+using BidMasterOnline.API.Middlewares;
 using BidMasterOnline.Application;
+using BidMasterOnline.Application.Initializers;
 using BidMasterOnline.Infrastructure;
-using Microsoft.AspNetCore.Mvc.Versioning;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options => {
+    options.AddDefaultPolicy(policyBuilder =>
+    {
+        policyBuilder
+        .WithOrigins("http://localhost:4200")
+        .WithHeaders("Authorization", "origin", "accept", "content-type")
+        .WithMethods("GET", "POST", "PUT", "DELETE");
+    });
+});
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -45,7 +58,26 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo()
+    {
+        Title = "Hospital Registry API",
+        Version = "1.0"
+    });
+});
+
+builder.Services.AddVersionedApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'V";
+    options.SubstituteApiVersionInUrl = true;
+});
+
 var app = builder.Build();
+
+app.UseHsts();
+app.UseHttpsRedirection();
+app.UseStaticFiles();
 
 if (app.Environment.IsDevelopment())
 {
@@ -53,10 +85,24 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseRouting();
+app.UseCors();
 
 app.UseAuthorization();
 
 app.MapControllers();
 
+app.UseExceptionsHandler();
+
+SeedData();
+
 app.Run();
+
+void SeedData()
+{
+    using var scope = app.Services.CreateScope();
+
+    var usersInitializer = scope.ServiceProvider.GetRequiredService<UsersInitializer>();
+
+    usersInitializer.Initialize();
+}

@@ -34,7 +34,7 @@ export class SignInComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.signInForm.valid) {
+    if (!this.signInForm.valid) {
       return;
     }
 
@@ -47,13 +47,11 @@ export class SignInComponent implements OnInit {
         (response) => {
           console.log('Authenticated successfully.');
 
-          // TODO: create toaster
-
           this.router.navigate(['/']);
         },
         (error) => {
           console.error('Authentication failed:', error);
-          this.error = error;
+          this.error = error.error;
         }
       );
   }

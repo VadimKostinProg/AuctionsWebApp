@@ -26,6 +26,9 @@ namespace BidMasterOnline.Domain.Entities
         [Required]
         public DateTime FinishDateTime { get; set; }
 
+        [Required]
+        public TimeSpan AuctionTime { get; set; }
+
         [AllowNull]
         public TimeSpan? FinishInterval { get; set; }
 
@@ -60,5 +63,7 @@ namespace BidMasterOnline.Domain.Entities
         public virtual ICollection<AuctionImage> Images { get; set; }
 
         public virtual ICollection<Bid> Bids { get; set; }
+
+        public virtual ICollection<AuctionScore> Scores { get; set; }
     }
 }

@@ -27,7 +27,7 @@ namespace BidMasterOnline.Tests.CategoriesServiceTests
             var action = async () =>
             {
                 // Act
-                var categoriesList = await this.service.GetDeletedCategoriesListAsync(specification);
+                var categoriesList = await this.service.GetCategoriesListAsync(specification);
             };
 
             await action.Should().ThrowAsync<ArgumentNullException>();

@@ -1,4 +1,5 @@
 ﻿using BidMasterOnline.Application.Enums;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
 namespace BidMasterOnline.Application.DTO
@@ -24,5 +25,7 @@ namespace BidMasterOnline.Application.DTO
         [Required(ErrorMessage = "Password confirmation is required.")]
         [Compare(nameof(Password), ErrorMessage = "Passwords do not match.")]
         public string ConfirmPassword { get; set; } = null!;
+
+        public IFormFile? Image { get; set; }
     }
 }

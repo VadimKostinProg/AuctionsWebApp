@@ -40,6 +40,7 @@ namespace BidMasterOnline.API.Controllers
         }
 
         [HttpGet("{id}/details")]
+        [AllowAnonymous]
         public async Task<ActionResult<AuctionDetailsDTO>> GetAuctionDetailsById([FromRoute] Guid id)
         {
             return Ok(await _auctionsService.GetAuctionDetailsByIdAsync(id));
@@ -47,15 +48,24 @@ namespace BidMasterOnline.API.Controllers
 
         [HttpPost]
         [Authorize(Roles = UserRoles.Customer)]
-        public async Task<ActionResult<string>> PublishAuction([FromBody] PublishAuctionDTO auction)
+        public async Task<ActionResult<string>> PublishAuction([FromForm] PublishAuctionDTO auction)
         {
             await _auctionsService.PublishAuctionAsync(auction);
 
             return Ok("Auction has been successfully published for verification.");
         }
 
+        [HttpPost("scores")]
+        [Authorize(Roles = UserRoles.Customer)]
+        public async Task<ActionResult<string>> SetScoreForAuction([FromBody] SetAuctionScoreDTO request)
+        {
+            await _auctionsService.SetAuctionScoreAsync(request);
+
+            return Ok("Your score for auction has been successfully set.");
+        }
+
         [HttpDelete("{id}")]
-        [Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.TechnicalSupportSpecialist)]
         public async Task<ActionResult<string>> CancelAuction([FromRoute] Guid id)
         {
             await _auctionsService.CancelAuctionAsync(id);
@@ -64,10 +74,10 @@ namespace BidMasterOnline.API.Controllers
         }
 
         [HttpPost("{id}/recover")]
-        [Authorize(Roles = UserRoles.Admin)]
-        public async Task<ActionResult<string>> RecoverAuction([FromRoute] Guid id, [FromQuery] DateTime? newFinishTime)
+        [Authorize(Roles = UserRoles.TechnicalSupportSpecialist)]
+        public async Task<ActionResult<string>> RecoverAuction([FromRoute] Guid id)
         {
-            await _auctionsService.RecoverAuctionAsync(id, newFinishTime);
+            await _auctionsService.RecoverAuctionAsync(id);
 
             return Ok("Auction has been recovered successfully.");
         }
@@ -90,15 +100,22 @@ namespace BidMasterOnline.API.Controllers
         }
 
         [HttpGet("not-approved/list")]
-        [Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.TechnicalSupportSpecialist)]
         public async Task<ActionResult<ListModel<AuctionDTO>>> GetNotApprovedAuctionsList(
             [FromQuery] AuctionSpecificationsDTO specifications)
         {
             return Ok(await _auctionVerificationService.GetNotApprovedAuctionsListAsync(specifications));
         }
 
-        [HttpPost("not-approved/{id}")]
-        [Authorize(Roles = UserRoles.Admin)]
+        [HttpGet("not-approved/{id}/details")]
+        [Authorize(Roles = UserRoles.TechnicalSupportSpecialist)]
+        public async Task<ActionResult<AuctionDetailsDTO>> GetNotApprovedAuctionDetails([FromRoute] Guid id)
+        {
+            return Ok(await _auctionVerificationService.GetNotApprovedAuctionDetailsByIdAsync(id));
+        }
+
+        [HttpPost("not-approved/{id}/approve")]
+        [Authorize(Roles = UserRoles.TechnicalSupportSpecialist)]
         public async Task<ActionResult<string>> ApproveAuction([FromRoute] Guid id)
         {
             await _auctionVerificationService.ApproveAuctionAsync(id);
@@ -106,11 +123,11 @@ namespace BidMasterOnline.API.Controllers
             return Ok("Auction has been approved successfully.");
         }
 
-        [HttpDelete("not-approved/{id}")]
-        [Authorize(Roles = UserRoles.Admin)]
-        public async Task<ActionResult<string>> RejectAuction([FromRoute] Guid id)
+        [HttpPost("not-approved/reject")]
+        [Authorize(Roles = UserRoles.TechnicalSupportSpecialist)]
+        public async Task<ActionResult<string>> RejectAuction([FromBody] RejectAuctionDTO request)
         {
-            await _auctionVerificationService.RejectAuctionAsync(id);
+            await _auctionVerificationService.RejectAuctionAsync(request);
 
             return Ok("Auction has been rejected successfully.");
         }

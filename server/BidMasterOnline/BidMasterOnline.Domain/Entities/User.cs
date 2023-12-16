@@ -22,11 +22,9 @@ namespace BidMasterOnline.Domain.Entities
         public string Email { get; set; } = null!;
 
         [Required]
-        [MaxLength(50)]
         public string PasswordHashed { get; set; } = null!;
 
         [Required]
-        [MaxLength(50)]
         public string PasswordSalt { get; set; } = null!;
 
         [AllowNull]
@@ -40,6 +38,9 @@ namespace BidMasterOnline.Domain.Entities
 
         [AllowNull]
         public string? ImageUrl { get; set; }
+
+        [AllowNull]
+        public string? ImagePublicId { get; set; }
 
         [ForeignKey(nameof(RoleId))]
         public virtual Role Role { get; set; }

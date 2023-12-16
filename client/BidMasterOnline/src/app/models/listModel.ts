@@ -1,4 +1,4 @@
 export class ListModel<T> {
-    public data: T[];
+    public list: T[];
     public totalPages: number;
 }

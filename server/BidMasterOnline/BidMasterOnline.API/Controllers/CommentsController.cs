@@ -26,7 +26,7 @@ namespace BidMasterOnline.API.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.TechnicalSupportSpecialist)]
         public async Task<ActionResult<CommentDTO>> GetCommentById([FromRoute] Guid id)
         {
             return Ok(await _commentsService.GetCommentByIdAsync(id));
