@@ -5,6 +5,7 @@ import { ActionClickedModel } from 'src/app/models/actionClickedModel';
 import { DataTableOptionsModel } from 'src/app/models/dataTableOptionsModel';
 import { ListModel } from 'src/app/models/listModel';
 import { PaginationModel } from 'src/app/models/paginationModel';
+import { SortDirectionEnum } from 'src/app/models/sortDirectionEnum';
 import { SortingModel } from 'src/app/models/sortingModel';
 import { DeepLinkingService } from 'src/app/services/deep-linking.service';
 
@@ -25,11 +26,16 @@ export class DataTableComponent implements OnInit {
   onCreate = new EventEmitter<void>();
 
   @Output()
-  onAction = new EventEmitter<ActionClickedModel<any>>();
+  onEdit = new EventEmitter<void>();
+
+  @Output()
+  onDelete = new EventEmitter<string>();
 
   tableData: ListModel<any>;
 
-  isCurrentDataDeleted: boolean = false;
+  choosenItem: any;
+
+  SortDirectionEnum = SortDirectionEnum;
 
   sorting: SortingModel;
 
@@ -87,6 +93,18 @@ export class DataTableComponent implements OnInit {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' })
   }
 
+  onEditClick(item: any, modal: TemplateRef<any>) {
+    this.options.editFormOptions.properties.forEach(element => {
+      this.options.editFormOptions.form.controls[element.propName].setValue(item[element.propName]);
+    });
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' });
+  }
+
+  onDeleteClick(item: any, modal: TemplateRef<any>) {
+    this.choosenItem = item;
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' });
+  }
+
   async decrementPageNumber() {
     this.pagination.pageNumber--;
 
@@ -119,8 +137,37 @@ export class DataTableComponent implements OnInit {
     await this.reloadDatatable();
   }
 
-  onCreateSubmit(content: any) {
-    content.close();
+  async onSortingChanged(field: string) {
+    if (this.sorting.sortField != field) {
+      this.sorting.sortField = field;
+      this.sorting.sortDirection = SortDirectionEnum.ASC;
+
+      await this.deepLinkingService.setSortingParams(this.sorting);
+    } else if (this.sorting.sortField == field && this.sorting.sortDirection == SortDirectionEnum.ASC) {
+      this.sorting.sortDirection = SortDirectionEnum.DESC;
+
+      await this.deepLinkingService.setSortingParams(this.sorting);
+    } else {
+      this.sorting.sortField = null;
+
+      await this.deepLinkingService.clearSortingParams();
+    }
+
+    await this.reloadDatatable();
+  }
+
+  onCreateSubmit(modal: any) {
+    modal.close();
     this.onCreate.emit();
+  }
+
+  onEditSubmit(modal: any) {
+    modal.close();
+    this.onEdit.emit();
+  }
+
+  onDeleteSubmit(modal: any) {
+    modal.close();
+    this.onDelete.emit(this.choosenItem.id);
   }
 }

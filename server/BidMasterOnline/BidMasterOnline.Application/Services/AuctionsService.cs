@@ -193,10 +193,10 @@ namespace BidMasterOnline.Application.Services
                 switch (specifications.SortField)
                 {
                     case "Popularity":
-                        builder.OrderBy(x => x.Bids.Count(), specifications.SortOrder ?? Enums.SortOrder.ASC);
+                        builder.OrderBy(x => x.Bids.Count(), specifications.SortDirection ?? Enums.SortDirection.ASC);
                         break;
                     case "DateAndTime":
-                        builder.OrderBy(x => x.FinishDateTime, specifications.SortOrder ?? Enums.SortOrder.DESC);
+                        builder.OrderBy(x => x.FinishDateTime, specifications.SortDirection ?? Enums.SortDirection.DESC);
                         break;
                 }
             }

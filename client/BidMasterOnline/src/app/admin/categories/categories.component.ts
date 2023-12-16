@@ -17,69 +17,9 @@ export class CategoriesComponent implements OnInit {
   @ViewChild(DataTableComponent)
   dateTable: DataTableComponent;
 
-  options: DataTableOptionsModel = {
-    title: 'Categories',
-    resourceName: 'category',
-    showIndexColumn: true,
-    showDeletedData: true,
-    allowCreating: true,
-    createFormOptions: {
-      form: new FormGroup({
-        name: new FormControl(null, [Validators.required]),
-        description: new FormControl(null, [Validators.required])
-      }),
-      properties: [
-        {
-          label: 'Name',
-          propName: 'name'
-        },
-        {
-          label: 'Description',
-          propName: 'description'
-        }
-      ],
-    },
-    allowEdit: true,
-    editFormOptions: {
-      form: new FormGroup({
-        id: new FormControl(null, [Validators.required]),
-        name: new FormControl(null, [Validators.required]),
-        description: new FormControl(null, [Validators.required])
-      }),
-      properties: [
-        {
-          label: 'Id',
-          propName: 'id'
-        },
-        {
-          label: 'Name',
-          propName: 'name'
-        },
-        {
-          label: 'Description',
-          propName: 'description'
-        }
-      ],
-    },
-    allowDelete: true,
-    emptyListDisplayLabel: 'There list of categories is empty.',
-    columnSettings: [
-      {
-        title: 'Name',
-        dataPropName: 'name',
-        isOrderable: true,
-        width: 30
-      },
-      {
-        title: 'Description',
-        dataPropName: 'description',
-        isOrderable: false,
-        width: 50
-      },
-    ]
-  };
+  options: DataTableOptionsModel;
 
-  categoryForm: FormGroup;
+  placeholder: string = 'Search category...';
 
   error: string;
 
@@ -89,11 +29,7 @@ export class CategoriesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.categoryForm = new FormGroup({
-      id: new FormControl(null, [Validators.required]),
-      username: new FormControl(null, [Validators.required]),
-      password: new FormControl(null, [Validators.required]),
-    });
+    this.options = this.categoriesService.getDataTableOptions();
   }
 
   onCreateCategory() {
@@ -106,13 +42,10 @@ export class CategoriesComponent implements OnInit {
       async (response) => {
         // TODO: add toaster
 
-        console.log(response);
-
         await this.dateTable.reloadDatatable();
       },
       (error) => {
         // TODO: add toaster
-        console.log(error);
       }
     )
 
@@ -120,6 +53,41 @@ export class CategoriesComponent implements OnInit {
       name: new FormControl(null, [Validators.required]),
       description: new FormControl(null, [Validators.required])
     });
+  }
+
+  onEditCategory() {
+    if (!this.options.editFormOptions.form.valid) {
+      return;
+    }
+    var category = this.options.editFormOptions.form.value;
+
+    this.categoriesService.updateCategory(category).subscribe(
+      async (response) => {
+        // TODO: add toaster
+
+        await this.dateTable.reloadDatatable();
+      },
+      (error) => {
+        // TODO: add toaster
+      }
+    )
+  }
+
+  onDeleteCategory(categoryId: string) {
+    this.categoriesService.deleteCategory(categoryId).subscribe(
+      async (response) => {
+        // TODO: add toaster
+
+        await this.dateTable.reloadDatatable();
+      },
+      (error) => {
+        // TODO: add toaster
+      }
+    );
+  }
+
+  async onSearchClicked() {
+    await this.dateTable.reloadDatatable();
   }
 
   getCategoriesApiUrl() {

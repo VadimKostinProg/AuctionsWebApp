@@ -6,6 +6,8 @@ import { CategoryModel } from '../models/categoryModel';
 import { Observable, catchError, throwError } from 'rxjs';
 import { CreateCategoryModel } from '../models/createCategoryModel';
 import { ListModel } from '../models/listModel';
+import { DataTableOptionsModel } from '../models/dataTableOptionsModel';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -45,32 +47,76 @@ export class CategoriesService {
   }
 
   updateCategory(category: CategoryModel) {
-    return this.httpClient.put(this.baseUrl, category).pipe(
-      catchError((error: HttpErrorResponse) => {
-        // TODO: show modal window
-        alert(error.message);
-        return throwError(() => new Error(error.message));
-      })
-    );
+    return this.httpClient.put(this.baseUrl, category);
   }
 
   deleteCategory(id: string) {
-    return this.httpClient.delete(`${this.baseUrl}/${id}`).pipe(
-      catchError((error: HttpErrorResponse) => {
-        // TODO: show modal window
-        alert(error.message);
-        return throwError(() => new Error(error.message));
-      })
-    );
+    return this.httpClient.delete(`${this.baseUrl}/${id}`);
   }
 
-  recoverCategory(id: string) {
-    return this.httpClient.post(`${this.baseUrl}/${id}/recover`, {}).pipe(
-      catchError((error: HttpErrorResponse) => {
-        // TODO: show modal window
-        alert(error.message);
-        return throwError(() => new Error(error.message));
-      })
-    );
+  getDataTableOptions() {
+    var options = {
+      title: 'Categories',
+      resourceName: 'category',
+      showIndexColumn: true,
+      showDeletedData: true,
+      allowCreating: true,
+      createFormOptions: {
+        form: new FormGroup({
+          name: new FormControl(null, [Validators.required]),
+          description: new FormControl(null, [Validators.required])
+        }),
+        properties: [
+          {
+            label: 'Name',
+            propName: 'name'
+          },
+          {
+            label: 'Description',
+            propName: 'description'
+          }
+        ],
+      },
+      allowEdit: true,
+      editFormOptions: {
+        form: new FormGroup({
+          id: new FormControl(null, [Validators.required]),
+          name: new FormControl(null, [Validators.required]),
+          description: new FormControl(null, [Validators.required])
+        }),
+        properties: [
+          {
+            label: 'Id',
+            propName: 'id'
+          },
+          {
+            label: 'Name',
+            propName: 'name'
+          },
+          {
+            label: 'Description',
+            propName: 'description'
+          }
+        ],
+      },
+      allowDelete: true,
+      emptyListDisplayLabel: 'The list of categories is empty.',
+      columnSettings: [
+        {
+          title: 'Name',
+          dataPropName: 'name',
+          isOrderable: true,
+          width: 30
+        },
+        {
+          title: 'Description',
+          dataPropName: 'description',
+          isOrderable: false,
+          width: 50
+        },
+      ]
+    } as DataTableOptionsModel;
+
+    return options;
   }
 }

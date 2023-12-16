@@ -22,7 +22,7 @@ namespace BidMasterOnline.Application.Services
         {
             var specification = new SpecificationBuilder<Category>()
                 .With(x => x.IsDeleted == false)
-                .OrderBy(x => x.Name, Enums.SortOrder.ASC)
+                .OrderBy(x => x.Name, Enums.SortDirection.ASC)
                 .Build();
 
             var categories = await _repository.GetAsync<Category>(specification);
@@ -65,7 +65,7 @@ namespace BidMasterOnline.Application.Services
             await _repository.UpdateAsync(category);
         }
 
-        public async Task<ListModel<CategoryDTO>> GetCategoriesListAsync(CategorySpecificationsDTO specifications)
+        public async Task<ListModel<CategoryDTO>> GetCategoriesListAsync(SpecificationsDTO specifications)
         {
             if (specifications is null)
                 throw new ArgumentNullException("Specifications are null.");
@@ -90,24 +90,24 @@ namespace BidMasterOnline.Application.Services
         }
 
         // Method for creating ISpecification for CategorySpecificationsDTO
-        private ISpecification<Category> GetSpecification(CategorySpecificationsDTO specifications)
+        private ISpecification<Category> GetSpecification(SpecificationsDTO specifications)
         {
             var builder = new SpecificationBuilder<Category>();
 
             builder.With(x => !x.IsDeleted);
 
-            if (!string.IsNullOrEmpty(specifications.Name))
-                builder.With(x => x.Name.Contains(specifications.Name));
+            if (!string.IsNullOrEmpty(specifications.SearchTerm))
+                builder.With(x => x.Name.Contains(specifications.SearchTerm));
 
             if (!string.IsNullOrEmpty(specifications.SortField))
             {
                 switch (specifications.SortField)
                 {
                     case "Id":
-                        builder.OrderBy(x => x.Id, specifications.SortOrder ?? Enums.SortOrder.ASC);
+                        builder.OrderBy(x => x.Id, specifications.SortDirection ?? Enums.SortDirection.ASC);
                         break;
                     case "Name":
-                        builder.OrderBy(x => x.Name, specifications.SortOrder ?? Enums.SortOrder.ASC);
+                        builder.OrderBy(x => x.Name, specifications.SortDirection ?? Enums.SortDirection.ASC);
                         break;
                 }
             }

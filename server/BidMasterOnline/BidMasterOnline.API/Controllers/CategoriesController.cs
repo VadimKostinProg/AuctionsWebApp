@@ -35,7 +35,7 @@ namespace BidMasterOnline.API.Controllers
         [HttpGet("list")]
         [Authorize(Roles = UserRoles.Admin)]
         public async Task<ActionResult<ListModel<CategoryDTO>>> GetCategoriesList(
-            [FromQuery] CategorySpecificationsDTO specifications)
+            [FromQuery] SpecificationsDTO specifications)
         {
             return Ok(await _categoriesService.GetCategoriesListAsync(specifications));
         }

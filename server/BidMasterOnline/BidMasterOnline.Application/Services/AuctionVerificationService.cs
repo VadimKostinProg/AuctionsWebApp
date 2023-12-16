@@ -98,7 +98,7 @@ namespace BidMasterOnline.Application.Services
 
             var specification = new SpecificationBuilder<Auction>()
                 .With(x => x.IsApproved == false)
-                .OrderBy(x => x.StartDateTime, Enums.SortOrder.ASC)
+                .OrderBy(x => x.StartDateTime, Enums.SortDirection.ASC)
                 .WithPagination(specifications.PageSize, specifications.PageNumber)
                 .Build();
 

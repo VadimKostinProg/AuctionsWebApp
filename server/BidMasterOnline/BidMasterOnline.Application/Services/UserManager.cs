@@ -222,13 +222,13 @@ namespace BidMasterOnline.Application.Services
                 switch (specifications.SortField)
                 {
                     case "Id":
-                        builder.OrderBy(x => x.Id, specifications.SortOrder ?? SortOrder.ASC);
+                        builder.OrderBy(x => x.Id, specifications.SortDirection ?? SortDirection.ASC);
                         break;
                     case "FullName":
-                        builder.OrderBy(x => x.FullName, specifications.SortOrder ?? SortOrder.ASC);
+                        builder.OrderBy(x => x.FullName, specifications.SortDirection ?? SortDirection.ASC);
                         break;
                     case "DateOfBirth":
-                        builder.OrderBy(x => x.DateOfBirth, specifications.SortOrder ?? SortOrder.ASC);
+                        builder.OrderBy(x => x.DateOfBirth, specifications.SortDirection ?? SortDirection.ASC);
                         break;
                 }
             }

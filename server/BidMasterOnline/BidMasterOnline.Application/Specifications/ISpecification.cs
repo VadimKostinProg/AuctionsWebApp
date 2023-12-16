@@ -23,7 +23,7 @@ namespace BidMasterOnline.Application.Specifications
         /// <summary>
         /// Direction to sort in.
         /// </summary>
-        SortOrder SortOrder { get; set; }
+        SortDirection SortOrder { get; set; }
 
         /// <summary>
         /// Flag that identifies whether the pagination is enabled.

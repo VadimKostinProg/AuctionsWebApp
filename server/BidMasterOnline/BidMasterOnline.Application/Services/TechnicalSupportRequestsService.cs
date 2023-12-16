@@ -42,7 +42,7 @@ namespace BidMasterOnline.Application.Services
 
             var specification = new SpecificationBuilder<TechnicalSupportRequest>()
                 .With(x => x.IsHandled == specifications.IsHandled)
-                .OrderBy(x => x.DateAndTime, Enums.SortOrder.DESC)
+                .OrderBy(x => x.DateAndTime, Enums.SortDirection.DESC)
                 .WithPagination(specifications.PageSize, specifications.PageNumber)
                 .Build();
 

@@ -6,6 +6,7 @@ import { DataTableComponent } from './data-table/data-table.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     NgSelectModule,
     FormsModule,
     ReactiveFormsModule,
+    FontAwesomeModule,
   ],
   exports: [
     SearchBarComponent,

@@ -8,7 +8,7 @@
 
         <div *ngIf="options.allowCreating"
              class="text-end">
-            <button class="btn btn-lg btn-outline-primary"
+            <button class="btn default-btn-background"
                     (click)="open(createModal)">Create</button>
         </div>
 
@@ -18,10 +18,26 @@
                     <tr>
                         <th *ngIf="options.showIndexColumn"></th>
 
-                        <th *ngFor="let column of options.columnSettings"
+                        <th *ngFor="let column of options.columnSettings; let i = index"
                             [ngStyle]="{ 'width': column.width }">
                             <div>
-                                {{ column.title }}
+                                <div *ngIf="column.isOrderable">
+                                    <button (click)="onSortingChanged(column.title)"
+                                            class="orderable-title"> {{ column.title }} </button>
+
+                                    <i *ngIf="column.title != sorting.sortField"
+                                       class="fa-solid fa-sort"></i>
+
+                                    <i *ngIf="column.title == sorting.sortField && sorting.sortDirection == SortDirectionEnum.ASC"
+                                       class="fa-solid fa-sort-up"></i>
+
+                                    <i *ngIf="column.title == sorting.sortField && sorting.sortDirection == SortDirectionEnum.DESC"
+                                       class="fa-solid fa-sort-down"></i>
+                                </div>
+
+                                <div *ngIf="!column.isOrderable">
+                                    {{ column.title }}
+                                </div>
                             </div>
                         </th>
 
@@ -43,21 +59,25 @@
 
                         <th *ngIf="options.allowEdit || options.allowDelete">
                             <ng-template #actionsPopContent>
-                                <button *ngIf="options.allowEdit"
-                                        class="btn">
-                                    Edit
-                                </button>
-                                <button *ngIf="options.allowDelete"
-                                        class="btn">
-                                    Delete
-                                </button>
+                                <div class="actions-container">
+                                    <button *ngIf="options.allowEdit"
+                                            class="btn"
+                                            (click)="onEditClick(row, editModal)">
+                                        Edit
+                                    </button>
+                                    <button *ngIf="options.allowDelete"
+                                            class="btn"
+                                            (click)="onDeleteClick(row, deleteModal)">
+                                        Delete
+                                    </button>
+                                </div>
                             </ng-template>
 
                             <button type="button"
-                                    class="btn default-btn-background w-75"
+                                    class="btn"
                                     placement="bottom"
                                     [ngbPopover]="actionsPopContent">
-                                <i class="bi bi-three-dots"></i>
+                                <i class="fa-solid fa-ellipsis"></i>
                             </button>
                         </th>
                     </tr>
@@ -150,4 +170,66 @@
                         (click)="onCreateSubmit(modal)">Create</button>
             </div>
         </ng-template>
+
+        <ng-template #editModal
+                     let-modal>
+            <div class="modal-header">
+                <h4 class="modal-title"
+                    id="modal-basic-title">Edit {{ options.resourceName }}</h4>
+                <button type="button"
+                        class="btn-close"
+                        aria-label="Close"
+                        (click)="modal.close()"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="options.editFormOptions.form">
+                    <input type="text"
+                           id="id"
+                           class="form-control"
+                           formControlName="id"
+                           hidden />
+
+                    <div *ngFor="let prop of options.createFormOptions.properties"
+                         class="form-field flex mb-2">
+                        <div>
+                            <label [for]="prop.propName"
+                                   class="form-label pt">{{ prop.label }}:</label>
+                        </div>
+
+                        <div class="flex-1">
+                            <input type="text"
+                                   [id]="prop.propName"
+                                   class="form-control"
+                                   [formControlName]="prop.propName" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button"
+                        class="btn btn-outline-dark"
+                        (click)="onEditSubmit(modal)">Edit</button>
+            </div>
+        </ng-template>
+
+        <ng-template #deleteModal
+                     let-modal>
+            <div class="modal-header">
+                <h4 class="modal-title"
+                    id="modal-basic-title">Delete {{ options.resourceName }}</h4>
+                <button type="button"
+                        class="btn-close"
+                        aria-label="Close"
+                        (click)="modal.close()"></button>
+            </div>
+            <div class="modal-body">
+                <span>Are you shure you want to delete this {{ options.resourceName }}?</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button"
+                        class="btn btn-outline-dark"
+                        (click)="onDeleteSubmit(modal)">Delete</button>
+            </div>
+        </ng-template>
     </div>
+</div>

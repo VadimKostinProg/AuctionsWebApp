@@ -62,7 +62,7 @@ namespace BidMasterOnline.Application.Services
             var specification = new SpecificationBuilder<AuctionComment>()
                 .With(x => x.AuctionId == auctionId)
                 .With(x => !x.IsDeleted)
-                .OrderBy(x => x.DateAndTime, Enums.SortOrder.DESC)
+                .OrderBy(x => x.DateAndTime, Enums.SortDirection.DESC)
                 .Build();
 
             var comments = await _repository.GetAsync<AuctionComment>(specification);

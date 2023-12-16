@@ -8,7 +8,7 @@ namespace BidMasterOnline.Application.Specifications
     {
         public Specification(Expression<Func<T, bool>> predicate = null,
                              Expression<Func<T, object>> sortBy = null,
-                             SortOrder orderDirection = SortOrder.ASC)
+                             SortDirection orderDirection = SortDirection.ASC)
         {
             this.Predicate = predicate;
             this.SortBy = sortBy;
@@ -18,7 +18,7 @@ namespace BidMasterOnline.Application.Specifications
         public Specification(int take, int skip,
                              Expression<Func<T, bool>> predicate = null,
                              Expression<Func<T, object>> sortBy = null,
-                             SortOrder orderDirection = SortOrder.ASC)
+                             SortDirection orderDirection = SortDirection.ASC)
         {
             this.Predicate = predicate;
             this.SortBy = sortBy;

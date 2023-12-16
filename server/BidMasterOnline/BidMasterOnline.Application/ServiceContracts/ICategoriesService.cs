@@ -16,9 +16,9 @@ namespace BidMasterOnline.Application.ServiceContracts
         /// <summary>
         /// Gets the list of categories with applyed specifications.
         /// </summary>
-        /// <param name="specifications">Specifications for filtering, sorting and pagination to apply.</param>
+        /// <param name="specifications">Specifications for searchin, filtering, sorting and pagination to apply.</param>
         /// <returns>List of categories with applyed specifications.</returns>
-        Task<ListModel<CategoryDTO>> GetCategoriesListAsync(CategorySpecificationsDTO specifications);
+        Task<ListModel<CategoryDTO>> GetCategoriesListAsync(SpecificationsDTO specifications);
 
         /// <summary>
         /// Gets the specified category by it`s identifier.

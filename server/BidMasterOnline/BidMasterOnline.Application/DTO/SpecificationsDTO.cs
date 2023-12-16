@@ -12,7 +12,7 @@ namespace BidMasterOnline.Application.DTO
 
         // Sorting
         public string? SortField { get; set; }
-        public SortOrder? SortOrder { get; set; }
+        public SortDirection? SortDirection { get; set; }
 
         // Pagination
         public int PageNumber { get; set; } = 1;

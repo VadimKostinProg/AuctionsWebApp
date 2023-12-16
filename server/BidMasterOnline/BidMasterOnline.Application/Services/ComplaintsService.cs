@@ -67,7 +67,7 @@ namespace BidMasterOnline.Application.Services
             var specification = new SpecificationBuilder<Complaint>()
                 .With(x => x.ComplaintType.Name == specificationsDTO.Type.ToString())
                 .With(x => !x.IsHandled)
-                .OrderBy(x => x.DateAndTime, Enums.SortOrder.ASC)
+                .OrderBy(x => x.DateAndTime, Enums.SortDirection.ASC)
                 .WithPagination(specificationsDTO.PageSize, specificationsDTO.PageNumber)
                 .Build();
 

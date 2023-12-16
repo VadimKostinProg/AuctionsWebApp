@@ -1,6 +1,6 @@
 import { SortDirectionEnum } from "./sortDirectionEnum";
 
 export class SortingModel {
-    public sortField: number;
+    public sortField: string | null;
     public sortDirection: SortDirectionEnum;
 }

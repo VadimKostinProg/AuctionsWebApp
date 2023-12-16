@@ -16,10 +16,10 @@ namespace BidMasterOnline.Application.Specifications
             {
                 switch (specification.SortOrder)
                 {
-                    case Enums.SortOrder.ASC:
+                    case Enums.SortDirection.ASC:
                         query = query.OrderBy(specification.SortBy);
                         break;
-                    case Enums.SortOrder.DESC:
+                    case Enums.SortDirection.DESC:
                         query = query.OrderByDescending(specification.SortBy);
                         break;
                 }

@@ -8,7 +8,7 @@ namespace BidMasterOnline.Application.Specifications
     {
         public virtual Expression<Func<T, bool>> Predicate { get; set; }
         public virtual Expression<Func<T, object>> SortBy { get; set; }
-        public virtual SortOrder SortOrder { get; set; }
+        public virtual SortDirection SortOrder { get; set; }
         public virtual bool IsPaginationEnabled { get; set; }
         public virtual int Skip { get; set; }
         public virtual int Take { get; set; }

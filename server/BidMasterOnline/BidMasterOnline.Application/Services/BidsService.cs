@@ -29,7 +29,7 @@ namespace BidMasterOnline.Application.Services
 
             var specification = new SpecificationBuilder<Bid>()
                 .With(x => x.AuctionId == auctionId)
-                .OrderBy(x => x.DateAndTime, Enums.SortOrder.DESC)
+                .OrderBy(x => x.DateAndTime, Enums.SortDirection.DESC)
                 .WithPagination(specifications.PageSize, specifications.PageNumber)
                 .Build();
 
@@ -68,7 +68,7 @@ namespace BidMasterOnline.Application.Services
 
             var specificationBuilder = new SpecificationBuilder<Bid>()
                 .With(x => x.BidderId == userId)
-                .OrderBy(x => x.DateAndTime, Enums.SortOrder.DESC)
+                .OrderBy(x => x.DateAndTime, Enums.SortDirection.DESC)
                 .WithPagination(specifications.PageSize, specifications.PageNumber);
 
             if (specifications.OnlyWinning)

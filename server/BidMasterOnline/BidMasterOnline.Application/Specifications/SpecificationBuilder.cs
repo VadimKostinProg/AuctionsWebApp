@@ -8,7 +8,7 @@ namespace BidMasterOnline.Application.Specifications
     {
         private readonly List<Expression<Func<T, bool>>> _filters = new();
         private Expression<Func<T, object>> _sortBy;
-        private SortOrder _sortOrder;
+        private SortDirection _sortOrder;
         private bool _isPaginationEnabled;
         private int _take;
         private int _skip;
@@ -20,7 +20,7 @@ namespace BidMasterOnline.Application.Specifications
             return this;
         }
 
-        public SpecificationBuilder<T> OrderBy(Expression<Func<T, object>> sortBy, SortOrder sortOrder)
+        public SpecificationBuilder<T> OrderBy(Expression<Func<T, object>> sortBy, SortDirection sortOrder)
         {
             this._sortBy = sortBy;
             this._sortOrder = sortOrder;

@@ -67,7 +67,7 @@ export class DeepLinkingService {
 
   async setSortingParams(sorting: SortingModel) {
     await this.setQueryParam('sortField', sorting.sortField);
-    await this.setQueryParam('sortDirection', sorting.sortDirection);
+    await this.setQueryParam('sortDirection', SortDirectionEnum[sorting.sortDirection]);
   }
 
   async clearSortingParams() {
