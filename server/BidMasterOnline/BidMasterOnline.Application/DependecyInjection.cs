@@ -15,12 +15,14 @@ namespace BidMasterOnline.Application
 
             services.AddScoped<IAuctionsService, AuctionsService>();
             services.AddScoped<IAuctionVerificationService, AuctionVerificationService>();
+            services.AddScoped<IAuctionPaymentDelivaryService, AuctionsPaymentDeliveryOptionsService>();
             services.AddScoped<ICategoriesService, CategoriesService>();
             services.AddScoped<IBidsService, BidsService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ICommentsService, CommentsService>();
             services.AddScoped<IComplaintsService, ComplaintsService>();
             services.AddScoped<IImagesService, ImagesService>();
+            services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<INotificationsService, NotificationsService>();
             services.AddScoped<IUserManager, UserManager>();
             services.AddScoped<ITechnicalSupportRequestsService, TechnicalSupportRequestsService>();

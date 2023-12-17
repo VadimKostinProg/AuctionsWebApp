@@ -21,6 +21,8 @@ namespace BidMasterOnline.Domain.Entities
         [MaxLength(30)]
         public string Email { get; set; } = null!;
 
+        public bool IsEmailConfirmed { get; set; }
+
         [Required]
         public string PasswordHashed { get; set; } = null!;
 

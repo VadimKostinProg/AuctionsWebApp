@@ -88,6 +88,9 @@ namespace BidMasterOnline.Application.Services
             if (user.UserStatus.Name == Enums.UserStatus.Blocked.ToString())
                 throw new ForbiddenException("Your account is blocked.");
 
+            if (!user.IsEmailConfirmed)
+                throw new ForbiddenException("Your email is not confirmed.");
+
             if (!await _repository.AnyAsync<Auction>(x => x.Id == request.AuctionId && x.IsApproved))
                 throw new KeyNotFoundException("Auction with such id does not exist.");
 

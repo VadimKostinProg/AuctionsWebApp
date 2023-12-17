@@ -33,24 +33,7 @@ namespace BidMasterOnline.Application.Services
 
             await _repository.UpdateAsync(auction);
 
-            await this.SendMessageOfApprovalAuctionToAuctionistAsync(auction);
-        }
-
-        private async Task SendMessageOfApprovalAuctionToAuctionistAsync(Auction auction)
-        {
-            string title = "Your auction has been approved.";
-
-            string message = "We are happy to inform you, that your auction has been successfully approved." +
-                             "Now your auction is visible for other users and thay can set bids on your auction.\n" +
-                             "Here is information of the approved auction:\n" +
-                             $"Auction Id: {auction.Id}\n" +
-                             $"Lot: {auction.Name}\n" +
-                             $"Description: {auction.LotDescription}\n" +
-                             $"Category: {auction.Category.Name}\n" +
-                             $"Start date and time: {auction.StartDateTime}" +
-                             "\n\nBidMasterOnline Technical Support Team.";
-
-            await _notificationsService.SendNotificationAsync(auction.Auctionist.Email, title, message);
+            _notificationsService.SendMessageOfApprovalAuctionToAuctionist(auction);
         }
 
         public async Task<AuctionDetailsDTO> GetNotApprovedAuctionDetailsByIdAsync(Guid id)
@@ -139,7 +122,7 @@ namespace BidMasterOnline.Application.Services
 
             await _repository.DeleteAsync(auction);
 
-            await this.SendMessageOfRejectionAuctionToAuctionistAsync(auction, request.RejectionReason);
+            _notificationsService.SendMessageOfRejectionAuctionToAuctionist(auction, request.RejectionReason);
         }
 
         private async Task DeleteAuctionImagesAsync(Auction auction)
@@ -150,24 +133,6 @@ namespace BidMasterOnline.Application.Services
             {
                 await _imagesService.DeleteImageAsync(publicId);
             }
-        }
-
-        private async Task SendMessageOfRejectionAuctionToAuctionistAsync(Auction auction, string rejectionReason)
-        {
-            string title = "Your auction has been rejected.";
-
-            string message = "We regret to inform you, that your auction has been rejected." +
-                             "Here is information of the rejected auction:\n" +
-                             $"Auction Id: {auction.Id}\n" +
-                             $"Lot: {auction.Name}\n" +
-                             $"Description: {auction.LotDescription}\n" +
-                             $"Category: {auction.Category.Name}\n" +
-                             $"Start date and time: {auction.StartDateTime}" +
-                             "\n\nHeare is the rejection reason explained:" +
-                             $"\n{rejectionReason}" +
-                             "\n\nBidMasterOnline Technical Support Team.";
-
-            await _notificationsService.SendNotificationAsync(auction.Auctionist.Email, title, message);
         }
     }
 }

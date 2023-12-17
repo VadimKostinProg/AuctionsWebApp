@@ -9,12 +9,18 @@ namespace BidMasterOnline.Application.ServiceContracts
     public interface IUserManager
     {
         /// <summary>
-        /// Gets user list with applyed specifications.
+        /// Gets customers list with applyed specifications.
         /// </summary>
-        /// <param name="specifications">Specifications of sorting, pagination, filtering by user role and 
-        /// status to apply.</param>
+        /// <param name="specifications">Specifications of searching, sorting, pagination, filtering by status to apply.</param>
         /// <returns>Users list with applyed specifications.</returns>
-        Task<ListModel<UserDTO>> GetUsersListAsync(UserSpecificationsDTO specifications);
+        Task<ListModel<UserDTO>> GetCustomersListAsync(UserSpecificationsDTO specifications);
+
+        /// <summary>
+        /// Gets staff users list with applyed specifications.
+        /// </summary>
+        /// <param name="specifications">Specifications of searching, sorting and pagination.</param>
+        /// <returns>Users list with applyed specifications.</returns>
+        Task<ListModel<UserDTO>> GetStaffListAsync(SpecificationsDTO specifications);
 
         /// <summary>
         /// Gets users information by it`s identifier.
@@ -31,6 +37,12 @@ namespace BidMasterOnline.Application.ServiceContracts
         Task CreateUserAsync(CreateUserDTO request, UserRole role);
 
         /// <summary>
+        /// Confirms the email of the authenticated user.
+        /// </summary>
+        /// <param name="userId">Identifier of user to confirm email.</param>
+        Task ConfirmEmailAsync(Guid userId);
+
+        /// <summary>
         /// Changes the password of the specified user.
         /// </summary>
         /// <param name="request">Object with password information.</param>
@@ -39,9 +51,8 @@ namespace BidMasterOnline.Application.ServiceContracts
         /// <summary>
         /// Blocks the specified user for the specified amount of days.
         /// </summary>
-        /// <param name="userId">Identifier of user to block.</param>
-        /// <param name="days">Amount of days to block.</param>
-        Task BlockUserAsync(Guid userId, int? days);
+        /// <param name="request">Information of user to block and reason .</param>
+        Task BlockUserAsync(BlockUserDTO request);
 
         /// <summary>
         /// Unblocks the specified user.

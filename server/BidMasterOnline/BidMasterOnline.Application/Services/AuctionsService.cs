@@ -15,7 +15,7 @@ namespace BidMasterOnline.Application.Services
         private readonly INotificationsService _notificationsService;
         private readonly IImagesService _imagesService;
 
-        public AuctionsService(IAsyncRepository repository, IAuthService authService, 
+        public AuctionsService(IAsyncRepository repository, IAuthService authService,
             INotificationsService notificationsService, IImagesService imagesService)
         {
             _repository = repository;
@@ -24,7 +24,28 @@ namespace BidMasterOnline.Application.Services
             _imagesService = imagesService;
         }
 
-        public async Task CancelAuctionAsync(Guid auctionId)
+        public async Task CancelAuctionAsync(CancelAuctionDTO request)
+        {
+            if (request is null)
+                throw new ArgumentException("Request object is null.");
+
+            var auction = await _repository.GetByIdAsync<Auction>(request.AuctionId);
+
+            if (auction is null)
+                throw new KeyNotFoundException("Auction with such id does not exist.");
+
+            if (auction.Status.Name == Enums.AuctionStatus.Canceled.ToString())
+                throw new InvalidOperationException("Auction is already canceled.");
+
+            if (auction.Status.Name == Enums.AuctionStatus.Finished.ToString())
+                throw new InvalidOperationException("Auction is finished.");
+
+            await this.PerformCancelingForAuctionAsync(auction);
+
+            _notificationsService.SendMessageOfCancelingAuctionToAuctionist(auction, request.CancelingReason);
+        }
+
+        public async Task CancelOwnAuctionAsync(Guid auctionId)
         {
             var auction = await _repository.GetByIdAsync<Auction>(auctionId);
 
@@ -37,6 +58,16 @@ namespace BidMasterOnline.Application.Services
             if (auction.Status.Name == Enums.AuctionStatus.Finished.ToString())
                 throw new InvalidOperationException("Auction is finished.");
 
+            var user = await _authService.GetAuthenticatedUserEntityAsync();
+
+            if (auction.AuctionistId != user.Id)
+                throw new ForbiddenException("You cannot cancel the auction of other user.");
+
+            await this.PerformCancelingForAuctionAsync(auction);
+        }
+
+        private async Task PerformCancelingForAuctionAsync(Auction auction)
+        {
             var bids = auction.Bids;
 
             await _repository.DeleteManyAsync<Bid>(bids);
@@ -47,29 +78,6 @@ namespace BidMasterOnline.Application.Services
             auction.StatusId = status!.Id;
 
             await _repository.UpdateAsync(auction);
-
-            await this.SendMessageOfCancelingAuctionToAuctionist(auction);
-        }
-
-        private async Task SendMessageOfCancelingAuctionToAuctionist(Auction auction)
-        {
-            string title = "Your auction has been canceled.";
-
-            string message = "We are informing you, that your auction has been canceled.\n" +
-                             "Here is information of the canceled auction:\n" +
-                             $"Auction Id: {auction.Id}\n" +
-                             $"Lot: {auction.Name}\n" +
-                             $"Description: {auction.LotDescription}\n" +
-                             $"Category: {auction.Category.Name}\n" +
-                             $"Start date and time: {auction.StartDateTime}" +
-                             "\n\nBidMasterOnline Technical Support Team.";
-
-            await _notificationsService.SendNotificationAsync(auction.Auctionist.Email, title, message);
-        }
-
-        public Task ConfirmPaymentForAuctionAsync(Guid auctionId)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<AuctionDTO> GetAuctionByIdAsync(Guid id)
@@ -225,6 +233,12 @@ namespace BidMasterOnline.Application.Services
 
             var auctionist = await _authService.GetAuthenticatedUserEntityAsync();
 
+            if (auctionist.UserStatus.Name == Enums.UserStatus.Blocked.ToString())
+                throw new ForbiddenException("Your account is blocked.");
+
+            if (!auctionist.IsEmailConfirmed)
+                throw new ForbiddenException("Your email is not confirmed.");
+
             var finishType = await _repository.FirstOrDefaultAsync<AuctionFinishType>(x =>
                 x.Name == request.FinishType.ToString());
 
@@ -250,7 +264,7 @@ namespace BidMasterOnline.Application.Services
 
             await this.UploadAuctionImagesAsync(auction.Id, request.Images);
 
-            await this.SendMessageOfPublishingAuctionToAuctionist(auctionist.Email);
+            _notificationsService.SendMessageOfPublishingAuctionToAuctionst(auction);
         }
 
         private async Task UploadAuctionImagesAsync(Guid auctionId, List<IFormFile> files)
@@ -268,18 +282,6 @@ namespace BidMasterOnline.Application.Services
 
                 await _repository.AddAsync(auctionImage);
             }
-        }
-
-        private async Task SendMessageOfPublishingAuctionToAuctionist(string email)
-        {
-            string title = "Your auction has been canceled.";
-
-            string message = "Your auction has been successfully published for reviewing." +
-                             "Once it is approved, the auction will be visible for all users." +
-                             "Wait for verification response." +
-                             "\n\nBidMasterOnline Technical Support Team.";
-
-            await _notificationsService.SendNotificationAsync(email, title, message);
         }
 
         public async Task RecoverAuctionAsync(Guid auctionId)
@@ -304,23 +306,7 @@ namespace BidMasterOnline.Application.Services
 
             await _repository.UpdateAsync(auction);
 
-            await this.SendMessageOfRecoveringAuctionToAuctionist(auction);
-        }
-
-        private async Task SendMessageOfRecoveringAuctionToAuctionist(Auction auction)
-        {
-            string title = "Your auction has been recovered.";
-
-            string message = "We are informing you, that your auction has been recovered.\n" +
-                             "Here is information of the recovered auction:\n" +
-                             $"Auction Id: {auction.Id}\n" +
-                             $"Lot: {auction.Name}\n" +
-                             $"Description: {auction.LotDescription}\n" +
-                             $"Category: {auction.Category.Name}\n" +
-                             $"Start date and time: {auction.StartDateTime}" +
-                             "\n\nBidMasterOnline Technical Support Team.";
-
-            await _notificationsService.SendNotificationAsync(auction.Auctionist.Email, title, message);
+            _notificationsService.SendMessageOfRecoveringAuctionToAuctionist(auction);
         }
 
         public async Task SetAuctionScoreAsync(SetAuctionScoreDTO request)
@@ -352,7 +338,6 @@ namespace BidMasterOnline.Application.Services
             }
 
             // If user has not set the score for auction before, add new score
-
             var auctionScore = new AuctionScore
             {
                 AuctionId = request.AuctionId,
@@ -361,6 +346,95 @@ namespace BidMasterOnline.Application.Services
             };
 
             await _repository.AddAsync(auctionScore);
+        }
+
+        public async Task SetNextWinnerOfAuctionAsync(Guid auctionId)
+        {
+            var auction = await _repository.GetByIdAsync<Auction>(auctionId);
+
+            if (auction is null)
+                throw new KeyNotFoundException("Auction with such id does not exist.");
+
+            if (auction.Status.Name == Enums.AuctionStatus.Canceled.ToString())
+                throw new InvalidOperationException("Auction is canceled.");
+
+            if (auction.Status.Name == Enums.AuctionStatus.Active.ToString())
+                throw new InvalidOperationException("Cannot change the winner of auction before it is finished.");
+
+            var bidsCount = auction.Bids.Count();
+
+            if (bidsCount == 0)
+            {
+                throw new InvalidOperationException("Cannot set new winner of the auction as there are not any bids.");
+            }
+
+            await this.CancelWinnersBidForAuctionAsync(auction);
+
+            if (bidsCount == 1)
+            {
+                await this.SetNoWinnersToAuctionAsync(auction);
+            }
+            else
+            {
+                await this.SetNextBidderAsWinnerAsync(auction);
+            }
+        }
+
+        private async Task CancelWinnersBidForAuctionAsync(Auction auction)
+        {
+            var winnersBid = auction.Bids.First(x => x.IsWinning);
+
+            _notificationsService.SendMessageOfCancelingTheBidToWinner(winnersBid);
+
+            await _repository.DeleteAsync(winnersBid);
+        }
+
+        private async Task SetNextBidderAsWinnerAsync(Auction auction)
+        {
+            // Updating the winners bid
+            var specification = new SpecificationBuilder<Bid>()
+                .With(x => x.AuctionId == auction.Id)
+                .OrderBy(x => x.Amount, Enums.SortDirection.DESC)
+                .Build();
+
+            var bids = await _repository.GetAsync<Bid>(specification);
+
+            var newWinnersBid = bids.First();
+
+            newWinnersBid.IsWinning = true;
+
+            await _repository.UpdateAsync(newWinnersBid);
+
+            // Updating sell and delivery options
+            var paymentDeliveryOptions = auction.PaymentDeliveryOptions;
+
+            paymentDeliveryOptions!.WinnerId = newWinnersBid.BidderId;
+
+            await _repository.UpdateAsync(paymentDeliveryOptions);
+
+            // Sending a letter to new winner
+            var user = await _repository.GetByIdAsync<User>(newWinnersBid.BidderId);
+
+            _notificationsService.SendMessageOfDeliveryOptionsSetToWinner(auction, user);
+        }
+
+        public async Task SetNoWinnersToAuctionAsync(Auction auction)
+        {
+            var paymentDeliveryOptions = auction.PaymentDeliveryOptions;
+
+            paymentDeliveryOptions!.WinnerId = null;
+            paymentDeliveryOptions.IBAN =
+            paymentDeliveryOptions.Country =
+            paymentDeliveryOptions.City =
+            paymentDeliveryOptions.Waybill = null;
+            paymentDeliveryOptions.AreDeliveryOptionsSet =
+            paymentDeliveryOptions.ArePaymentOptionsSet = 
+            paymentDeliveryOptions.IsDeliveryConfirmed = 
+            paymentDeliveryOptions.IsPaymentConfirmed = false;
+
+            await _repository.UpdateAsync(paymentDeliveryOptions);
+
+            _notificationsService.SendMessageOfNoWinnersOfAuctionToAuctionist(auction);
         }
     }
 }

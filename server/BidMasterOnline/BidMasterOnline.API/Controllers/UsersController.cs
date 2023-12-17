@@ -18,11 +18,18 @@ namespace BidMasterOnline.API.Controllers
             _userManager = userManager;
         }
 
-        [HttpGet("list")]
+        [HttpGet("/staff/list")]
         [Authorize(Roles = UserRoles.Admin)]
-        public async Task<ActionResult<ListModel<UserDTO>>> GetUsersList([FromQuery] UserSpecificationsDTO specifications)
+        public async Task<ActionResult<ListModel<UserDTO>>> GetStuffList([FromQuery] SpecificationsDTO specifications)
         {
-            return Ok(await _userManager.GetUsersListAsync(specifications));
+            return Ok(await _userManager.GetStaffListAsync(specifications));
+        }
+
+        [HttpGet("/customers/list")]
+        [Authorize(Roles = UserRoles.TechnicalSupportSpecialist)]
+        public async Task<ActionResult<ListModel<UserDTO>>> GetCustomersList([FromQuery] UserSpecificationsDTO specifications)
+        {
+            return Ok(await _userManager.GetCustomersListAsync(specifications));
         }
 
         [HttpGet("{id}")]
@@ -34,74 +41,83 @@ namespace BidMasterOnline.API.Controllers
 
         [HttpPost("customers")]
         [AllowAnonymous]
-        public async Task<ActionResult<string>> CreateCustomer([FromForm] CreateUserDTO user)
+        public async Task<ActionResult> CreateCustomer([FromForm] CreateUserDTO user)
         {
             await _userManager.CreateUserAsync(user, Application.Enums.UserRole.Customer);
 
-            return Ok("Account has been successfully created.");
+            return Ok(new { Message = "Account has been successfully created." });
         }
 
         [HttpPost("technical-support-specialists")]
         [Authorize(Roles = UserRoles.Admin)]
-        public async Task<ActionResult<string>> CreateTechnicalSupportSpecialist([FromForm] CreateUserDTO user)
+        public async Task<ActionResult> CreateTechnicalSupportSpecialist([FromForm] CreateUserDTO user)
         {
             await _userManager.CreateUserAsync(user, Application.Enums.UserRole.TechnicalSupportSpecialist);
 
-            return Ok("Account has been successfully created.");
+            return Ok(new { Message = "Account has been successfully created." });
         }
 
         [HttpPost("admins")]
         [Authorize(Roles = UserRoles.Admin)]
-        public async Task<ActionResult<string>> CreateAdmin([FromForm] CreateUserDTO user)
+        public async Task<ActionResult> CreateAdmin([FromForm] CreateUserDTO user)
         {
             await _userManager.CreateUserAsync(user, Application.Enums.UserRole.Admin);
 
-            return Ok("Account has been successfully created.");
+            return Ok(new { Message = "Account has been successfully created." });
+        }
+
+        [HttpPut("{id}/confirm-email")]
+        [Authorize]
+        public async Task<ActionResult> ConfirmEmail([FromRoute] Guid id)
+        {
+            await _userManager.ConfirmEmailAsync(id);
+
+            return Ok(new { Message = "Your email has been successfully confirmed." });
         }
 
         [HttpPut("passwords")]
         [Authorize]
-        public async Task<ActionResult<string>> ChangePassword([FromBody] ChangePasswordDTO changePassword)
+        public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordDTO changePassword)
         {
             await _userManager.ChangePasswordAsync(changePassword);
 
-            return Ok("Password has been successfully changed.");
+            return Ok(new { Message = "Password has been successfully changed." });
         }
 
         [HttpDelete]
         [Authorize]
-        public async Task<ActionResult<string>> DeleteOwnAccount()
+        public async Task<ActionResult> DeleteOwnAccount()
         {
             await _userManager.DeleteUserAsync();
 
-            return Ok("Your account has been deleted successfully.");
+            return Ok(new { Message = "Your account has been deleted successfully." });
         }
 
         [HttpDelete("{id}")]
         [Authorize(Roles = UserRoles.Admin)]
-        public async Task<ActionResult<string>> DeleteAccount([FromRoute] Guid id)
+        public async Task<ActionResult> DeleteAccount([FromRoute] Guid id)
         {
             await _userManager.DeleteUserAsync(id);
 
-            return Ok("User account has been deleted successfully.");
+            return Ok(new { Message = "User account has been deleted successfully." });
         }
 
         [HttpPut("{id}/block")]
-        [Authorize(Roles = $"{UserRoles.Admin}, {UserRoles.TechnicalSupportSpecialist}")]
-        public async Task<ActionResult<string>> BlockUser([FromRoute] Guid id, [FromQuery] int? days)
+        [Authorize(Roles = $"{UserRoles.TechnicalSupportSpecialist}")]
+        public async Task<ActionResult> BlockUser([FromBody] BlockUserDTO request) 
         {
-            await _userManager.BlockUserAsync(id, days);
+            await _userManager.BlockUserAsync(request);
 
-            return Ok("User has been blocked successfully.");
+            return Ok(new { Message = "User has been blocked successfully." });
         }
 
         [HttpPut("{id}/unblock")]
         [Authorize(Roles = $"{UserRoles.Admin}, {UserRoles.TechnicalSupportSpecialist}")]
-        public async Task<ActionResult<string>> UnblockUser([FromRoute] Guid id)
+        public async Task<ActionResult> UnblockUser([FromRoute] Guid id)
         {
             await _userManager.UnblockUserAsync(id);
 
-            return Ok("User has been unblocked successfully.");
+            return Ok(new { Message = "User has been unblocked successfully." });
         }
     }
 }

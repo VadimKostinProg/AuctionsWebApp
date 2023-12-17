@@ -43,11 +43,6 @@ namespace BidMasterOnline.Domain.Entities
 
         public bool IsApproved { get; set; }
 
-        public bool IsPayed { get; set; }
-
-        [AllowNull]
-        public DateTime? PaymentDateTime { get; set; }
-
         [ForeignKey(nameof(AuctionistId))]
         public virtual User Auctionist { get; set; }
 
@@ -65,5 +60,7 @@ namespace BidMasterOnline.Domain.Entities
         public virtual ICollection<Bid> Bids { get; set; }
 
         public virtual ICollection<AuctionScore> Scores { get; set; }
+
+        public virtual AuctionPaymentDeliveryOptions PaymentDeliveryOptions { get; set; }
     }
 }

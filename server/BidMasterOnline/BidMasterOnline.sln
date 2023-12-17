@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BidMasterOnline.Application
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BidMasterOnline.Infrastructure", "BidMasterOnline.Infrastructure\BidMasterOnline.Infrastructure.csproj", "{E0D12DFF-5E97-4C10-B536-623B5FD50EC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BidMasterOnline.Tests", "BidMasterOnline.Tests\BidMasterOnline.Tests.csproj", "{90FA4747-68A5-423F-ABC0-EEDAF17DDC25}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,10 +33,6 @@ Global
 		{E0D12DFF-5E97-4C10-B536-623B5FD50EC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0D12DFF-5E97-4C10-B536-623B5FD50EC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E0D12DFF-5E97-4C10-B536-623B5FD50EC6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{90FA4747-68A5-423F-ABC0-EEDAF17DDC25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{90FA4747-68A5-423F-ABC0-EEDAF17DDC25}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{90FA4747-68A5-423F-ABC0-EEDAF17DDC25}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{90FA4747-68A5-423F-ABC0-EEDAF17DDC25}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

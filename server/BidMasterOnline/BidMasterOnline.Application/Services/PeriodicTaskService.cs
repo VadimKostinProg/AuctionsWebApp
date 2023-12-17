@@ -51,7 +51,10 @@ namespace BidMasterOnline.Application.Services
                 auction.StatusId = finishedStatus.Id;
                 await _repository.UpdateAsync(auction);
 
-                var auctionist = auction.Auctionist;
+                var paymentDeliveryOptions = new AuctionPaymentDeliveryOptions
+                {
+                    AuctionId = auction.Id,
+                };
 
                 if (auction.Bids.Any())
                 {
@@ -63,15 +66,18 @@ namespace BidMasterOnline.Application.Services
 
                     var winner = winningBid.Bidder;
 
-                    await _notificationsService.SendNotificationAsync(auctionist.Email, "Auction finished.", "");
-                    await _notificationsService.SendNotificationAsync(winner.Email, "Auction victory.", "");
+                    paymentDeliveryOptions.WinnerId = winner.Id;
+
+                    _notificationsService.SendMessageOfPaymentOptionsSetToAuctionist(auction);
+                    _notificationsService.SendMessageOfDeliveryOptionsSetToWinner(auction, winner);
                 }
                 else
                 {
-                    await _notificationsService.SendNotificationAsync(auctionist.Email, "Auction finished.", "");
+                    _notificationsService.SendMessageOfNoWinnersOfAuctionToAuctionist(auction);
                 }
-            }
 
+                await _repository.AddAsync(paymentDeliveryOptions);
+            }
 
             _logger.LogInformation($"--> PeriodicTaskService: {auctionsToFinish.Count()} auctions has been applyed finished status to.");
         }
@@ -98,8 +104,9 @@ namespace BidMasterOnline.Application.Services
                 blockedUser.UnblockDateTime = null;
 
                 await _repository.UpdateAsync(blockedUser);
-            }
 
+                _notificationsService.SendMessageOfUnblockingAccountToUser(blockedUser);
+            }
 
             _logger.LogInformation($"--> PeriodicTaskService: {blockedUsers.Count()} users has been unblocked.");
         }

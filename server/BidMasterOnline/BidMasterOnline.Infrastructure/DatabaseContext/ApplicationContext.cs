@@ -11,6 +11,7 @@ namespace BidMasterOnline.Infrastructure.DatabaseContext
         public virtual DbSet<AuctionStatus> AuctionStatuses { get; set; }
         public virtual DbSet<AuctionScore> AuctionScores { get; set; }
         public virtual DbSet<AuctionImage> AuctionImages { get; set; }
+        public virtual DbSet<AuctionPaymentDeliveryOptions> AuctionPaymentDeliveryOptions { get; set; }
         public virtual DbSet<Bid> Bids { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<AuctionComment> Comments { get; set; }
@@ -37,6 +38,7 @@ namespace BidMasterOnline.Infrastructure.DatabaseContext
             modelBuilder.Entity<AuctionStatus>().ToTable("AuctionStatuses");
             modelBuilder.Entity<AuctionScore>().ToTable("AuctionScores");
             modelBuilder.Entity<AuctionImage>().ToTable("AuctionImages");
+            modelBuilder.Entity<AuctionPaymentDeliveryOptions>().ToTable("AuctionPaymentDeliveryOptions");
             modelBuilder.Entity<Bid>().ToTable("Bids");
             modelBuilder.Entity<Category>().ToTable("Categories");
             modelBuilder.Entity<AuctionComment>().ToTable("Comments");

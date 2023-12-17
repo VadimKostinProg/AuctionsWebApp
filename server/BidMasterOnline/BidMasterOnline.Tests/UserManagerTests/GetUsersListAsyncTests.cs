@@ -24,7 +24,7 @@ namespace BidMasterOnline.Tests.UserManagerTests
             var action = async () =>
             {
                 // Act
-                var list = await service.GetUsersListAsync(specifications);
+                var list = await service.GetCustomersListAsync(specifications);
             };
 
             await action.Should().ThrowAsync<ArgumentNullException>();
@@ -76,7 +76,7 @@ namespace BidMasterOnline.Tests.UserManagerTests
                 .ReturnsAsync(users.Count);
 
             // Act
-            var usersList = await service.GetUsersListAsync(specificationsDTO);
+            var usersList = await service.GetCustomersListAsync(specificationsDTO);
 
             // Assert
             usersList.Should().NotBeNull();

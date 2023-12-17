@@ -14,17 +14,20 @@ namespace BidMasterOnline.Application.Services
         private readonly IAsyncRepository _repository;
         private readonly IImagesService _imagesService;
         private readonly IAuthService _authService;
+        private readonly INotificationsService _notificationsService;
 
-        public UserManager(IAsyncRepository repository, IImagesService imagesService, IAuthService authService)
+        public UserManager(IAsyncRepository repository, IImagesService imagesService, IAuthService authService,
+            INotificationsService notificationsService)
         {
             _repository = repository;
             _imagesService = imagesService;
             _authService = authService;
+            _notificationsService = notificationsService;
         }
 
-        public async Task BlockUserAsync(Guid userId, int? days)
+        public async Task BlockUserAsync(BlockUserDTO request)
         {
-            var user = await _repository.GetByIdAsync<User>(userId);
+            var user = await _repository.GetByIdAsync<User>(request.UserId);
 
             if (user is null)
                 throw new KeyNotFoundException("User with such id does not exist.");
@@ -40,15 +43,17 @@ namespace BidMasterOnline.Application.Services
 
             user.UserStatusId = userStatus!.Id;
 
-            if (days is not null)
+            if (request.Days is not null)
             {
-                if (days.Value < 1)
+                if (request.Days.Value < 1)
                     throw new ArgumentException("Days number to block must be at least 1.");
 
-                user.UnblockDateTime = DateTime.UtcNow.AddDays(days.Value);
+                user.UnblockDateTime = DateTime.UtcNow.AddDays(request.Days.Value);
             }
 
             await _repository.UpdateAsync(user);
+
+            _notificationsService.SendMessageOfBlockingAccountToUser(user, request.BlockingReason, request.Days);
         }
 
         public async Task ChangePasswordAsync(ChangePasswordDTO request)
@@ -136,6 +141,8 @@ namespace BidMasterOnline.Application.Services
             }
 
             await _repository.AddAsync(user);
+
+            _notificationsService.SendMessageOfEmailConfirmToUser(user);
         }
 
         public async Task DeleteUserAsync(Guid userId)
@@ -154,6 +161,8 @@ namespace BidMasterOnline.Application.Services
             user.UserStatusId = status!.Id;
 
             await _repository.UpdateAsync(user);
+
+            _notificationsService.SendMessageOfDeletingAccountToUser(user);
         }
 
         public async Task<UserDTO> GetUserByIdAsync(Guid id)
@@ -175,20 +184,102 @@ namespace BidMasterOnline.Application.Services
             };
         }
 
-        public async Task<ListModel<UserDTO>> GetUsersListAsync(UserSpecificationsDTO specifications)
+        public async Task<ListModel<UserDTO>> GetCustomersListAsync(UserSpecificationsDTO specifications)
         {
             if (specifications is null)
                 throw new ArgumentNullException("Specifications are null.");
 
-            var specification = this.GetSpecification(specifications);
+            var specification = this.GetSpecificationForCustomer(specifications);
 
+            return await this.GetListModerAsync(specification);
+        }
+
+        private ISpecification<User> GetSpecificationForCustomer(UserSpecificationsDTO specifications)
+        {
+            var builder = new SpecificationBuilder<User>();
+
+            builder.With(x => x.Role.Name == Enums.UserRole.Customer.ToString());
+
+            if (!string.IsNullOrEmpty(specifications.SearchTerm))
+                builder.With(x => x.FullName.Contains(specifications.SearchTerm) || x.Username.Contains(specifications.SearchTerm));
+
+            if (!string.IsNullOrEmpty(specifications.SortField))
+            {
+                switch (specifications.SortField)
+                {
+                    case "Id":
+                        builder.OrderBy(x => x.Id, specifications.SortDirection ?? SortDirection.ASC);
+                        break;
+                    case "FullName":
+                        builder.OrderBy(x => x.FullName, specifications.SortDirection ?? SortDirection.ASC);
+                        break;
+                    case "DateOfBirth":
+                        builder.OrderBy(x => x.DateOfBirth, specifications.SortDirection ?? SortDirection.ASC);
+                        break;
+                }
+            }
+
+            if (specifications.Status is not null)
+                builder.With(x => x.UserStatus.Name == specifications.Status.ToString());
+
+            builder.WithPagination(specifications.PageSize, specifications.PageNumber);
+
+            return builder.Build();
+        }
+
+        public async Task<ListModel<UserDTO>> GetStaffListAsync(SpecificationsDTO specifications)
+        {
+            if (specifications is null)
+                throw new ArgumentNullException("Specifications are null.");
+
+            var specification = this.GetSpecificationForStuff(specifications);
+
+            return await this.GetListModerAsync(specification);
+        }
+
+        private ISpecification<User> GetSpecificationForStuff(SpecificationsDTO specifications)
+        {
+            var builder = new SpecificationBuilder<User>();
+
+            builder.With(x => x.Role.Name == Enums.UserRole.Admin.ToString() || 
+                              x.Role.Name == Enums.UserRole.TechnicalSupportSpecialist.ToString());
+
+            if (!string.IsNullOrEmpty(specifications.SearchTerm))
+                builder.With(x => x.FullName.Contains(specifications.SearchTerm) || x.Username.Contains(specifications.SearchTerm));
+
+            if (!string.IsNullOrEmpty(specifications.SortField))
+            {
+                switch (specifications.SortField)
+                {
+                    case "Id":
+                        builder.OrderBy(x => x.Id, specifications.SortDirection ?? SortDirection.ASC);
+                        break;
+                    case "FullName":
+                        builder.OrderBy(x => x.FullName, specifications.SortDirection ?? SortDirection.ASC);
+                        break;
+                    case "DateOfBirth":
+                        builder.OrderBy(x => x.DateOfBirth, specifications.SortDirection ?? SortDirection.ASC);
+                        break;
+                    case "Role":
+                        builder.OrderBy(x => x.Role.Name, specifications.SortDirection ?? SortDirection.ASC);
+                        break;
+                }
+            }
+
+            builder.WithPagination(specifications.PageSize, specifications.PageNumber);
+
+            return builder.Build();
+        }
+
+        private async Task<ListModel<UserDTO>> GetListModerAsync(ISpecification<User> specification)
+        {
             var users = await _repository.GetAsync<User>(specification);
 
             long totalCount = specification.Predicate is null ?
                 await _repository.CountAsync<User>() :
                 await _repository.CountAsync<User>(specification.Predicate);
 
-            var totalPages = (long)Math.Ceiling((double)totalCount / specifications.PageSize);
+            var totalPages = (long)Math.Ceiling((double)totalCount / specification.Take);
 
             var list = new ListModel<UserDTO>
             {
@@ -208,40 +299,6 @@ namespace BidMasterOnline.Application.Services
             };
 
             return list;
-        }
-
-        private ISpecification<User> GetSpecification(UserSpecificationsDTO specifications)
-        {
-            var builder = new SpecificationBuilder<User>();
-
-            if (!string.IsNullOrEmpty(specifications.SearchTerm))
-                builder.With(x => x.FullName.Contains(specifications.SearchTerm));
-
-            if (!string.IsNullOrEmpty(specifications.SortField))
-            {
-                switch (specifications.SortField)
-                {
-                    case "Id":
-                        builder.OrderBy(x => x.Id, specifications.SortDirection ?? SortDirection.ASC);
-                        break;
-                    case "FullName":
-                        builder.OrderBy(x => x.FullName, specifications.SortDirection ?? SortDirection.ASC);
-                        break;
-                    case "DateOfBirth":
-                        builder.OrderBy(x => x.DateOfBirth, specifications.SortDirection ?? SortDirection.ASC);
-                        break;
-                }
-            }
-
-            if (specifications.Role is not null)
-                builder.With(x => x.Role.Name == specifications.Role.ToString());
-
-            if (specifications.Status is not null)
-                builder.With(x => x.UserStatus.Name == specifications.Status.ToString());
-
-            builder.WithPagination(specifications.PageSize, specifications.PageNumber);
-
-            return builder.Build();
         }
 
         public async Task UnblockUserAsync(Guid userId)
@@ -264,6 +321,8 @@ namespace BidMasterOnline.Application.Services
             user.UnblockDateTime = null;
 
             await _repository.UpdateAsync(user);
+
+            _notificationsService.SendMessageOfUnblockingAccountToUser(user);
         }
 
         public async Task DeleteUserAsync()
@@ -274,6 +333,21 @@ namespace BidMasterOnline.Application.Services
                 x.Name == Enums.UserStatus.Deleted.ToString());
 
             user.UserStatusId = status!.Id;
+
+            await _repository.UpdateAsync(user);
+        }
+
+        public async Task ConfirmEmailAsync(Guid userId)
+        {
+            var user = await _authService.GetAuthenticatedUserEntityAsync();
+
+            if (user.Id != userId)
+                throw new ForbiddenException("You cannot confirm the email of other user.");
+
+            if (user.IsEmailConfirmed)
+                throw new InvalidOperationException("User email has already been confimred.");
+
+            user.IsEmailConfirmed = true;
 
             await _repository.UpdateAsync(user);
         }

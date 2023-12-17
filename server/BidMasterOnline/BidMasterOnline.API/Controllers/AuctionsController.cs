@@ -13,14 +13,17 @@ namespace BidMasterOnline.API.Controllers
     {
         private readonly IAuctionsService _auctionsService;
         private readonly IAuctionVerificationService _auctionVerificationService;
+        private readonly IAuctionPaymentDelivaryService _auctionSellDelivaryService;
         private readonly IBidsService _bidsService;
 
         public AuctionsController(IAuctionsService auctionsService,
             IAuctionVerificationService auctionVerificationService,
+            IAuctionPaymentDelivaryService auctionSellDelivaryService,
             IBidsService bidsService)
         {
             _auctionsService = auctionsService;
             _auctionVerificationService = auctionVerificationService;
+            _auctionSellDelivaryService = auctionSellDelivaryService;
             _bidsService = bidsService;
         }
 
@@ -48,43 +51,52 @@ namespace BidMasterOnline.API.Controllers
 
         [HttpPost]
         [Authorize(Roles = UserRoles.Customer)]
-        public async Task<ActionResult<string>> PublishAuction([FromForm] PublishAuctionDTO auction)
+        public async Task<ActionResult> PublishAuction([FromForm] PublishAuctionDTO auction)
         {
             await _auctionsService.PublishAuctionAsync(auction);
 
-            return Ok("Auction has been successfully published for verification.");
+            return Ok(new { Message = "Auction has been successfully published for verification." });
         }
 
         [HttpPost("scores")]
         [Authorize(Roles = UserRoles.Customer)]
-        public async Task<ActionResult<string>> SetScoreForAuction([FromBody] SetAuctionScoreDTO request)
+        public async Task<ActionResult> SetScoreForAuction([FromBody] SetAuctionScoreDTO request)
         {
             await _auctionsService.SetAuctionScoreAsync(request);
 
-            return Ok("Your score for auction has been successfully set.");
+            return Ok(new { Message = "Your score for auction has been successfully set." });
         }
 
         [HttpDelete("{id}")]
         [Authorize(Roles = UserRoles.TechnicalSupportSpecialist)]
-        public async Task<ActionResult<string>> CancelAuction([FromRoute] Guid id)
+        public async Task<ActionResult> CancelAuction([FromRoute] CancelAuctionDTO request)
         {
-            await _auctionsService.CancelAuctionAsync(id);
+            await _auctionsService.CancelAuctionAsync(request);
 
-            return Ok("Auction has been canceled successfully.");
+            return Ok(new { Message = "Auction has been canceled successfully." });
+        }
+
+        [HttpDelete("own/{id}")]
+        [Authorize(Roles = UserRoles.Customer)]
+        public async Task<ActionResult> CancelOwnAuction([FromRoute] Guid id)
+        {
+            await _auctionsService.CancelOwnAuctionAsync(id);
+
+            return Ok(new { Message = "Auction has been canceled successfully." });
         }
 
         [HttpPost("{id}/recover")]
         [Authorize(Roles = UserRoles.TechnicalSupportSpecialist)]
-        public async Task<ActionResult<string>> RecoverAuction([FromRoute] Guid id)
+        public async Task<ActionResult> RecoverAuction([FromRoute] Guid id)
         {
             await _auctionsService.RecoverAuctionAsync(id);
 
-            return Ok("Auction has been recovered successfully.");
+            return Ok(new { Message = "Auction has been recovered successfully." });
         }
 
         [HttpGet("{id}/bids")]
         [AllowAnonymous]
-        public async Task<ActionResult<ListModel<BidDTO>>> GetBidsForAuction([FromRoute] Guid id, 
+        public async Task<ActionResult<ListModel<BidDTO>>> GetBidsForAuction([FromRoute] Guid id,
             [FromQuery] SpecificationsDTO specifications)
         {
             return Ok(await _bidsService.GetBidsListForAuctionAsync(id, specifications));
@@ -92,11 +104,11 @@ namespace BidMasterOnline.API.Controllers
 
         [HttpPost("{id}/bids")]
         [Authorize(Roles = UserRoles.Customer)]
-        public async Task<ActionResult<ListModel<BidDTO>>> SetNewBid([FromBody] SetBidDTO bid)
+        public async Task<ActionResult> SetNewBid([FromBody] SetBidDTO bid)
         {
             await _bidsService.SetBidAsync(bid);
 
-            return Ok("New bid has been set successfully.");
+            return Ok(new { Message = "New bid has been set successfully." });
         }
 
         [HttpGet("not-approved/list")]
@@ -116,20 +128,63 @@ namespace BidMasterOnline.API.Controllers
 
         [HttpPost("not-approved/{id}/approve")]
         [Authorize(Roles = UserRoles.TechnicalSupportSpecialist)]
-        public async Task<ActionResult<string>> ApproveAuction([FromRoute] Guid id)
+        public async Task<ActionResult> ApproveAuction([FromRoute] Guid id)
         {
             await _auctionVerificationService.ApproveAuctionAsync(id);
 
-            return Ok("Auction has been approved successfully.");
+            return Ok(new { Message = "Auction has been approved successfully." });
         }
 
         [HttpPost("not-approved/reject")]
         [Authorize(Roles = UserRoles.TechnicalSupportSpecialist)]
-        public async Task<ActionResult<string>> RejectAuction([FromBody] RejectAuctionDTO request)
+        public async Task<ActionResult> RejectAuction([FromBody] RejectAuctionDTO request)
         {
             await _auctionVerificationService.RejectAuctionAsync(request);
 
-            return Ok("Auction has been rejected successfully.");
+            return Ok(new { Message = "Auction has been rejected successfully." });
+        }
+
+        [HttpGet("{id}/payment-delivery-options")]
+        [Authorize(Roles = UserRoles.TechnicalSupportSpecialist)]
+        public async Task<ActionResult<AuctionPaymentDeliveryOptionsDTO>> GetPaymentDeliveryOptions([FromRoute] Guid id)
+        {
+            return Ok(await _auctionSellDelivaryService.GetPaymentDeliveryOptionsForAuctionIdAsync(id));
+        }
+
+        [HttpPost("payment-options")]
+        [Authorize(Roles = UserRoles.Customer)]
+        public async Task<ActionResult> SetSellOptions([FromBody] SetPaymentOptionsDTO request)
+        {
+            await _auctionSellDelivaryService.SetPaymentOptionsForAuctionAsync(request);
+
+            return Ok(new { Message = "Payment options for the auction has been successfully set." });
+        }
+
+        [HttpPost("delivery-options")]
+        [Authorize(Roles = UserRoles.Customer)]
+        public async Task<ActionResult> SetDeliveryOptions([FromBody] SetDeliveryOptionsDTO request)
+        {
+            await _auctionSellDelivaryService.SetDeliveryOptionsForAuctionAsync(request);
+
+            return Ok(new { Message = "Delivery options for the auction has been successfully set." });
+        }
+
+        [HttpPut("payemnt-options")]
+        [Authorize(Roles = UserRoles.Customer)]
+        public async Task<ActionResult> ConfirmPayment([FromQuery] Guid auctionId)
+        {
+            await _auctionSellDelivaryService.ConfirmPaymentForAuctionAsync(auctionId);
+
+            return Ok(new { Message = "Payment for the auction has been successfully confirmed." });
+        }
+
+        [HttpPut("delivery-options")]
+        [Authorize(Roles = UserRoles.Customer)]
+        public async Task<ActionResult> ConfirmDelivery([FromBody] ConfirmDeliveryDTO request)
+        {
+            await _auctionSellDelivaryService.ConfirmDeliveyForAuctionAsync(request);
+
+            return Ok(new { Message = "Delivery for the auction has been successfully confirmed." });
         }
     }
 }

@@ -107,10 +107,13 @@ namespace BidMasterOnline.Application.Services
             if (bid is null)
                 throw new ArgumentNullException("Bid is null.");
 
-            var user = await _authService.GetAuthenticatedUserAsync();
+            var user = await _authService.GetAuthenticatedUserEntityAsync();
 
-            if (user.Status == Enums.UserStatus.Blocked)
+            if (user.UserStatus.Name == Enums.UserStatus.Blocked.ToString())
                 throw new ForbiddenException("Account is blocked.");
+
+            if (!user.IsEmailConfirmed)
+                throw new ForbiddenException("Your email is not confirmed.");
 
             var auction = await _repository.GetByIdAsync<Auction>(bid.AuctionId);
 

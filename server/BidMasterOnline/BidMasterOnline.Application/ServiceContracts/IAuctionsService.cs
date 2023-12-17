@@ -42,16 +42,16 @@ namespace BidMasterOnline.Application.ServiceContracts
         Task PublishAuctionAsync(PublishAuctionDTO request);
 
         /// <summary>
-        /// Confirms payment for auction lot by user.
-        /// </summary>
-        /// <param name="auctionId">Identifier of auction to confirm payment for.</param>
-        Task ConfirmPaymentForAuctionAsync(Guid auctionId);
-
-        /// <summary>
         /// Cancels active auction.
         /// </summary>
+        /// <param name="request">Information of auction to cancel and reason.</param>
+        Task CancelAuctionAsync(CancelAuctionDTO request);
+
+        /// <summary>
+        /// Cancels auction of the authenticated user.
+        /// </summary>
         /// <param name="auctionId">Identifier of auction to cancel.</param>
-        Task CancelAuctionAsync(Guid auctionId);
+        Task CancelOwnAuctionAsync(Guid auctionId);
 
         /// <summary>
         /// Recovers canceled auction.
@@ -59,5 +59,11 @@ namespace BidMasterOnline.Application.ServiceContracts
         /// <param name="auctionId">Identifier of auction to cancel.</param>
         /// <returns></returns>
         Task RecoverAuctionAsync(Guid auctionId);
+
+        /// <summary>
+        /// Sets the next bidder as winner of auction.
+        /// </summary>
+        /// <param name="auctionId">Identifier of auction to ser new winner.</param>
+        Task SetNextWinnerOfAuctionAsync(Guid auctionId);
     }
 }

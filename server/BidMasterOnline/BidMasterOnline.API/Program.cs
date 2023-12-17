@@ -3,10 +3,10 @@ using BidMasterOnline.Application;
 using BidMasterOnline.Application.Initializers;
 using BidMasterOnline.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.IdentityModel.Tokens;
+using sib_api_v3_sdk.Client;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -72,6 +72,9 @@ builder.Services.AddVersionedApiExplorer(options =>
     options.GroupNameFormat = "'v'V";
     options.SubstituteApiVersionInUrl = true;
 });
+
+// Configuring Brevo.API
+Configuration.Default.ApiKey.Add("api-key", builder.Configuration["BrevoSettings:APIKey"]);
 
 var app = builder.Build();
 

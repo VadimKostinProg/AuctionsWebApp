@@ -7,7 +7,6 @@ namespace BidMasterOnline.Application.DTO
     /// </summary>
     public class UserSpecificationsDTO : SpecificationsDTO
     {
-        public UserRole? Role;
         public UserStatus? Status;
     }
 }
