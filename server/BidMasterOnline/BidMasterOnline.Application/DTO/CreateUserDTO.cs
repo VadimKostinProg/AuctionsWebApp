@@ -19,6 +19,9 @@ namespace BidMasterOnline.Application.DTO
         [EmailAddress]
         public string Email { get; set; } = null!;
 
+        [Required(ErrorMessage = "Date of birth is required.")]
+        public DateOnly DateOfBirth { get; set; }
+
         [Required(ErrorMessage = "Password is required.")]
         public string Password { get; set; } = null!;
 

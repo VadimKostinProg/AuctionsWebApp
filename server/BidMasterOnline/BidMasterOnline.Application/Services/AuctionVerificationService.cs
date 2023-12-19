@@ -57,18 +57,6 @@ namespace BidMasterOnline.Application.Services
                 LotDescription = auction.LotDescription,
                 FinishTypeDescription = auction.FinishType.Description,
                 Status = Enum.Parse<Enums.AuctionStatus>(auction.Status.Name),
-                Bids = auction.Bids
-                    .Select(bid => new BidDTO
-                    {
-                        Id = bid.Id,
-                        AuctionId = auction.Id,
-                        AuctionName = auction.Name,
-                        BidderId = bid.BidderId,
-                        BidderUsername = bid.Bidder.Username,
-                        DateAndTime = bid.DateAndTime,
-                        Amount = bid.Amount
-                    })
-                    .ToList()
             };
 
             return auctionDetailsDTO;

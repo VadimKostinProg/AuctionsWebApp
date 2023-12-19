@@ -14,6 +14,5 @@ namespace BidMasterOnline.Application.DTO
         public double Score { get; set; }
         public string FinishTypeDescription { get; set; }
         public AuctionStatus Status { get; set; }
-        public List<BidDTO> Bids { get; set; }
     }
 }

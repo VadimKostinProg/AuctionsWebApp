@@ -1,3 +1,4 @@
+using BidMasterOnline.API.Filters;
 using BidMasterOnline.API.Middlewares;
 using BidMasterOnline.Application;
 using BidMasterOnline.Application.Initializers;
@@ -21,7 +22,10 @@ builder.Services.AddCors(options => {
     });
 });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(config =>
+{
+    config.Filters.Add(new SessionFilter());
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

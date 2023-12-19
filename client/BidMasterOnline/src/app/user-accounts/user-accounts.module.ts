@@ -5,20 +5,25 @@ import { SignInComponent } from './sign-in/sign-in.component';
 import { CreateAccountComponent } from './create-account/create-account.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { ProfileComponent } from './profile/profile.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
     SignInComponent,
     CreateAccountComponent,
+    ProfileComponent,
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     RouterModule,
+    NgbModule,
   ],
   exports: [
     SignInComponent,
     CreateAccountComponent,
+    ProfileComponent,
   ]
 })
 export class UserAccountsModule { }

@@ -16,7 +16,9 @@ namespace BidMasterOnline.Application.Services
             _emailSender = emailSender;
             _configuration = configuration;
 
-            _clientUrl = _configuration["AllowedOrigins[0]"]!;
+            var allowedOriginsSection = _configuration.GetSection("AllowedOrigins");
+
+            _clientUrl = allowedOriginsSection.GetChildren().FirstOrDefault()!.Value!;
         }
 
         public void SendMessageOfApplyingDeliveryToAuctionist(Auction auction)

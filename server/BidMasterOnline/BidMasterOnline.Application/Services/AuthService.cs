@@ -36,8 +36,9 @@ namespace BidMasterOnline.Application.Services
                 Username = user.Username,
                 FullName = user.FullName,
                 Email = user.Email,
+                Role = user.Role.Name,
                 ImageUrl = user.ImageUrl,
-                Status = Enum.Parse<Enums.UserStatus>(user.UserStatus.Name)
+                Status = user.UserStatus.Name
             };
         }
 
@@ -47,8 +48,7 @@ namespace BidMasterOnline.Application.Services
                 throw new AuthenticationException("User is not authenticated.");
 
             var user = await _repository.FirstOrDefaultAsync<User>(x => x.Id == _sessionContext.UserId &&
-                                         x.UserStatus.Name != Enums.UserStatus.Deleted.ToString(),
-                                         disableTracking: false);
+                                         x.UserStatus.Name != Enums.UserStatus.Deleted.ToString());
 
             if (user is null)
                 throw new UnauthorizedAccessException("User with such claims does not exist.");
@@ -96,8 +96,9 @@ namespace BidMasterOnline.Application.Services
             // Configure claims for the payload
             var claims = new Claim[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.Email),
+                new Claim("Id", user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Username.ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(ClaimTypes.Role, user.Role.Name)
             };
 

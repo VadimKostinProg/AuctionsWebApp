@@ -4,6 +4,7 @@ using BidMasterOnline.Application.RepositoryContracts;
 using BidMasterOnline.Application.ServiceContracts;
 using BidMasterOnline.Application.Specifications;
 using BidMasterOnline.Domain.Entities;
+using System.Xml.Linq;
 
 namespace BidMasterOnline.Application.Services
 {
@@ -19,6 +20,18 @@ namespace BidMasterOnline.Application.Services
         }
 
         public async Task DeleteCommentAsync(Guid id)
+        {
+            var comment = await _repository.FirstOrDefaultAsync<AuctionComment>(x =>
+                x.Id == id && !x.IsDeleted);
+
+            if (comment is null)
+                throw new KeyNotFoundException("Comment with such id does not exists.");
+
+            comment.IsDeleted = true;
+            await _repository.UpdateAsync(comment);
+        }
+
+        public async Task DeleteOwnCommentAsync(Guid id)
         {
             var comment = await _repository.FirstOrDefaultAsync<AuctionComment>(x =>
                 x.Id == id && !x.IsDeleted);

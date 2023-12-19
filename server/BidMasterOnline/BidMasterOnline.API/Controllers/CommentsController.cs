@@ -42,10 +42,19 @@ namespace BidMasterOnline.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = UserRoles.Customer)]
+        [Authorize(Roles = UserRoles.TechnicalSupportSpecialist)]
         public async Task<ActionResult<string>> DeleteComment([FromRoute] Guid id)
         {
             await _commentsService.DeleteCommentAsync(id);
+
+            return Ok("Comment has been deleted successfully.");
+        }
+
+        [HttpDelete("own/{id}")]
+        [Authorize(Roles = UserRoles.Customer)]
+        public async Task<ActionResult<string>> DeleteOwnComment([FromRoute] Guid id)
+        {
+            await _commentsService.DeleteOwnCommentAsync(id);
 
             return Ok("Comment has been deleted successfully.");
         }

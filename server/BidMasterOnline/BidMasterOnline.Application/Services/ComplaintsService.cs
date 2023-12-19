@@ -109,10 +109,35 @@ namespace BidMasterOnline.Application.Services
             if (string.IsNullOrEmpty(request.ComplaintText))
                 throw new ArgumentNullException("Complaint text is blank.");
 
-            if (!await _repository.AnyAsync<Auction>(x => x.Id == request.AuctionId && x.IsApproved))
+            var auction = await _repository.GetByIdAsync<Auction>(request.AuctionId);
+
+            if (auction is null)
                 throw new KeyNotFoundException("Auction with such id does not exist.");
 
             var accusingUser = await _authService.GetAuthenticatedUserEntityAsync();
+
+            if (request.ComplaintType == Enums.ComplaintType.ComplaintOnAuctionContent &&
+                auction.Id == accusingUser.Id)
+                throw new InvalidOperationException("You cannot set complaint for your auction.");
+
+            if (!await _repository.AnyAsync<User>(x => x.Id == request.AccusedUserId))
+                throw new KeyNotFoundException("User with such id does not exist.");
+
+            // Validate request for comment
+            if (request.ComplaintType == Enums.ComplaintType.ComplaintOnUserComment)
+            {
+                if (request.CommentId is null)
+                    throw new ArgumentNullException("Comment is null.");
+
+                var comment = await _repository.GetByIdAsync<AuctionComment>(request.CommentId.Value);
+
+                if (comment is null)
+                    throw new KeyNotFoundException("Comment with such id does not exist.");
+
+                if (comment.UserId == accusingUser.Id)
+                    throw new InvalidOperationException("You cannot set complaint on your comment.");
+            }
+
 
             var complaintType = await _repository.FirstOrDefaultAsync<ComplaintType>(x =>
                 x.Name == request.ComplaintType.ToString());

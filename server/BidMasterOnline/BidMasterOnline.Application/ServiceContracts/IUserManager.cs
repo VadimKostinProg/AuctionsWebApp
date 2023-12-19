@@ -23,11 +23,11 @@ namespace BidMasterOnline.Application.ServiceContracts
         Task<ListModel<UserDTO>> GetStaffListAsync(SpecificationsDTO specifications);
 
         /// <summary>
-        /// Gets users information by it`s identifier.
+        /// Gets users profile information by it`s identifier.
         /// </summary>
-        /// <param name="id">Identifier of user to get information about.</param>
-        /// <returns>Users information.</returns>
-        Task<UserDTO> GetUserByIdAsync(Guid id);
+        /// <param name="id">Identifier of user to get profile information of.</param>
+        /// <returns>Users profiles information.</returns>
+        Task<ProfileDTO> GetUserProfileByIdAsync(Guid id);
 
         /// <summary>
         /// Create new user of specified role.

@@ -4,6 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { SearchComponent } from './search/search.component';
 import { CommonSharedModule } from '../common-shared/common-shared.module';
 import { AuctionsModule } from '../auctions/auctions.module';
+import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
 
 
 
@@ -11,6 +12,7 @@ import { AuctionsModule } from '../auctions/auctions.module';
   declarations: [
     HomeComponent,
     SearchComponent,
+    ConfirmEmailComponent,
   ],
   imports: [
     CommonModule,
@@ -20,6 +22,7 @@ import { AuctionsModule } from '../auctions/auctions.module';
   exports: [
     HomeComponent,
     SearchComponent,
+    ConfirmEmailComponent,
   ]
 })
 export class GeneralModule { }

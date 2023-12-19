@@ -103,10 +103,10 @@ namespace BidMasterOnline.Application.Services
             {
                 switch (specifications.SortField)
                 {
-                    case "Id":
+                    case "id":
                         builder.OrderBy(x => x.Id, specifications.SortDirection ?? Enums.SortDirection.ASC);
                         break;
-                    case "Name":
+                    case "name":
                         builder.OrderBy(x => x.Name, specifications.SortDirection ?? Enums.SortDirection.ASC);
                         break;
                 }

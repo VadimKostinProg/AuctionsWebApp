@@ -10,8 +10,8 @@ export class JwtInterceptorService implements HttpInterceptor {
   constructor() { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (sessionStorage.getItem('authenticatedUser') != null) {
-      var authenticatedUser = JSON.parse(sessionStorage.getItem('authenticatedUser') as string);
+    if (localStorage.getItem('authenticatedUser') != null) {
+      var authenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser') as string);
 
       request = request.clone({
         setHeaders: {

@@ -33,8 +33,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     JwtModule.forRoot({
       config: {
         tokenGetter: () => {
-          if (sessionStorage.getItem('authenticatedUser') != null) {
-            return JSON.parse(sessionStorage.getItem('authenticatedUser') as string).token;
+          if (localStorage.getItem('authenticatedUser') != null) {
+            return JSON.parse(localStorage.getItem('authenticatedUser') as string).token;
           }
 
           return null;

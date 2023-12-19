@@ -4,10 +4,12 @@ import { CategoriesComponent } from './categories/categories.component';
 import { CommonSharedModule } from '../common-shared/common-shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { StaffManagementComponent } from './staff-management/staff-management.component';
 
 @NgModule({
   declarations: [
-    CategoriesComponent
+    CategoriesComponent,
+    StaffManagementComponent,
   ],
   imports: [
     CommonModule,
@@ -16,7 +18,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     NgbModule
   ],
   exports: [
-    CategoriesComponent
+    CategoriesComponent,
+    StaffManagementComponent,
   ]
 })
 export class AdminModule { }

@@ -15,7 +15,7 @@ export class AuthService {
   user: AuthenticationModel | null;
 
   constructor(private readonly httpClient: HttpClient) {
-    this.user = JSON.parse(sessionStorage.getItem('authenticatedUser') as string);
+    this.user = JSON.parse(localStorage.getItem('authenticatedUser') as string);
   }
 
   signIn(signInModel: SignInModel): Observable<AuthenticationModel> {
@@ -23,7 +23,7 @@ export class AuthService {
       .pipe(map(user => {
         if (user) {
           this.user = user;
-          sessionStorage.setItem('authenticatedUser', JSON.stringify(user));
+          localStorage.setItem('authenticatedUser', JSON.stringify(user));
         }
 
         return user;
@@ -32,6 +32,6 @@ export class AuthService {
 
   logOut() {
     this.user = null;
-    sessionStorage.removeItem('authenticatedUser');
+    localStorage.removeItem('authenticatedUser');
   }
 }

@@ -18,14 +18,14 @@ namespace BidMasterOnline.API.Controllers
             _userManager = userManager;
         }
 
-        [HttpGet("/staff/list")]
+        [HttpGet("staff/list")]
         [Authorize(Roles = UserRoles.Admin)]
         public async Task<ActionResult<ListModel<UserDTO>>> GetStuffList([FromQuery] SpecificationsDTO specifications)
         {
             return Ok(await _userManager.GetStaffListAsync(specifications));
         }
 
-        [HttpGet("/customers/list")]
+        [HttpGet("customers/list")]
         [Authorize(Roles = UserRoles.TechnicalSupportSpecialist)]
         public async Task<ActionResult<ListModel<UserDTO>>> GetCustomersList([FromQuery] UserSpecificationsDTO specifications)
         {
@@ -34,9 +34,9 @@ namespace BidMasterOnline.API.Controllers
 
         [HttpGet("{id}")]
         [AllowAnonymous]
-        public async Task<ActionResult<UserDTO>> GetUserByUsername([FromRoute] Guid id)
+        public async Task<ActionResult<ProfileDTO>> GetUserProfileById([FromRoute] Guid id)
         {
-            return Ok(await _userManager.GetUserByIdAsync(id));
+            return Ok(await _userManager.GetUserProfileByIdAsync(id));
         }
 
         [HttpPost("customers")]

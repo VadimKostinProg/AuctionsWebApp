@@ -35,6 +35,7 @@ namespace BidMasterOnline.Application.Initializers
             var username = _configuration["SysAdmin:Username"]!;
             var fullname = _configuration["SysAdmin:Fullname"]!;
             var email = _configuration["SysAdmin:Email"]!;
+            var dateOfBirth = DateOnly.Parse(_configuration["SysAdmin:DateOfBirth"]!);
             var password = _configuration["SysAdmin:Password"]!;
 
             var sysAdmin = new CreateUserDTO
@@ -42,6 +43,7 @@ namespace BidMasterOnline.Application.Initializers
                 Username = username,
                 Email = email,
                 FullName = fullname,
+                DateOfBirth = dateOfBirth,
                 Password = password,
                 ConfirmPassword = password
             };

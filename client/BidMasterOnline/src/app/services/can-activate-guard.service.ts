@@ -22,7 +22,7 @@ export class CanActivateGuardService implements CanActivate {
       return false;
     }
 
-    if (currentUser.role != route.data['expectedRole']) {
+    if (!route.data['expectedRoles'].includes(currentUser.role)) {
       console.log('You have no access to this route.');
       return false;
     }

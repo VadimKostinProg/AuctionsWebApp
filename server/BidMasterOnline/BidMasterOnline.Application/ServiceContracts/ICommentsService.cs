@@ -28,9 +28,16 @@ namespace BidMasterOnline.Application.ServiceContracts
         Task SetNewCommentAsync(SetCommentDTO comment);
 
         /// <summary>
-        /// Deletes comment with passed identifier.
+        /// Deletes comment with passed identifier by technical support specialist.
         /// </summary>
         /// <param name="id">Identifier of comment to delete.</param>
         Task DeleteCommentAsync(Guid id);
+
+        /// <summary>
+        /// Deletes own comment of the user.
+        /// </summary>
+        /// <param name="id">Identifier of comment to delete.</param>
+        /// <returns></returns>
+        Task DeleteOwnCommentAsync(Guid id);
     }
 }

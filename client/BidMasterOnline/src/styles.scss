@@ -121,6 +121,15 @@ input[type="radio"]:checked {
     font-weight: bold;
 }
 
+.account-image {
+    width: 300px;
+    height: 300px;
+}
+
+.user-info-container {
+    @extend .radio-container;
+}
+
 @media screen and (max-width: 990px) {
     .header-container {
         flex-direction: column;

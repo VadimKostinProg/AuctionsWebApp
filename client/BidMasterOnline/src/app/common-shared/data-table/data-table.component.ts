@@ -1,8 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ActionClickedModel } from 'src/app/models/actionClickedModel';
 import { DataTableOptionsModel } from 'src/app/models/dataTableOptionsModel';
+import { FormInputTypeEnum } from 'src/app/models/formInputTypeEnum';
 import { ListModel } from 'src/app/models/listModel';
 import { PaginationModel } from 'src/app/models/paginationModel';
 import { SortDirectionEnum } from 'src/app/models/sortDirectionEnum';
@@ -36,6 +36,8 @@ export class DataTableComponent implements OnInit {
   choosenItem: any;
 
   SortDirectionEnum = SortDirectionEnum;
+
+  FormInputTypeEnum = FormInputTypeEnum;
 
   sorting: SortingModel;
 
@@ -94,8 +96,8 @@ export class DataTableComponent implements OnInit {
   }
 
   onEditClick(item: any, modal: TemplateRef<any>) {
-    this.options.editFormOptions.properties.forEach(element => {
-      this.options.editFormOptions.form.controls[element.propName].setValue(item[element.propName]);
+    this.options.editFormOptions?.properties.forEach(element => {
+      this.options.editFormOptions?.form.controls[element.propName].setValue(item[element.propName]);
     });
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' });
   }
@@ -104,6 +106,11 @@ export class DataTableComponent implements OnInit {
     this.choosenItem = item;
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' });
   }
+
+  isTextType = (inputType: FormInputTypeEnum): boolean => inputType == FormInputTypeEnum.Text;
+  isPasswordType = (inputType: FormInputTypeEnum): boolean => inputType == FormInputTypeEnum.Password;
+  isSelectType = (inputType: FormInputTypeEnum): boolean => inputType == FormInputTypeEnum.Select;
+  isDateType = (inputType: FormInputTypeEnum): boolean => inputType == FormInputTypeEnum.Date;
 
   async decrementPageNumber() {
     this.pagination.pageNumber--;

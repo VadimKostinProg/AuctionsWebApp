@@ -6,29 +6,62 @@ import { SignInComponent } from './user-accounts/sign-in/sign-in.component';
 import { CreateAccountComponent } from './user-accounts/create-account/create-account.component';
 import { CategoriesComponent } from './admin/categories/categories.component';
 import { CanActivateGuardService } from './services/can-activate-guard.service';
+import { StaffManagementComponent } from './admin/staff-management/staff-management.component';
+import { ConfirmEmailComponent } from './general/confirm-email/confirm-email.component';
+import { ProfileComponent } from './user-accounts/profile/profile.component';
 
 const routes: Routes = [
-  { 
-    path: '', 
-    component: HomeComponent 
+  {
+    path: '',
+    component: HomeComponent
   },
-  { 
-    path: 'search', 
-    component: SearchComponent 
+  {
+    path: 'search',
+    component: SearchComponent
   },
-  { 
-    path: 'sign-in', 
-    component: SignInComponent 
+  {
+    path: 'sign-in',
+    component: SignInComponent
   },
-  { 
-    path: 'create-account', 
-    component: CreateAccountComponent 
+  {
+    path: 'create-account',
+    component: CreateAccountComponent
   },
-  { 
-    path: 'categories', 
-    component: CategoriesComponent, 
-    canActivate: [ CanActivateGuardService ],
-    data: { expectedRole: 'Admin' } 
+  {
+    path: 'confirm-email',
+    component: ConfirmEmailComponent,
+    canActivate: [CanActivateGuardService],
+    data: {
+      expectedRoles: [
+        'Admin',
+        'TechnicalSupportSpecialist',
+        'Customer'
+      ]
+    }
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    canActivate: [CanActivateGuardService],
+    data: {
+      expectedRoles: [
+        'Admin',
+        'TechnicalSupportSpecialist',
+        'Customer'
+      ]
+    }
+  },
+  {
+    path: 'staff-management',
+    component: StaffManagementComponent,
+    canActivate: [CanActivateGuardService],
+    data: { expectedRoles: ['Admin'] }
+  },
+  {
+    path: 'categories',
+    component: CategoriesComponent,
+    canActivate: [CanActivateGuardService],
+    data: { expectedRoles: ['Admin'] }
   }
 ];
 

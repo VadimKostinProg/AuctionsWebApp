@@ -112,7 +112,7 @@ namespace BidMasterOnline.API.Controllers
         }
 
         [HttpGet("not-approved/list")]
-        [Authorize(Roles = UserRoles.TechnicalSupportSpecialist)]
+        [Authorize(Roles = UserRoles.Admin)]
         public async Task<ActionResult<ListModel<AuctionDTO>>> GetNotApprovedAuctionsList(
             [FromQuery] AuctionSpecificationsDTO specifications)
         {
@@ -120,14 +120,14 @@ namespace BidMasterOnline.API.Controllers
         }
 
         [HttpGet("not-approved/{id}/details")]
-        [Authorize(Roles = UserRoles.TechnicalSupportSpecialist)]
+        [Authorize(Roles = UserRoles.Admin)]
         public async Task<ActionResult<AuctionDetailsDTO>> GetNotApprovedAuctionDetails([FromRoute] Guid id)
         {
             return Ok(await _auctionVerificationService.GetNotApprovedAuctionDetailsByIdAsync(id));
         }
 
         [HttpPost("not-approved/{id}/approve")]
-        [Authorize(Roles = UserRoles.TechnicalSupportSpecialist)]
+        [Authorize(Roles = UserRoles.Admin)]
         public async Task<ActionResult> ApproveAuction([FromRoute] Guid id)
         {
             await _auctionVerificationService.ApproveAuctionAsync(id);
@@ -136,7 +136,7 @@ namespace BidMasterOnline.API.Controllers
         }
 
         [HttpPost("not-approved/reject")]
-        [Authorize(Roles = UserRoles.TechnicalSupportSpecialist)]
+        [Authorize(Roles = UserRoles.Admin)]
         public async Task<ActionResult> RejectAuction([FromBody] RejectAuctionDTO request)
         {
             await _auctionVerificationService.RejectAuctionAsync(request);

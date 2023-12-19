@@ -11,8 +11,9 @@ namespace BidMasterOnline.Application.DTO
         public string Username { get; set; }
         public string FullName { get; set; }
         public string Email { get; set; }
-        public UserRole Role { get; set; }
+        public DateOnly DateOfBirth { get; set; }
+        public string Role { get; set; }
         public string? ImageUrl { get; set; }
-        public UserStatus Status { get; set; }
+        public string Status { get; set; }
     }
 }

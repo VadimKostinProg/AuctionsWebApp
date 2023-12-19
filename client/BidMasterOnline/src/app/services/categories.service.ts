@@ -8,6 +8,8 @@ import { CreateCategoryModel } from '../models/createCategoryModel';
 import { ListModel } from '../models/listModel';
 import { DataTableOptionsModel } from '../models/dataTableOptionsModel';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormInputTypeEnum } from '../models/formInputTypeEnum';
+import { UserRoleEnum } from '../models/userRoleEnum';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +20,7 @@ export class CategoriesService {
 
   constructor(private readonly httpClient: HttpClient) { }
 
-  getCategoriesApiUrl() {
+  getCategoriesDataTableApiUrl() {
     return `${this.baseUrl}/list`;
   }
 
@@ -59,7 +61,6 @@ export class CategoriesService {
       title: 'Categories',
       resourceName: 'category',
       showIndexColumn: true,
-      showDeletedData: true,
       allowCreating: true,
       createFormOptions: {
         form: new FormGroup({
@@ -69,11 +70,13 @@ export class CategoriesService {
         properties: [
           {
             label: 'Name',
-            propName: 'name'
+            propName: 'name',
+            type: FormInputTypeEnum.Text,
           },
           {
             label: 'Description',
-            propName: 'description'
+            propName: 'description',
+            type: FormInputTypeEnum.Text,
           }
         ],
       },
@@ -87,15 +90,18 @@ export class CategoriesService {
         properties: [
           {
             label: 'Id',
-            propName: 'id'
+            propName: 'id',
+            type: FormInputTypeEnum.Text,
           },
           {
             label: 'Name',
-            propName: 'name'
+            propName: 'name',
+            type: FormInputTypeEnum.Text,
           },
           {
             label: 'Description',
-            propName: 'description'
+            propName: 'description',
+            type: FormInputTypeEnum.Text,
           }
         ],
       },

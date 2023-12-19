@@ -1,6 +1,5 @@
 ﻿using BidMasterOnline.Application.Sessions;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace BidMasterOnline.API.Filters
@@ -15,16 +14,10 @@ namespace BidMasterOnline.API.Filters
 
             if (claimsIdentity is not null)
             {
-                var userIdClaim = claimsIdentity.Claims.SingleOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub);
+                var userIdClaim = claimsIdentity.Claims.SingleOrDefault(c => c.Type == "Id");
                 if (userIdClaim is not null)
                 {
                     session.UserId = Guid.Parse(userIdClaim.Value);
-                }
-
-                var emailClaim = claimsIdentity.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-                if (emailClaim is not null)
-                {
-                    session.UserEmail = emailClaim.Value;
                 }
 
                 var roleClaim = claimsIdentity.Claims.SingleOrDefault(c => c.Type == ClaimTypes.Role);

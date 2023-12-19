@@ -102,15 +102,20 @@ namespace BidMasterOnline.Application.Services
             if (string.IsNullOrEmpty(request.Email))
                 throw new ArgumentNullException("Email is blank.");
 
+            if (request.DateOfBirth.AddYears(18) > DateOnly.FromDateTime(DateTime.Now))
+                throw new ForbiddenException("Cannot create an account untill you are 18 y.o.");
+
             if (string.IsNullOrEmpty(request.Password))
                 throw new ArgumentNullException("Password is blank.");
 
             PasswordComplexityValidator.Validate(request.Password);
 
-            if (await _repository.AnyAsync<User>(x => x.Username == request.Username))
+            if (await _repository.AnyAsync<User>(x => x.Username == request.Username && 
+                x.UserStatus.Name != Enums.UserStatus.Deleted.ToString()))
                 throw new ArgumentException("User with such username already exists.");
 
-            if (await _repository.AnyAsync<User>(x => x.Email == request.Email))
+            if (await _repository.AnyAsync<User>(x => x.Email == request.Email &&
+                x.UserStatus.Name != Enums.UserStatus.Deleted.ToString()))
                 throw new ArgumentException("User with such email already exists.");
 
             var passwordSalt = CryptographyHelper.GenerateSalt(size: 128);
@@ -126,6 +131,7 @@ namespace BidMasterOnline.Application.Services
                 Username = request.Username,
                 FullName = request.FullName,
                 Email = request.Email,
+                DateOfBirth = request.DateOfBirth.ToDateTime(new TimeOnly()),
                 PasswordHashed = password,
                 PasswordSalt = passwordSalt,
                 RoleId = roleToAssign!.Id,
@@ -165,22 +171,33 @@ namespace BidMasterOnline.Application.Services
             _notificationsService.SendMessageOfDeletingAccountToUser(user);
         }
 
-        public async Task<UserDTO> GetUserByIdAsync(Guid id)
+        public async Task<ProfileDTO> GetUserProfileByIdAsync(Guid id)
         {
             var user = await _repository.GetByIdAsync<User>(id);
 
             if (user is null)
                 throw new KeyNotFoundException("User with id does not exist.");
 
-            return new UserDTO
+            var totalAuctions = await _repository.CountAsync<Auction>(x => x.AuctionistId == user.Id);
+
+            var usersBids = await _repository.GetFilteredAsync<Bid>(x => x.BidderId == user.Id);
+
+            var totalBids = usersBids.Count();
+            var totalWins = usersBids.Count(x => x.IsWinning);
+
+            return new ProfileDTO
             {
                 Id = user.Id,
                 Username = user.Username,
                 FullName = user.FullName,
                 Email = user.Email,
-                Role = Enum.Parse<UserRole>(user.Role.Name),
+                DateOfBirth = DateOnly.FromDateTime(user.DateOfBirth),
+                Role = user.Role.Name,
                 ImageUrl = user.ImageUrl,
-                Status = Enum.Parse<Enums.UserStatus>(user.UserStatus.Name)
+                Status = user.UserStatus.Name,
+                TotalAuctions = (int)totalAuctions,
+                TotalBids = totalBids,
+                TotalWins = totalWins
             };
         }
 
@@ -207,13 +224,19 @@ namespace BidMasterOnline.Application.Services
             {
                 switch (specifications.SortField)
                 {
-                    case "Id":
+                    case "id":
                         builder.OrderBy(x => x.Id, specifications.SortDirection ?? SortDirection.ASC);
                         break;
-                    case "FullName":
+                    case "username":
+                        builder.OrderBy(x => x.Username, specifications.SortDirection ?? SortDirection.ASC);
+                        break;
+                    case "fullName":
                         builder.OrderBy(x => x.FullName, specifications.SortDirection ?? SortDirection.ASC);
                         break;
-                    case "DateOfBirth":
+                    case "email":
+                        builder.OrderBy(x => x.Email, specifications.SortDirection ?? SortDirection.ASC);
+                        break;
+                    case "dateOfBirth":
                         builder.OrderBy(x => x.DateOfBirth, specifications.SortDirection ?? SortDirection.ASC);
                         break;
                 }
@@ -244,6 +267,8 @@ namespace BidMasterOnline.Application.Services
             builder.With(x => x.Role.Name == Enums.UserRole.Admin.ToString() || 
                               x.Role.Name == Enums.UserRole.TechnicalSupportSpecialist.ToString());
 
+            builder.With(x => x.UserStatus.Name == Enums.UserStatus.Active.ToString());
+
             if (!string.IsNullOrEmpty(specifications.SearchTerm))
                 builder.With(x => x.FullName.Contains(specifications.SearchTerm) || x.Username.Contains(specifications.SearchTerm));
 
@@ -251,16 +276,22 @@ namespace BidMasterOnline.Application.Services
             {
                 switch (specifications.SortField)
                 {
-                    case "Id":
+                    case "id":
                         builder.OrderBy(x => x.Id, specifications.SortDirection ?? SortDirection.ASC);
                         break;
-                    case "FullName":
+                    case "username":
+                        builder.OrderBy(x => x.Username, specifications.SortDirection ?? SortDirection.ASC);
+                        break;
+                    case "fullName":
                         builder.OrderBy(x => x.FullName, specifications.SortDirection ?? SortDirection.ASC);
                         break;
-                    case "DateOfBirth":
+                    case "email":
+                        builder.OrderBy(x => x.Email, specifications.SortDirection ?? SortDirection.ASC);
+                        break;
+                    case "dateOfBirth":
                         builder.OrderBy(x => x.DateOfBirth, specifications.SortDirection ?? SortDirection.ASC);
                         break;
-                    case "Role":
+                    case "role":
                         builder.OrderBy(x => x.Role.Name, specifications.SortDirection ?? SortDirection.ASC);
                         break;
                 }
@@ -290,9 +321,10 @@ namespace BidMasterOnline.Application.Services
                         Username = x.Username,
                         FullName = x.FullName,
                         Email = x.Email,
-                        Role = Enum.Parse<UserRole>(x.Role.Name),
+                        DateOfBirth = DateOnly.FromDateTime(x.DateOfBirth),
+                        Role = x.Role.Name,
                         ImageUrl = x.ImageUrl,
-                        Status = Enum.Parse<Enums.UserStatus>(x.UserStatus.Name)
+                        Status = x.UserStatus.Name
                     })
                     .ToList(),
                 TotalPages = totalPages
@@ -329,6 +361,9 @@ namespace BidMasterOnline.Application.Services
         {
             var user = await _authService.GetAuthenticatedUserEntityAsync();
 
+            if (user.UserStatus.Name == Enums.UserStatus.Deleted.ToString())
+                throw new InvalidOperationException("User is already deleted.");
+
             var status = await _repository.FirstOrDefaultAsync<Domain.Entities.UserStatus>(x =>
                 x.Name == Enums.UserStatus.Deleted.ToString());
 
@@ -350,6 +385,8 @@ namespace BidMasterOnline.Application.Services
             user.IsEmailConfirmed = true;
 
             await _repository.UpdateAsync(user);
+
+            _notificationsService.SendMessageOfSuccessfullConfirmingEmailToUser(user);
         }
     }
 }

@@ -23,8 +23,7 @@ export class CategoriesComponent implements OnInit {
 
   error: string;
 
-  constructor(private readonly categoriesService: CategoriesService,
-    private readonly deepLinkingService: DeepLinkingService) {
+  constructor(private readonly categoriesService: CategoriesService) {
 
   }
 
@@ -49,10 +48,7 @@ export class CategoriesComponent implements OnInit {
       }
     )
 
-    this.options.createFormOptions.form = new FormGroup({
-      name: new FormControl(null, [Validators.required]),
-      description: new FormControl(null, [Validators.required])
-    });
+    this.options = this.categoriesService.getDataTableOptions();
   }
 
   onEditCategory() {
@@ -91,6 +87,6 @@ export class CategoriesComponent implements OnInit {
   }
 
   getCategoriesApiUrl() {
-    return this.categoriesService.getCategoriesApiUrl();
+    return this.categoriesService.getCategoriesDataTableApiUrl();
   }
 }
