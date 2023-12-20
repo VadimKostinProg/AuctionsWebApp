@@ -9,6 +9,7 @@ import { CanActivateGuardService } from './services/can-activate-guard.service';
 import { StaffManagementComponent } from './admin/staff-management/staff-management.component';
 import { ConfirmEmailComponent } from './general/confirm-email/confirm-email.component';
 import { ProfileComponent } from './user-accounts/profile/profile.component';
+import { CustomersManagementComponent } from './technical-support/customers-management/customers-management.component';
 
 const routes: Routes = [
   {
@@ -62,6 +63,12 @@ const routes: Routes = [
     component: CategoriesComponent,
     canActivate: [CanActivateGuardService],
     data: { expectedRoles: ['Admin'] }
+  },
+  {
+    path: 'customers-management',
+    component: CustomersManagementComponent,
+    canActivate: [CanActivateGuardService],
+    data: { expectedRoles: ['TechnicalSupportSpecialist'] }
   }
 ];
 

@@ -1,4 +1,5 @@
 import { FormOptionsModel } from "./formOptionsModel";
+import { OptionalActionModel } from "./optionalActionModel";
 import { TableColumnSettingsModel } from "./tableColumnSettingsModel";
 
 export class DataTableOptionsModel {
@@ -10,6 +11,7 @@ export class DataTableOptionsModel {
     public allowEdit: boolean;
     public editFormOptions: FormOptionsModel | null;
     public allowDelete: boolean;
+    public optionalAction: OptionalActionModel;
     public emptyListDisplayLabel: string;
     public columnSettings: TableColumnSettingsModel[];
 }

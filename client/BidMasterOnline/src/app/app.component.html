@@ -57,7 +57,7 @@
                             <li *ngIf="user.role == 'TechnicalSupportSpecialist'"
                                 ngbDropdownItem>
                                 <a class="dropdown-item"
-                                   routerLink="/customers-requests">Customers management</a>
+                                   routerLink="/customers-management">Customers management</a>
                             </li>
                             <li *ngIf="user.role == 'TechnicalSupportSpecialist'"
                                 ngbDropdownItem>
@@ -95,7 +95,7 @@
                         <a class="logout-btn"
                            routerLink="/"
                            (click)="onLogOutClick()">
-                           <i class="fa-solid fa-right-from-bracket"></i>
+                            <i class="fa-solid fa-right-from-bracket"></i>
                         </a>
                     </ng-template>
                 </span>

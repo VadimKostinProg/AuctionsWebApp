@@ -48,7 +48,7 @@ namespace BidMasterOnline.Application.Services
                 if (request.Days.Value < 1)
                     throw new ArgumentException("Days number to block must be at least 1.");
 
-                user.UnblockDateTime = DateTime.UtcNow.AddDays(request.Days.Value);
+                user.UnblockDateTime = DateTime.Now.AddDays(request.Days.Value);
             }
 
             await _repository.UpdateAsync(user);

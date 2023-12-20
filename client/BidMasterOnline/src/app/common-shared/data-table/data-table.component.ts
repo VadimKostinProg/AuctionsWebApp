@@ -4,6 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DataTableOptionsModel } from 'src/app/models/dataTableOptionsModel';
 import { FormInputTypeEnum } from 'src/app/models/formInputTypeEnum';
 import { ListModel } from 'src/app/models/listModel';
+import { OptionalActionResultModel } from 'src/app/models/optionalActionResultModal';
 import { PaginationModel } from 'src/app/models/paginationModel';
 import { SortDirectionEnum } from 'src/app/models/sortDirectionEnum';
 import { SortingModel } from 'src/app/models/sortingModel';
@@ -11,8 +12,7 @@ import { DeepLinkingService } from 'src/app/services/deep-linking.service';
 
 @Component({
   selector: 'data-table',
-  templateUrl: './data-table.component.html',
-  styleUrls: ['./data-table.component.scss']
+  templateUrl: './data-table.component.html'
 })
 export class DataTableComponent implements OnInit {
 
@@ -30,6 +30,9 @@ export class DataTableComponent implements OnInit {
 
   @Output()
   onDelete = new EventEmitter<string>();
+
+  @Output()
+  onAction = new EventEmitter<OptionalActionResultModel>();
 
   tableData: ListModel<any>;
 
@@ -86,7 +89,9 @@ export class DataTableComponent implements OnInit {
       }
 
       if (this.pagination.pageNumber > this.tableData.totalPages) {
-        await this.onPageNumberChanged(1);
+        this.pagination.pageNumber = 1;
+
+        await this.deepLinkingService.setPaginationParams(this.pagination);
       }
     });
   }
@@ -102,12 +107,17 @@ export class DataTableComponent implements OnInit {
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' });
   }
 
-  onDeleteClick(item: any, modal: TemplateRef<any>) {
+  onActionClick(item: any, modal: TemplateRef<any>) {
     this.choosenItem = item;
+    if (this.options.optionalAction.form != null) {
+      this.options.optionalAction.form.controls['id'].setValue(this.choosenItem['id']);
+    }
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' });
   }
 
   isTextType = (inputType: FormInputTypeEnum): boolean => inputType == FormInputTypeEnum.Text;
+  isNumberType = (inputType: FormInputTypeEnum): boolean => inputType == FormInputTypeEnum.Number;
+  isTextAreaType = (inputType: FormInputTypeEnum): boolean => inputType == FormInputTypeEnum.TextArea;
   isPasswordType = (inputType: FormInputTypeEnum): boolean => inputType == FormInputTypeEnum.Password;
   isSelectType = (inputType: FormInputTypeEnum): boolean => inputType == FormInputTypeEnum.Select;
   isDateType = (inputType: FormInputTypeEnum): boolean => inputType == FormInputTypeEnum.Date;
@@ -176,5 +186,17 @@ export class DataTableComponent implements OnInit {
   onDeleteSubmit(modal: any) {
     modal.close();
     this.onDelete.emit(this.choosenItem.id);
+  }
+
+  onOptionalActionSubmit(modal: any) {
+    modal.close();
+
+    var actionResult = {
+      actionName: this.options.optionalAction.actionName,
+      object: this.options.optionalAction.form != null ?
+        this.options.optionalAction.form.value : this.choosenItem['id']
+    } as OptionalActionResultModel;
+
+    this.onAction.emit(actionResult);
   }
 }

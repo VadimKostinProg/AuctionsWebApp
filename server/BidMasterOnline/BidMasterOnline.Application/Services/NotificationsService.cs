@@ -87,7 +87,7 @@ namespace BidMasterOnline.Application.Services
             string title = "Your  account has been blocked.";
 
             string message = "We are informing you, that your account on the BidMasterOnline has been blocked." +
-                             "Here is the blocking reason explained:" +
+                             "Here is the blocking reason explained:<br>" +
                              blockingReason;
 
             if (days is not null)

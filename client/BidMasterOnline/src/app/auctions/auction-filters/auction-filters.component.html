@@ -7,8 +7,6 @@
                     <div>
                         <input class="form-check-input"
                                type="radio"
-                               name="exampleRadios"
-                               id="radioOption1"
                                [value]="category.id"
                                [checked]="category.id == chosenCategoryId"
                                (click)="onCategoryChanged($event)"> {{ category.name }}

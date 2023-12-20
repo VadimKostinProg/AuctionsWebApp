@@ -106,6 +106,7 @@ export class CategoriesService {
         ],
       },
       allowDelete: true,
+      optionalAction: null,
       emptyListDisplayLabel: 'The list of categories is empty.',
       columnSettings: [
         {

@@ -102,7 +102,7 @@ namespace BidMasterOnline.API.Controllers
             return Ok(new { Message = "User account has been deleted successfully." });
         }
 
-        [HttpPut("{id}/block")]
+        [HttpPut("block")]
         [Authorize(Roles = $"{UserRoles.TechnicalSupportSpecialist}")]
         public async Task<ActionResult> BlockUser([FromBody] BlockUserDTO request) 
         {

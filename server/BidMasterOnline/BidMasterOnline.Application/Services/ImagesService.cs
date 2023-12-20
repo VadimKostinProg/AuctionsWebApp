@@ -15,7 +15,7 @@ namespace BidMasterOnline.Application.Services
             var account = new Account(
                     configuration["CloudinarySettings:CloudName"]!,
                     configuration["CloudinarySettings:APIKey"]!,
-                    configuration["CloudinarySettings:Ofu6Nuq7rd-EmMYCk8lL5PfgbL8"]!
+                    configuration["CloudinarySettings:APISecret"]!
                 );
 
             _cloudinary = new Cloudinary(account);

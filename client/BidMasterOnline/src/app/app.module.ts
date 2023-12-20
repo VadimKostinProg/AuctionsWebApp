@@ -14,6 +14,7 @@ import { AdminModule } from './admin/admin.module';
 import { JwtInterceptorService } from './services/jwt-interceptor.service';
 import { JwtModule } from '@auth0/angular-jwt';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TechnicalSupportModule } from './technical-support/technical-support.module';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     CommonSharedModule,
     AuctionsModule,
     AdminModule,
+    TechnicalSupportModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,

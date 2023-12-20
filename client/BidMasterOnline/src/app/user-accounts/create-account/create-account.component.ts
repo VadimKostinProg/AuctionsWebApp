@@ -7,11 +7,12 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-account',
-  templateUrl: './create-account.component.html',
-  styleUrl: './create-account.component.scss'
+  templateUrl: './create-account.component.html'
 })
 export class CreateAccountComponent implements OnInit {
   createAccountForm: FormGroup;
+
+  image: File;
 
   error: string | undefined;
 
@@ -20,11 +21,11 @@ export class CreateAccountComponent implements OnInit {
 
   ngOnInit(): void {
     this.createAccountForm = new FormGroup({
-      image: new FormControl(),
       username: new FormControl(null, [Validators.required]),
       name: new FormControl(null, [Validators.required]),
       surname: new FormControl(null, [Validators.required]),
       email: new FormControl(null, [Validators.required, Validators.email]),
+      dateOfBirth: new FormControl(null, [Validators.required]),
       password: new FormControl(null, [Validators.required]),
       confirmPassword: new FormControl(null, [Validators.required]),
     });
@@ -46,6 +47,10 @@ export class CreateAccountComponent implements OnInit {
     return this.createAccountForm.get('email');
   }
 
+  get dateOfBirth() {
+    return this.createAccountForm.get('dateOfBirth');
+  }
+
   get password() {
     return this.createAccountForm.get('password');
   }
@@ -54,8 +59,12 @@ export class CreateAccountComponent implements OnInit {
     return this.createAccountForm.get('confirmPassword');
   }
 
+  onImageChange(file: any) {
+    this.image = file.target.files[0];
+  }
+
   onSubmit() {
-    if (this.createAccountForm.valid) {
+    if (!this.createAccountForm.valid) {
       return;
     }
 
@@ -64,10 +73,11 @@ export class CreateAccountComponent implements OnInit {
     const formModel = this.createAccountForm.value;
 
     const user = {
-      image: formModel.image,
+      image: this.image,
       username: formModel.username,
       fullName: `${formModel.surname} ${formModel.name}`,
       email: formModel.email,
+      dateOfBirth: formModel.dateOfBirth,
       password: formModel.password,
       confirmPassword: formModel.confirmPassword
     } as CreateUserModel;

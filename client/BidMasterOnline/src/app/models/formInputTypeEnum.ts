@@ -1,3 +1,3 @@
 export enum FormInputTypeEnum {
-    Text, Select, Password, Date
+    Text, Number, TextArea, Select, Password, Date
 }

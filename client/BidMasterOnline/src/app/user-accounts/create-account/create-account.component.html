@@ -15,8 +15,8 @@
                     <input type="file"
                            id="image"
                            class="form-control"
-                           formControlName="image"
-                           accept=".png, .jpg, .jpeg" />
+                           accept=".png, .jpg, .jpeg"
+                           (change)="onImageChange($event)" />
                 </div>
             </div>
 
@@ -93,6 +93,33 @@
                     </div>
                     <div *ngIf="email?.errors?.['email']">
                         <span class="text-danger">Incorrect format of email.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-field flex mb-2">
+                <div>
+                    <label for="dateOfBirth"
+                           class="form-label pt">Date of birth:</label>
+                </div>
+
+                <div class="flex-1 input-group">
+                    <input class="form-control"
+                           placeholder="yyyy-mm-dd"
+                           name="dp"
+                           formControlName="dateOfBirth"
+                           ngbDatepicker
+                           #d="ngbDatepicker" />
+                    <button class="btn btn-outline-secondary bi bi-calendar3"
+                            (click)="d.toggle()"
+                            type="button">
+                        <i class="fa-solid fa-calendar-days"></i>
+                    </button>
+                </div>
+
+                <div *ngIf="!dateOfBirth?.valid && (dateOfBirth?.dirty || dateOfBirth?.touched)">
+                    <div *ngIf="dateOfBirth?.errors?.['required']">
+                        <span class="text-danger">Date of birth is required.</span>
                     </div>
                 </div>
             </div>

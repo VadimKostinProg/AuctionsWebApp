@@ -40,7 +40,7 @@
                             </div>
                         </th>
 
-                        <th *ngIf="options.allowEdit || options.allowDelete"></th>
+                        <th *ngIf="options.allowEdit || options.allowDelete || options.optionalAction"></th>
                     </tr>
 
                     <tr *ngFor="let row of tableData.list; let i = index">
@@ -56,7 +56,7 @@
                             </div>
                         </td>
 
-                        <th *ngIf="options.allowEdit || options.allowDelete">
+                        <th *ngIf="options.allowEdit || options.allowDelete || options.optionalAction">
                             <ng-template #actionsPopContent>
                                 <div class="actions-container">
                                     <button *ngIf="options.allowEdit"
@@ -66,8 +66,13 @@
                                     </button>
                                     <button *ngIf="options.allowDelete"
                                             class="btn"
-                                            (click)="onDeleteClick(row, deleteModal)">
+                                            (click)="onActionClick(row, deleteModal)">
                                         Delete
+                                    </button>
+                                    <button *ngIf="options.optionalAction"
+                                            class="btn"
+                                            (click)="onActionClick(row, optionalActionModal)">
+                                        {{ options.optionalAction.actionName }}
                                     </button>
                                 </div>
                             </ng-template>
@@ -162,6 +167,18 @@
                                    class="form-control"
                                    [formControlName]="prop.propName" />
 
+                            <input *ngIf="isNumberType(prop.type)"
+                                   type="number"
+                                   [id]="prop.propName"
+                                   class="form-control"
+                                   [formControlName]="prop.propName" />
+
+                            <textarea *ngIf="isTextAreaType(prop.type)"
+                                      [id]="prop.propName"
+                                      class="form-control"
+                                      [formControlName]="prop.propName">
+                            </textarea>
+
                             <input *ngIf="isPasswordType(prop.type)"
                                    type="password"
                                    [id]="prop.propName"
@@ -236,6 +253,18 @@
                                    class="form-control"
                                    [formControlName]="prop.propName" />
 
+                            <input *ngIf="isNumberType(prop.type)"
+                                   type="number"
+                                   [id]="prop.propName"
+                                   class="form-control"
+                                   [formControlName]="prop.propName" />
+
+                            <textarea *ngIf="isTextAreaType(prop.type)"
+                                      [id]="prop.propName"
+                                      class="form-control"
+                                      [formControlName]="prop.propName">
+                            </textarea>
+
                             <input *ngIf="isPasswordType(prop.type)"
                                    type="text"
                                    [id]="prop.propName"
@@ -279,6 +308,82 @@
                 <button type="button"
                         class="btn btn-outline-dark"
                         (click)="onDeleteSubmit(modal)">Delete</button>
+            </div>
+        </ng-template>
+
+        <ng-template #optionalActionModal
+                     let-modal>
+            <div class="modal-header">
+                <h4 class="modal-title"
+                    id="modal-basic-title">
+                    {{ options.optionalAction.actionName + ' ' + options.resourceName }}
+                </h4>
+                <button type="button"
+                        class="btn-close"
+                        aria-label="Close"
+                        (click)="modal.close()"></button>
+            </div>
+            <div *ngIf="options.optionalAction.form"
+                 class="modal-body">
+                <form [formGroup]="options.optionalAction.form">
+                    <input type="text"
+                           id="id"
+                           class="form-control"
+                           formControlName="id"
+                           hidden />
+
+                    <div *ngFor="let prop of options.optionalAction.properties"
+                         class="form-field flex mb-2">
+                        <div>
+                            <label [for]="prop.propName"
+                                   class="form-label pt">{{ prop.label }}:</label>
+                        </div>
+
+                        <div class="flex-1">
+                            <input *ngIf="isTextType(prop.type)"
+                                   type="text"
+                                   [id]="prop.propName"
+                                   class="form-control"
+                                   [formControlName]="prop.propName" />
+
+                            <input *ngIf="isNumberType(prop.type)"
+                                   type="number"
+                                   [id]="prop.propName"
+                                   class="form-control"
+                                   [formControlName]="prop.propName" />
+
+                            <textarea *ngIf="isTextAreaType(prop.type)"
+                                      [id]="prop.propName"
+                                      class="form-control"
+                                      [formControlName]="prop.propName"></textarea>
+
+                            <input *ngIf="isPasswordType(prop.type)"
+                                   type="text"
+                                   [id]="prop.propName"
+                                   class="form-control"
+                                   [formControlName]="prop.propName" />
+
+                            <select *ngIf="isSelectType(prop.type)"
+                                    [id]="prop.propName"
+                                    class="form-control"
+                                    [formControlName]="prop.propName">
+                                <option *ngFor="let option in prop.selectOptions"
+                                        [value]="option.value">
+                                    {{ option.label }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div *ngIf="options.optionalAction.message"
+                 class="modal-body">
+                <span>{{ options.optionalAction.message }}</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button"
+                        class="btn btn-outline-dark"
+                        (click)="onOptionalActionSubmit(modal)">Submit</button>
             </div>
         </ng-template>
     </div>
