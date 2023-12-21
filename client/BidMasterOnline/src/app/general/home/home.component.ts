@@ -20,12 +20,8 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.auctionsService.getPopularAuctions().subscribe((auctions) => {
-      this.popularAuctions = auctions;
-    });
-    this.auctionsService.getFinishingAuctions().subscribe((auctions) => {
-      this.finishingAuctions = auctions;
-    });
+    this.popularAuctions = this.auctionsService.getPopularAuctions();
+    this.finishingAuctions = this.auctionsService.getFinishingAuctions();
   }
 
   async onSearchPressed() {

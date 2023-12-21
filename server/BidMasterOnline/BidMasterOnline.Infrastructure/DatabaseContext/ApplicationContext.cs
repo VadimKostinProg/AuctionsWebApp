@@ -73,8 +73,8 @@ namespace BidMasterOnline.Infrastructure.DatabaseContext
 
             modelBuilder.Entity<AuctionFinishType>().HasData(new List<AuctionFinishType>
             {
-                new AuctionFinishType 
-                { 
+                new AuctionFinishType
+                {
                     Name = Application.Enums.AuctionFinishType.StaticFinishTime.ToString(),
                     Description = "Auction finishes in the defined statis time."
                 },
@@ -87,8 +87,8 @@ namespace BidMasterOnline.Infrastructure.DatabaseContext
 
             modelBuilder.Entity<ComplaintType>().HasData(new List<ComplaintType>
             {
-                new ComplaintType 
-                { 
+                new ComplaintType
+                {
                     Name = Application.Enums.ComplaintType.ComplaintOnUserNonPayemnt.ToString(),
                     Description = "Complaint on user which has not payed for the lot of the auction."
                 },

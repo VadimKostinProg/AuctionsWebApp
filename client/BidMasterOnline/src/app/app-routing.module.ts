@@ -10,6 +10,7 @@ import { StaffManagementComponent } from './admin/staff-management/staff-managem
 import { ConfirmEmailComponent } from './general/confirm-email/confirm-email.component';
 import { ProfileComponent } from './user-accounts/profile/profile.component';
 import { CustomersManagementComponent } from './technical-support/customers-management/customers-management.component';
+import { CreateAuctionComponent } from './customer/create-auction/create-auction.component';
 
 const routes: Routes = [
   {
@@ -69,6 +70,12 @@ const routes: Routes = [
     component: CustomersManagementComponent,
     canActivate: [CanActivateGuardService],
     data: { expectedRoles: ['TechnicalSupportSpecialist'] }
+  },
+  {
+    path: 'create-auction',
+    component: CreateAuctionComponent,
+    canActivate: [CanActivateGuardService],
+    data: { expectedRoles: ['Customer'] }
   }
 ];
 

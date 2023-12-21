@@ -6,6 +6,7 @@ import { DataTableOptionsModel } from 'src/app/models/dataTableOptionsModel';
 import { CreateUserModel } from 'src/app/models/createUserModel';
 import { UserRoleEnum } from 'src/app/models/userRoleEnum';
 import { Observable } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-staff-management',
@@ -21,7 +22,8 @@ export class StaffManagementComponent implements OnInit {
 
   placeholder: string = 'Search user...';
 
-  constructor(private readonly usersService: UsersService) {
+  constructor(private readonly usersService: UsersService,
+    private readonly toastrService: ToastrService) {
 
   }
 
@@ -59,24 +61,24 @@ export class StaffManagementComponent implements OnInit {
       case UserRoleEnum[UserRoleEnum.Admin]:
         this.usersService.createAdmin(createUser).subscribe(
           async (response) => {
-            // TODO: add toaster
+            this.toastrService.success(response.message, 'Success');
 
             await this.dateTable.reloadDatatable();
           },
           (error) => {
-            // TODO: add toaster
+            this.toastrService.success(error.error, 'Success');
           }
         );
         break;
       case UserRoleEnum[UserRoleEnum.TechnicalSupportSpecialist]:
         this.usersService.createTechnicalSupportSpecialist(createUser).subscribe(
           async (response) => {
-            // TODO: add toaster
+            this.toastrService.success(response.message, 'Success');
 
             await this.dateTable.reloadDatatable();
           },
           (error) => {
-            // TODO: add toaster
+            this.toastrService.success(error.error, 'Success');
           }
         );
         break;
@@ -88,12 +90,12 @@ export class StaffManagementComponent implements OnInit {
   onUserDelete(userId: string) {
     this.usersService.deleteUser(userId).subscribe(
       async (response) => {
-        // TODO: add toaster
+        this.toastrService.success(response.message, 'Success');
 
         await this.dateTable.reloadDatatable();
       },
       (error) => {
-        // TODO: add toaster
+        this.toastrService.success(error.error, 'Success');
       }
     );
   }

@@ -5,6 +5,7 @@ import { CommonSharedModule } from '../common-shared/common-shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { StaffManagementComponent } from './staff-management/staff-management.component';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { StaffManagementComponent } from './staff-management/staff-management.co
     CommonModule,
     CommonSharedModule,
     ReactiveFormsModule,
-    NgbModule
+    NgbModule,
+    ToastrModule.forRoot(),
   ],
   exports: [
     CategoriesComponent,

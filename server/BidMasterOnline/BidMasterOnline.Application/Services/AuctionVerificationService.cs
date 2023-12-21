@@ -29,7 +29,7 @@ namespace BidMasterOnline.Application.Services
 
             auction.IsApproved = true;
             auction.StartDateTime = DateTime.Now;
-            auction.FinishDateTime = DateTime.Now.Add(auction.AuctionTime);
+            auction.FinishDateTime = DateTime.Now.Add(new TimeSpan(auction.AuctionTime));
 
             await _repository.UpdateAsync(auction);
 

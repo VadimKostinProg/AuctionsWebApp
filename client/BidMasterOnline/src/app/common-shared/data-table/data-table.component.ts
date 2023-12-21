@@ -109,8 +109,16 @@ export class DataTableComponent implements OnInit {
 
   onActionClick(item: any, modal: TemplateRef<any>) {
     this.choosenItem = item;
-    if (this.options.optionalAction.form != null) {
+    if (this.options.optionalAction?.form != null) {
       this.options.optionalAction.form.controls['id'].setValue(this.choosenItem['id']);
+    } else if (this.options.optionalAction.message == null) {
+      var actionResult = {
+        actionName: this.options.optionalAction.actionName,
+        object: this.options.optionalAction.form != null ?
+          this.options.optionalAction.form.value : this.choosenItem['id']
+      } as OptionalActionResultModel;
+
+      this.onAction.emit(actionResult);
     }
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' });
   }

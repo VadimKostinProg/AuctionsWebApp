@@ -2,7 +2,6 @@
 using BidMasterOnline.Infrastructure.DatabaseContext;
 using BidMasterOnline.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

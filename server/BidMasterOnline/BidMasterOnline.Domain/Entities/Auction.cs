@@ -27,10 +27,10 @@ namespace BidMasterOnline.Domain.Entities
         public DateTime FinishDateTime { get; set; }
 
         [Required]
-        public TimeSpan AuctionTime { get; set; }
+        public long AuctionTime { get; set; }
 
         [AllowNull]
-        public TimeSpan? FinishInterval { get; set; }
+        public long? FinishInterval { get; set; }
 
         [Required]
         public decimal StartPrice { get; set; }

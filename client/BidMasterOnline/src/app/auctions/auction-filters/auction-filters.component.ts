@@ -6,8 +6,7 @@ import { CategoriesService } from 'src/app/services/categories.service';
 
 @Component({
   selector: 'auction-filters',
-  templateUrl: './auction-filters.component.html',
-  styleUrl: './auction-filters.component.scss'
+  templateUrl: './auction-filters.component.html'
 })
 export class AuctionFiltersComponent implements OnInit {
 

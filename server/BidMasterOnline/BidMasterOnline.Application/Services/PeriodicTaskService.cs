@@ -38,6 +38,7 @@ namespace BidMasterOnline.Application.Services
             var now = DateTime.Now;
 
             var specification = new SpecificationBuilder<Auction>()
+                .With(x => x.IsApproved)
                 .With(x => x.Status.Name == Enums.AuctionStatus.Active.ToString())
                 .With(x => x.FinishDateTime < now)
                 .Build();

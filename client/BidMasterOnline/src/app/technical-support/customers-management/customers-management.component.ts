@@ -5,6 +5,7 @@ import { DataTableOptionsModel } from 'src/app/models/dataTableOptionsModel';
 import { DeepLinkingService } from 'src/app/services/deep-linking.service';
 import { OptionalActionResultModel } from 'src/app/models/optionalActionResultModal';
 import { BlockUserModel } from 'src/app/models/blockUserModel';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-customers-management',
@@ -27,7 +28,8 @@ export class CustomersManagementComponent implements OnInit {
   error: string = 'Invalid query parameters.';
 
   constructor(private readonly usersService: UsersService,
-    private readonly deepLinkingService: DeepLinkingService) {
+    private readonly deepLinkingService: DeepLinkingService,
+    private readonly toastrService: ToastrService) {
 
   }
 
@@ -79,10 +81,10 @@ export class CustomersManagementComponent implements OnInit {
         } as BlockUserModel;
         this.usersService.blockUser(model).subscribe(
           (response) => {
-            // TODO: add toaster
+            this.toastrService.success(response.message, 'Success');
           },
           (error) => {
-            // TODO: add toaster
+            this.toastrService.success(error.error, 'Error');
           }
         );
         break;
@@ -90,10 +92,10 @@ export class CustomersManagementComponent implements OnInit {
         const userId = actionResult.object as string;
         this.usersService.unblockUser(userId).subscribe(
           (response) => {
-            // TODO: add toaster
+            this.toastrService.success(response.message, 'Success');
           },
           (error) => {
-            // TODO: add toaster
+            this.toastrService.success(error.error, 'Error');
           }
         );
         break;

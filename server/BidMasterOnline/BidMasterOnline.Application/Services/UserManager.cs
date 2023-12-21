@@ -140,7 +140,7 @@ namespace BidMasterOnline.Application.Services
 
             if (request.Image is not null)
             {
-                var uploadResult = await _imagesService.AddImageAsync(request.Image);
+                var uploadResult = await _imagesService.AddImageAsync(request.Image, Enums.ImageType.ImageForUser);
 
                 user.ImageUrl = uploadResult.SecureUrl.AbsoluteUri;
                 user.ImagePublicId = uploadResult.PublicId;
@@ -167,6 +167,11 @@ namespace BidMasterOnline.Application.Services
             user.UserStatusId = status!.Id;
 
             await _repository.UpdateAsync(user);
+
+            if (user.ImagePublicId is not null)
+            {
+                await _imagesService.DeleteImageAsync(user.ImagePublicId);
+            }
 
             _notificationsService.SendMessageOfDeletingAccountToUser(user);
         }
@@ -370,6 +375,11 @@ namespace BidMasterOnline.Application.Services
             user.UserStatusId = status!.Id;
 
             await _repository.UpdateAsync(user);
+
+            if (user.ImagePublicId is not null)
+            {
+                await _imagesService.DeleteImageAsync(user.ImagePublicId);
+            }
         }
 
         public async Task ConfirmEmailAsync(Guid userId)

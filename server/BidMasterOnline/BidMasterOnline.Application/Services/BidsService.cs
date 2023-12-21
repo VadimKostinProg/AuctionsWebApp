@@ -147,7 +147,7 @@ namespace BidMasterOnline.Application.Services
 
             if (auction.FinishType.Name == Enums.AuctionFinishType.IncreasingFinishTime.ToString())
             {
-                auction.FinishDateTime.Add(auction.FinishInterval!.Value);
+                auction.FinishDateTime.Add(new TimeSpan(auction.FinishInterval!.Value));
 
                 await _repository.UpdateAsync(auction);
             }

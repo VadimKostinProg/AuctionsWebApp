@@ -15,6 +15,7 @@ import { JwtInterceptorService } from './services/jwt-interceptor.service';
 import { JwtModule } from '@auth0/angular-jwt';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TechnicalSupportModule } from './technical-support/technical-support.module';
+import { CustomerModule } from './customer/customer.module';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { TechnicalSupportModule } from './technical-support/technical-support.mo
     AuctionsModule,
     AdminModule,
     TechnicalSupportModule,
+    CustomerModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,

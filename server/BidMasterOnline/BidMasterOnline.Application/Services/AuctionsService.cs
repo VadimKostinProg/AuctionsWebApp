@@ -119,7 +119,7 @@ namespace BidMasterOnline.Application.Services
                 AuctionistName = auction.Auctionist.Username,
                 StartDateAndTime = auction.StartDateTime,
                 LotDescription = auction.LotDescription,
-                Score = auction.Scores.Average(x => x.Score),
+                Score = auction.Scores.Any() ? auction.Scores.Average(x => x.Score) : -1,
                 FinishTypeDescription = auction.FinishType.Description,
                 Status = Enum.Parse<Enums.AuctionStatus>(auction.Status.Name),
             };
@@ -188,10 +188,10 @@ namespace BidMasterOnline.Application.Services
             {
                 switch (specifications.SortField)
                 {
-                    case "Popularity":
+                    case "popularity":
                         builder.OrderBy(x => x.Bids.Count(), specifications.SortDirection ?? Enums.SortDirection.ASC);
                         break;
-                    case "DateAndTime":
+                    case "dateAndTime":
                         builder.OrderBy(x => x.FinishDateTime, specifications.SortDirection ?? Enums.SortDirection.DESC);
                         break;
                 }
@@ -216,7 +216,9 @@ namespace BidMasterOnline.Application.Services
             if (request.FinishType == Enums.AuctionFinishType.IncreasingFinishTime && request.FinishTimeInterval is null)
                 throw new ArgumentNullException("Finish time interval is blank.");
 
-            if (!await _repository.AnyAsync<Category>(x => x.Id == request.CategoryId))
+            var category = await _repository.GetByIdAsync<Category>(request.CategoryId);
+
+            if (category is null)
                 throw new KeyNotFoundException("Category with such id does not exist.");
 
             var auctionist = await _authService.GetAuthenticatedUserEntityAsync();
@@ -237,13 +239,13 @@ namespace BidMasterOnline.Application.Services
             {
                 Name = request.Name,
                 AuctionistId = auctionist.Id,
-                CategoryId = request.CategoryId,
+                CategoryId = category.Id,
                 LotDescription = request.LotDescription,
                 StartDateTime = DateTime.Now,
                 FinishDateTime = DateTime.Now.Add(request.AuctionTime),
-                AuctionTime = request.AuctionTime,
+                AuctionTime = request.AuctionTime.Ticks,
                 FinishTypeId = finishType!.Id,
-                FinishInterval = request.FinishType == Enums.AuctionFinishType.IncreasingFinishTime ? request.FinishTimeInterval : null,
+                FinishInterval = request.FinishType == Enums.AuctionFinishType.IncreasingFinishTime ? request.FinishTimeInterval!.Value.Ticks : null,
                 StartPrice = request.StartPrice,
                 StatusId = status!.Id
             };
@@ -259,7 +261,7 @@ namespace BidMasterOnline.Application.Services
         {
             foreach(var file in files)
             {
-                var uploadResponse = await _imagesService.AddImageAsync(file);
+                var uploadResponse = await _imagesService.AddImageAsync(file, Enums.ImageType.ImageForAuction);
 
                 var auctionImage = new AuctionImage
                 {
@@ -290,7 +292,7 @@ namespace BidMasterOnline.Application.Services
 
             auction.StatusId = status!.Id;
             auction.StartDateTime = DateTime.Now;
-            auction.FinishDateTime = DateTime.Now.Add(auction.AuctionTime);
+            auction.FinishDateTime = DateTime.Now.Add(new TimeSpan(auction.AuctionTime));
 
             await _repository.UpdateAsync(auction);
 

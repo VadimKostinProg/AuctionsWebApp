@@ -6,7 +6,7 @@
 <ng-container *ngIf="auctions.length > 0; else notFound">
     <h3>Result</h3>
 
-    <auction-card *ngFor="let auction in auctions"
+    <auction-card *ngFor="let auction of auctions"
                   [auction]="auction"></auction-card>
 </ng-container>
 

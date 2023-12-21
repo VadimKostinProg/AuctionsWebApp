@@ -35,24 +35,18 @@ export class CategoriesService {
   }
 
   getCategoryById(id: string) {
-    return this.httpClient.get<CategoryModel[]>(`${this.baseUrl}/${id}`).pipe(
-      catchError((error: HttpErrorResponse) => {
-        // TODO: show modal window
-        alert(error.message);
-        return throwError(() => new Error(error.message));
-      })
-    );
+    return this.httpClient.get<CategoryModel[]>(`${this.baseUrl}/${id}`);
   }
 
-  createNewCategory(category: CreateCategoryModel) {
+  createNewCategory(category: CreateCategoryModel): Observable<any> {
     return this.httpClient.post(this.baseUrl, category);
   }
 
-  updateCategory(category: CategoryModel) {
+  updateCategory(category: CategoryModel): Observable<any> {
     return this.httpClient.put(this.baseUrl, category);
   }
 
-  deleteCategory(id: string) {
+  deleteCategory(id: string): Observable<any> {
     return this.httpClient.delete(`${this.baseUrl}/${id}`);
   }
 

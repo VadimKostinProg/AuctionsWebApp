@@ -7,6 +7,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ChangePasswordModel } from 'src/app/models/changePasswordModel';
 import { ProfileModel } from 'src/app/models/profileModel';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-profile',
@@ -24,7 +25,8 @@ export class ProfileComponent implements OnInit {
     private readonly deepLinkingService: DeepLinkingService,
     private readonly authService: AuthService,
     private readonly modalService: NgbModal,
-    private readonly router: Router) {
+    private readonly router: Router,
+    private readonly toastrService: ToastrService) {
 
   }
 
@@ -42,7 +44,7 @@ export class ProfileComponent implements OnInit {
         this.user = response;
       },
       (error) => {
-        // TODO: add toaster
+        this.toastrService.error(error.error, 'Error');
       }
     );
 
@@ -70,12 +72,14 @@ export class ProfileComponent implements OnInit {
 
     this.usersService.changePassword(changePasswordModel).subscribe(
       (response) => {
-        // TODO: add toaster
+        this.toastrService.success(response.message, 'Success');
+
+        this.refreshChangePasswordForm();
 
         modal.close();
       },
       (error) => {
-        // TODO: add toaster
+        this.toastrService.error(error.error, 'Error');
       }
     );
   }
@@ -85,13 +89,13 @@ export class ProfileComponent implements OnInit {
 
     this.usersService.deleteOwnAccount().subscribe(
       (response) => {
-        // TODO: add toaster
+        this.toastrService.success(response.message, 'Success');
 
         this.authService.logOut();
         this.router.navigate(['/']);
       },
       (error) => {
-        // TODO: add toaster
+        this.toastrService.error(error.error, 'Error');
       }
     );
   }

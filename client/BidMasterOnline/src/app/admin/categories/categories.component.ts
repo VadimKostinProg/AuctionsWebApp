@@ -1,11 +1,8 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CategoriesService } from 'src/app/services/categories.service';
 import { DataTableOptionsModel } from 'src/app/models/dataTableOptionsModel';
-import { CategoryModel } from 'src/app/models/categoryModel';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { DeepLinkingService } from 'src/app/services/deep-linking.service';
-import { CreateCategoryModel } from 'src/app/models/createCategoryModel';
 import { DataTableComponent } from 'src/app/common-shared/data-table/data-table.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-categories',
@@ -23,7 +20,8 @@ export class CategoriesComponent implements OnInit {
 
   error: string;
 
-  constructor(private readonly categoriesService: CategoriesService) {
+  constructor(private readonly categoriesService: CategoriesService,
+    private readonly toastrService: ToastrService) {
 
   }
 
@@ -39,12 +37,12 @@ export class CategoriesComponent implements OnInit {
 
     this.categoriesService.createNewCategory(category).subscribe(
       async (response) => {
-        // TODO: add toaster
+        this.toastrService.success(response.message, 'Success');
 
         await this.dateTable.reloadDatatable();
       },
       (error) => {
-        // TODO: add toaster
+        this.toastrService.success(error.error, 'Error');
       }
     )
 
@@ -59,12 +57,12 @@ export class CategoriesComponent implements OnInit {
 
     this.categoriesService.updateCategory(category).subscribe(
       async (response) => {
-        // TODO: add toaster
+        this.toastrService.success(response.message, 'Success');
 
         await this.dateTable.reloadDatatable();
       },
       (error) => {
-        // TODO: add toaster
+        this.toastrService.success(error.error, 'Error');
       }
     )
   }
@@ -72,12 +70,12 @@ export class CategoriesComponent implements OnInit {
   onDeleteCategory(categoryId: string) {
     this.categoriesService.deleteCategory(categoryId).subscribe(
       async (response) => {
-        // TODO: add toaster
+        this.toastrService.success(response.message, 'Success');
 
         await this.dateTable.reloadDatatable();
       },
       (error) => {
-        // TODO: add toaster
+        this.toastrService.success(error.error, 'Error');
       }
     );
   }
