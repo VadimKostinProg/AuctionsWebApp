@@ -10,12 +10,14 @@ namespace BidMasterOnline.Application.DTO
     public class PublishAuctionDTO
     {
         [Required(ErrorMessage = "Lot name is required.")]
+        [MaxLength(50)]
         public string Name { get; set; } = null!;
 
         [Required(ErrorMessage = "Category is required.")]
         public Guid CategoryId { get; set; }
 
         [Required(ErrorMessage = "Lot description is required.")]
+        [MaxLength(300)]
         public string LotDescription { get; set; } = null!;
 
         [Required(ErrorMessage = "Auction finish type is required.")]

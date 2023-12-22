@@ -1,5 +1,6 @@
 ﻿using BidMasterOnline.Application.DTO;
 using BidMasterOnline.Application.Exceptions;
+using BidMasterOnline.Application.Helpers;
 using BidMasterOnline.Application.RepositoryContracts;
 using BidMasterOnline.Application.ServiceContracts;
 using BidMasterOnline.Application.Specifications;
@@ -91,6 +92,10 @@ namespace BidMasterOnline.Application.Services
             {
                 Id = auction.Id,
                 Name = auction.Name,
+                Category = auction.Category.Name,
+                AuctionistId = auction.AuctionistId,
+                Auctionist = auction.Auctionist.Username,
+                AuctionTime = ConvertHelper.TimeSpanTicksToString(auction.AuctionTime),
                 FinishDateAndTime = auction.FinishDateTime,
                 StartPrice = auction.StartPrice,
                 CurrentBid = auction.Bids.Any() ? auction.Bids.Max(x => x.Amount) : 0,
@@ -111,12 +116,14 @@ namespace BidMasterOnline.Application.Services
             {
                 Id = auction.Id,
                 Name = auction.Name,
+                Category = auction.Category.Name,
+                AuctionistId = auction.AuctionistId,
+                Auctionist = auction.Auctionist.Username,
+                AuctionTime = ConvertHelper.TimeSpanTicksToString(auction.AuctionTime),
                 FinishDateAndTime = auction.FinishDateTime,
                 StartPrice = auction.StartPrice,
-                CurrentBid = auction.Bids.Any() ? auction.Bids.Max(x => x.Amount) : 0,
+                CurrentBid = auction.Bids.Any() ? auction.Bids.Max(x => x.Amount) : auction.StartPrice,
                 ImageUrls = auction.Images.Select(x => x.Url).ToList(),
-                Category = auction.Category.Name,
-                AuctionistName = auction.Auctionist.Username,
                 StartDateAndTime = auction.StartDateTime,
                 LotDescription = auction.LotDescription,
                 Score = auction.Scores.Any() ? auction.Scores.Average(x => x.Score) : -1,
@@ -151,9 +158,13 @@ namespace BidMasterOnline.Application.Services
                     {
                         Id = auction.Id,
                         Name = auction.Name,
+                        Category = auction.Category.Name,
+                        AuctionistId = auction.AuctionistId,
+                        Auctionist = auction.Auctionist.Username,
+                        AuctionTime = ConvertHelper.TimeSpanTicksToString(auction.AuctionTime),
                         FinishDateAndTime = auction.FinishDateTime,
                         StartPrice = auction.StartPrice,
-                        CurrentBid = auction.Bids.Any() ? auction.Bids.Max(x => x.Amount) : 0,
+                        CurrentBid = auction.Bids.Any() ? auction.Bids.Max(x => x.Amount) : auction.StartPrice,
                         ImageUrls = auction.Images.Select(x => x.Url).ToList()
                     })
                     .ToList(),
@@ -408,7 +419,7 @@ namespace BidMasterOnline.Application.Services
             _notificationsService.SendMessageOfDeliveryOptionsSetToWinner(auction, user);
         }
 
-        public async Task SetNoWinnersToAuctionAsync(Auction auction)
+        private async Task SetNoWinnersToAuctionAsync(Auction auction)
         {
             var paymentDeliveryOptions = auction.PaymentDeliveryOptions;
 

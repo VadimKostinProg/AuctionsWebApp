@@ -11,6 +11,8 @@ import { ConfirmEmailComponent } from './general/confirm-email/confirm-email.com
 import { ProfileComponent } from './user-accounts/profile/profile.component';
 import { CustomersManagementComponent } from './technical-support/customers-management/customers-management.component';
 import { CreateAuctionComponent } from './customer/create-auction/create-auction.component';
+import { AuctionCreationRequestsListComponent } from './admin/auction-creation-requests-list/auction-creation-requests-list.component';
+import { AuctionCreationRequestComponent } from './admin/auction-creation-request/auction-creation-request.component';
 
 const routes: Routes = [
   {
@@ -76,6 +78,18 @@ const routes: Routes = [
     component: CreateAuctionComponent,
     canActivate: [CanActivateGuardService],
     data: { expectedRoles: ['Customer'] }
+  },
+  {
+    path: 'auction-creation-requests-list',
+    component: AuctionCreationRequestsListComponent,
+    canActivate: [CanActivateGuardService],
+    data: { expectedRoles: ['Admin'] }
+  },
+  {
+    path: 'auction-creation-request',
+    component: AuctionCreationRequestComponent,
+    canActivate: [CanActivateGuardService],
+    data: { expectedRoles: ['Admin'] }
   }
 ];
 

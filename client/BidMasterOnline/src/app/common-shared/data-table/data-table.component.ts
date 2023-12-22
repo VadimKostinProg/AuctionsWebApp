@@ -115,11 +115,14 @@ export class DataTableComponent implements OnInit {
       var actionResult = {
         actionName: this.options.optionalAction.actionName,
         object: this.options.optionalAction.form != null ?
-          this.options.optionalAction.form.value : this.choosenItem['id']
+          this.options.optionalAction.form.value : this.choosenItem
       } as OptionalActionResultModel;
 
       this.onAction.emit(actionResult);
+
+      return;
     }
+
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' });
   }
 

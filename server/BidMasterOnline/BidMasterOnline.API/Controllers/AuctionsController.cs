@@ -126,7 +126,7 @@ namespace BidMasterOnline.API.Controllers
             return Ok(await _auctionVerificationService.GetNotApprovedAuctionDetailsByIdAsync(id));
         }
 
-        [HttpPost("not-approved/{id}/approve")]
+        [HttpPut("not-approved/{id}/approve")]
         [Authorize(Roles = UserRoles.Admin)]
         public async Task<ActionResult> ApproveAuction([FromRoute] Guid id)
         {
@@ -135,7 +135,7 @@ namespace BidMasterOnline.API.Controllers
             return Ok(new { Message = "Auction has been approved successfully." });
         }
 
-        [HttpPost("not-approved/reject")]
+        [HttpPut("not-approved/reject")]
         [Authorize(Roles = UserRoles.Admin)]
         public async Task<ActionResult> RejectAuction([FromBody] RejectAuctionDTO request)
         {

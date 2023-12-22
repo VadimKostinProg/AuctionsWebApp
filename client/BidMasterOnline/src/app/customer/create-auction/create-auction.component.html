@@ -96,7 +96,7 @@
                     <input type="number"
                            id="auctionTimeDays"
                            class="form-control"
-                           min="1"
+                           min="0"
                            max="7"
                            formControlName="auctionTimeDays" />
                     <button class="btn btn-outline-secondary default-btn-background"
@@ -118,7 +118,7 @@
                     </div>
 
                     <div *ngIf="auctionTimeDays?.errors?.['min']">
-                        <span class="text-danger">Auction time must be at least 1 day.</span>
+                        <span class="text-danger">Incorrect number of days.</span>
                     </div>
 
                     <div *ngIf="auctionTimeDays?.errors?.['max']">
@@ -174,20 +174,38 @@
                 <div class="flex-1 input-group">
                     <input type="number"
                            id="finishTimeIntervalHours"
-                           min="1"
-                           max="5"
                            class="form-control"
+                           min="0"
+                           max="5"
                            formControlName="finishTimeIntervalHours" />
+                    <button class="btn btn-outline-secondary default-btn-background"
+                            disabled>
+                        <b>:</b>
+                    </button>
+                    <input type="number"
+                           id="finishTimeIntervalMinutes"
+                           min="0"
+                           max="59"
+                           class="form-control"
+                           formControlName="finishTimeIntervalMinutes" />
                 </div>
 
                 <div
-                     *ngIf="!finishTimeIntervalHours?.valid && (finishTimeIntervalHours?.dirty || finishTimeIntervalHours?.touched)">
-                    <div *ngIf="finishTimeIntervalHours?.errors?.['min']">
-                        <span class="text-danger">Incorrect number of hours.</span>
+                     *ngIf="!finishTimeIntervalHours?.valid && (finishTimeIntervalHours?.dirty || finishTimeIntervalHours?.touched) || !finishTimeIntervalMinutes?.valid && (finishTimeIntervalMinutes?.dirty || finishTimeIntervalMinutes?.touched)">
+                    <div *ngIf="finishTimeIntervalHours?.errors?.['min'] || finishTimeIntervalMinutes?.errors?.['min']">
+                        <span class="text-danger">Incorrect number of finish interval time.</span>
                     </div>
                     <div *ngIf="finishTimeIntervalHours?.errors?.['max']">
                         <span class="text-danger">Finish time inteval must be less or equal to 5 hours.</span>
                     </div>
+
+                    <div *ngIf="finishTimeIntervalMinutes?.errors?.['max']">
+                        <span class="text-danger">Cannot set more than 59 minutes.</span>
+                    </div>
+                </div>
+
+                <div *ngIf="finishTimeIntervalError">
+                    <span class="text-danger">{{ finishTimeIntervalError }}</span>
                 </div>
             </div>
 

@@ -16,7 +16,7 @@ export class CanActivateGuardService implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
     var currentUser = this.authService.user;
 
-    if (currentUser == null || this.jwtHelperService.isTokenExpired()) {
+    if (currentUser == null || this.jwtHelperService.isTokenExpired(currentUser.token)) {
       this.authService.logOut();
       this.router.navigate(["sign-in"]);
       return false;

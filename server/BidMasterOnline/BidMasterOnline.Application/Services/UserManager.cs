@@ -183,7 +183,10 @@ namespace BidMasterOnline.Application.Services
             if (user is null)
                 throw new KeyNotFoundException("User with id does not exist.");
 
-            var totalAuctions = await _repository.CountAsync<Auction>(x => x.AuctionistId == user.Id);
+            var totalAuctions = await _repository.CountAsync<Auction>(x =>
+                x.AuctionistId == user.Id && 
+                x.IsApproved &&
+                x.Status.Name != Enums.AuctionStatus.Canceled.ToString());
 
             var usersBids = await _repository.GetFilteredAsync<Bid>(x => x.BidderId == user.Id);
 

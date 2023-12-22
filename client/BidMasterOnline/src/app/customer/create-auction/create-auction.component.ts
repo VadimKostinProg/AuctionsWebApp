@@ -23,6 +23,8 @@ export class CreateAuctionComponent implements OnInit {
 
   auctionTimeError: string = null;
 
+  finishTimeIntervalError: string = null;
+
   error: string = null;
 
   constructor(private readonly auctionsService: AuctionsService,
@@ -39,9 +41,10 @@ export class CreateAuctionComponent implements OnInit {
       categoryId: new FormControl(null, [Validators.required]),
       lotDescription: new FormControl(null, [Validators.required]),
       finishType: new FormControl(null, [Validators.required]),
-      auctionTimeDays: new FormControl(1, [Validators.required, Validators.min(1), Validators.max(7)]),
-      auctionTimeHours: new FormControl(0, [Validators.required, Validators.min(0), Validators.max(23)]),
-      finishTimeIntervalHours: new FormControl(1, [Validators.min(1), Validators.max(5)]),
+      auctionTimeDays: new FormControl(0, [Validators.required, Validators.min(0), Validators.max(7)]),
+      auctionTimeHours: new FormControl(1, [Validators.required, Validators.min(0), Validators.max(23)]),
+      finishTimeIntervalHours: new FormControl(null, [Validators.min(0), Validators.max(5)]),
+      finishTimeIntervalMinutes: new FormControl(null, [Validators.min(0), Validators.max(59)]),
       startPrice: new FormControl(null, [Validators.required, Validators.min(100), Validators.max(10e9)])
     });
 
@@ -83,6 +86,10 @@ export class CreateAuctionComponent implements OnInit {
     return this.createAuctionForm.get('finishTimeIntervalHours');
   }
 
+  get finishTimeIntervalMinutes() {
+    return this.createAuctionForm.get('finishTimeIntervalMinutes');
+  }
+
   get startPrice() {
     return this.createAuctionForm.get('startPrice');
   }
@@ -96,7 +103,7 @@ export class CreateAuctionComponent implements OnInit {
   }
 
   onSubmit() {
-    if (!this.createAuctionForm.valid || !this.validateAuctionTime()) {
+    if (!this.createAuctionForm.valid || !this.validateAuctionTime() || !this.validateFinishIntervalTime()) {
       return;
     }
 
@@ -109,7 +116,7 @@ export class CreateAuctionComponent implements OnInit {
       lotDescription: formValue.lotDescription,
       finishType: formValue.finishType,
       auctionTime: `${formValue.auctionTimeDays}.${formValue.auctionTimeHours}:0:0`,
-      finishTimeInterval: `${formValue.finishTimeIntervalHours}:0:0`,
+      finishTimeInterval: `${formValue.finishTimeIntervalHours}:${formValue.finishTimeIntervalMinutes}:0`,
       startPrice: formValue.startPrice
     };
 
@@ -138,7 +145,31 @@ export class CreateAuctionComponent implements OnInit {
       return false;
     }
 
+    if (Number.parseInt(this.auctionTimeDays.value) == 0 && Number.parseInt(this.auctionTimeHours.value) == 0) {
+      this.auctionTimeError = 'Minimum auction time can be 1 hour.';
+
+      return false;
+    }
+
     this.auctionTimeError = null;
+
+    return true;
+  }
+
+  validateFinishIntervalTime(): boolean {
+    if (Number.parseInt(this.finishTimeIntervalHours.value) == 5 && Number.parseInt(this.finishTimeIntervalMinutes.value) > 0) {
+      this.finishTimeIntervalError = 'Maximum finish time interval can be 5 hours.';
+
+      return false;
+    }
+
+    if (Number.parseInt(this.finishTimeIntervalHours.value) == 0 && Number.parseInt(this.finishTimeIntervalMinutes.value) < 5) {
+      this.finishTimeIntervalError = 'Minimum finish time interval can be 5 minutes.';
+
+      return false;
+    }
+
+    this.finishTimeIntervalError = null;
 
     return true;
   }

@@ -1,4 +1,5 @@
 ﻿using BidMasterOnline.Application.DTO;
+using BidMasterOnline.Application.Helpers;
 using BidMasterOnline.Application.RepositoryContracts;
 using BidMasterOnline.Application.ServiceContracts;
 using BidMasterOnline.Application.Specifications;
@@ -47,12 +48,14 @@ namespace BidMasterOnline.Application.Services
             {
                 Id = auction.Id,
                 Name = auction.Name,
+                Category = auction.Category.Name,
+                AuctionistId = auction.AuctionistId,
+                Auctionist = auction.Auctionist.Username,
+                AuctionTime = ConvertHelper.TimeSpanTicksToString(auction.AuctionTime),
                 FinishDateAndTime = auction.FinishDateTime,
                 StartPrice = auction.StartPrice,
-                CurrentBid = auction.Bids.Any() ? auction.Bids.Max(x => x.Amount) : 0,
+                CurrentBid = auction.Bids.Any() ? auction.Bids.Max(x => x.Amount) : auction.StartPrice,
                 ImageUrls = auction.Images.Select(x => x.Url).ToList(),
-                Category = auction.Category.Name,
-                AuctionistName = auction.Auctionist.Username,
                 StartDateAndTime = auction.StartDateTime,
                 LotDescription = auction.LotDescription,
                 FinishTypeDescription = auction.FinishType.Description,
@@ -86,9 +89,13 @@ namespace BidMasterOnline.Application.Services
                     {
                         Id = auction.Id,
                         Name = auction.Name,
+                        Category = auction.Category.Name,
+                        AuctionistId = auction.AuctionistId,
+                        Auctionist = auction.Auctionist.Username,
+                        AuctionTime = ConvertHelper.TimeSpanTicksToString(auction.AuctionTime),
                         FinishDateAndTime = auction.FinishDateTime,
                         StartPrice = auction.StartPrice,
-                        CurrentBid = auction.Bids.Any() ? auction.Bids.Max(x => x.Amount) : 0,
+                        CurrentBid = auction.Bids.Any() ? auction.Bids.Max(x => x.Amount) : auction.StartPrice,
                         ImageUrls = auction.Images.Select(x => x.Url).ToList()
                     })
                     .ToList(),
@@ -100,17 +107,19 @@ namespace BidMasterOnline.Application.Services
 
         public async Task RejectAuctionAsync(RejectAuctionDTO request)
         {
-            var auction = await _repository.FirstOrDefaultAsync<Auction>(x => 
-                x.Id == request.AuctionId && !x.IsApproved);
+            var auction = await _repository.GetByIdAsync<Auction>(request.AuctionId);
 
             if (auction is null)
                 throw new KeyNotFoundException("Auction with such id does not exist.");
 
+            if (auction.IsApproved)
+                throw new InvalidOperationException("Cannot reject alrady approved auction.");
+
             await this.DeleteAuctionImagesAsync(auction);
 
-            await _repository.DeleteAsync(auction);
-
             _notificationsService.SendMessageOfRejectionAuctionToAuctionist(auction, request.RejectionReason);
+
+            await _repository.DeleteAsync(auction);
         }
 
         private async Task DeleteAuctionImagesAsync(Auction auction)
