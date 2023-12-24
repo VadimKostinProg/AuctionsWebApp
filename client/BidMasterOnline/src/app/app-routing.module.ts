@@ -13,6 +13,7 @@ import { CustomersManagementComponent } from './technical-support/customers-mana
 import { CreateAuctionComponent } from './customer/create-auction/create-auction.component';
 import { AuctionCreationRequestsListComponent } from './admin/auction-creation-requests-list/auction-creation-requests-list.component';
 import { AuctionCreationRequestComponent } from './admin/auction-creation-request/auction-creation-request.component';
+import { AuctionDetailsComponent } from './auctions/auction-details/auction-details.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,10 @@ const routes: Routes = [
   {
     path: 'search',
     component: SearchComponent
+  },
+  {
+    path: 'auction-details',
+    component: AuctionDetailsComponent
   },
   {
     path: 'sign-in',

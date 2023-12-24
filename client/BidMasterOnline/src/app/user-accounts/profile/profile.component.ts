@@ -33,7 +33,7 @@ export class ProfileComponent implements OnInit {
   async ngOnInit() {
     var userId = await this.deepLinkingService.getQueryParam('userId');
 
-    if (userId == null) {
+    if (userId == null || userId == this.authService.user.userId) {
       const currentAuthOptions = this.authService.user;
       userId = currentAuthOptions.userId;
       this.ownProfile = true;

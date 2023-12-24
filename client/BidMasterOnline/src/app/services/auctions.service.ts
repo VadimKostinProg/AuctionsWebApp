@@ -6,6 +6,10 @@ import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { PublishAuctionModel } from '../models/publishAuctionModel';
 import { ListModel } from '../models/listModel';
+import { AuctionDetailsModel } from '../models/auctionDetailsModel';
+import { DataTableOptionsModel } from '../models/dataTableOptionsModel';
+import { SetBidModel } from '../models/setBidModel';
+import { CancelAuctionModel } from '../models/cancelAuctionModel';
 
 @Injectable({
   providedIn: 'root'
@@ -16,34 +20,67 @@ export class AuctionsService {
 
   constructor(private readonly httpClient: HttpClient) { }
 
-  getAuctionsList(specifications: Params): Observable<AuctionModel[]> {
+  getAuctionsList(specifications: Params): Observable<ListModel<AuctionModel>> {
     const params = new HttpParams({ fromObject: specifications });
 
-    return this.httpClient.get<AuctionModel[]>(this.baseUrl, { params });
+    return this.httpClient.get<ListModel<AuctionModel>>(`${this.baseUrl}/list`, { params });
   }
 
-  getPopularAuctions(): AuctionModel[] {
-    var list: AuctionModel[] = [];
-
-    this.httpClient.get<ListModel<AuctionModel>>(`${this.baseUrl}/list?pageSize=10&pageNumber=1&sortField=popularity`).subscribe(
-      (response) => {
-        list = response.list;
-      }
-    );
-
-    return list;
+  getAuctionDetailsById(auctionId: string): Observable<AuctionDetailsModel> {
+    return this.httpClient.get<AuctionDetailsModel>(`${this.baseUrl}/${auctionId}/details`);
   }
 
-  getFinishingAuctions(): AuctionModel[] {
-    var list: AuctionModel[] = [];
+  getPopularAuctions(): Observable<ListModel<AuctionModel>> {
+    return this.httpClient.get<ListModel<AuctionModel>>(`${this.baseUrl}/list?status=Active&pageSize=10&pageNumber=1&sortField=popularity`);
+  }
 
-    this.httpClient.get<ListModel<AuctionModel>>(`${this.baseUrl}/list?pageSize=10&pageNumber=1&sortField=dateAndTime`).subscribe(
-      (response) => {
-        list = response.list;
-      }
-    );
+  getFinishingAuctions(): Observable<ListModel<AuctionModel>> {
+    return this.httpClient.get<ListModel<AuctionModel>>(`${this.baseUrl}/list?status=Active&pageSize=10&pageNumber=1&sortField=dateAndTime`);
+  }
 
-    return list;
+  setBidOnAuction(bid: SetBidModel): Observable<any> {
+    return this.httpClient.post(`${this.baseUrl}/bids`, bid);
+  }
+
+  getAuctionBidsApiUrl(auctionId: string) {
+    return `${this.baseUrl}/${auctionId}/bids`;
+  }
+
+  getAuctionBidsDataTableOptions() {
+    var options = {
+      title: 'Bids',
+      resourceName: 'bid',
+      showIndexColumn: false,
+      allowCreating: false,
+      createFormOptions: null,
+      allowEdit: false,
+      editFormOptions: null,
+      allowDelete: false,
+      optionalAction: null,
+      emptyListDisplayLabel: 'There are not placed bids at this auction.',
+      columnSettings: [
+        {
+          title: 'User',
+          dataPropName: 'bidderUsername',
+          isOrderable: false,
+          width: 30,
+        },
+        {
+          title: 'Date and time',
+          dataPropName: 'dateAndTime',
+          isOrderable: false,
+          width: 50
+        },
+        {
+          title: 'Amount',
+          dataPropName: 'amount',
+          isOrderable: false,
+          width: 30
+        },
+      ]
+    } as DataTableOptionsModel;
+
+    return options;
   }
 
   publishAuction(auction: PublishAuctionModel): Observable<any> {
@@ -58,9 +95,23 @@ export class AuctionsService {
     form.append('lotDescription', auction.lotDescription);
     form.append('finishType', auction.finishType);
     form.append('auctionTime', auction.auctionTime);
-    form.append('finishTimeInterval', auction.finishTimeInterval);
+    if (auction.finishTimeInterval) {
+      form.append('finishTimeInterval', auction.finishTimeInterval);
+    }
     form.append('startPrice', auction.startPrice.toString());
 
     return this.httpClient.post(`${this.baseUrl}`, form);
+  }
+
+  cancelAuction(model: CancelAuctionModel): Observable<any> {
+    return this.httpClient.put(`${this.baseUrl}/cancel`, model);
+  }
+
+  cancelOwnAuction(auctionId: string): Observable<any> {
+    return this.httpClient.put(`${this.baseUrl}/own/${auctionId}/cancel`, null);
+  }
+
+  recoverAuction(auctionId: string): Observable<any> {
+    return this.httpClient.put(`${this.baseUrl}/${auctionId}/recover`, null);
   }
 }

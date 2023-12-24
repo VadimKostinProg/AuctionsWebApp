@@ -51,9 +51,7 @@
                         </td>
 
                         <td *ngFor="let column of options.columnSettings">
-                            <div>
-                                {{ row[column.dataPropName] }}
-                            </div>
+                            {{ row[column.dataPropName] }}
                         </td>
 
                         <th *ngIf="options.allowEdit || options.allowDelete || options.optionalAction">
@@ -78,7 +76,7 @@
                             </ng-template>
 
                             <button type="button"
-                                    class="btn"
+                                    class="btn actions-button"
                                     placement="bottom"
                                     [ngbPopover]="actionsPopContent">
                                 <i class="fa-solid fa-ellipsis"></i>
@@ -89,14 +87,14 @@
             </div>
 
             <div class="flex-between-container">
-                <ng-select [(ngModel)]="pagination.pageSize"
-                           (change)="onPageSizeChanged($event)"
-                           [clearable]="false">
-                    <ng-option *ngFor="let size of pageSizeOptions"
-                               [value]="size">
+                <select [(ngModel)]="pagination.pageSize"
+                        (change)="onPageSizeChanged($event)"
+                        class="form-control data-table-page-size-select">
+                    <option *ngFor="let size of pageSizeOptions"
+                            [value]="size">
                         {{ size }}
-                    </ng-option>
-                </ng-select>
+                    </option>
+                </select>
 
                 <nav aria-label="Page navigation example"
                      #paginator>
@@ -137,7 +135,7 @@
         </div>
 
         <ng-template #emptyList>
-            <h3>{{ options.emptyListDisplayLabel }}</h3>
+            <span>{{ options.emptyListDisplayLabel }}</span>
         </ng-template>
 
         <ng-template #createModal

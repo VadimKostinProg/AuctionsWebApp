@@ -76,24 +76,23 @@ export class DataTableComponent implements OnInit {
     const specifications = await this.deepLinkingService.getAllQueryParams();
     const params = new HttpParams({ fromObject: specifications });
 
-    this.httpClient.get(this.apiUrl, { params }).subscribe(async (data: any) => {
-      this.tableData = {
-        list: data.list,
-        totalPages: data.totalPages
-      };
+    this.httpClient.get(this.apiUrl, { params }).subscribe(
+      async (data: any) => {
+        this.tableData = data;
 
-      this.pagesList = [];
+        this.pagesList = [];
 
-      for (let i = 1; i <= this.tableData.totalPages; i++) {
-        this.pagesList.push(i);
+        for (let i = 1; i <= this.tableData.totalPages; i++) {
+          this.pagesList.push(i);
+        }
+
+        if (this.pagination.pageNumber > this.tableData.totalPages) {
+          this.pagination.pageNumber = 1;
+
+          await this.deepLinkingService.setPaginationParams(this.pagination);
+        }
       }
-
-      if (this.pagination.pageNumber > this.tableData.totalPages) {
-        this.pagination.pageNumber = 1;
-
-        await this.deepLinkingService.setPaginationParams(this.pagination);
-      }
-    });
+    );
   }
 
   open(content: TemplateRef<any>) {
@@ -134,11 +133,7 @@ export class DataTableComponent implements OnInit {
   isDateType = (inputType: FormInputTypeEnum): boolean => inputType == FormInputTypeEnum.Date;
 
   async decrementPageNumber() {
-    this.pagination.pageNumber--;
-
-    await this.deepLinkingService.setPaginationParams(this.pagination);
-
-    await this.reloadDatatable();
+    await this.onPageNumberChanged(this.pagination.pageNumber - 1);
   }
 
   async onPageNumberChanged(pageNumber: number) {
@@ -150,15 +145,11 @@ export class DataTableComponent implements OnInit {
   }
 
   async incrementPageNumber() {
-    this.pagination.pageNumber++;
-
-    await this.deepLinkingService.setPaginationParams(this.pagination);
-
-    await this.reloadDatatable();
+    await this.onPageNumberChanged(this.pagination.pageNumber + 1);
   }
 
-  async onPageSizeChanged(pageSize: number) {
-    this.pagination.pageSize = pageSize;
+  async onPageSizeChanged(pageSize: any) {
+    this.pagination.pageSize = pageSize.target.value;
 
     await this.deepLinkingService.setPaginationParams(this.pagination);
 

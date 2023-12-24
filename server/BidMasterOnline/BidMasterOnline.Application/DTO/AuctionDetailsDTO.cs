@@ -7,10 +7,12 @@ namespace BidMasterOnline.Application.DTO
     /// </summary>
     public class AuctionDetailsDTO : AuctionDTO
     {
-        public DateTime StartDateAndTime { get; set; }
+        public string StartDateAndTime { get; set; }
         public string LotDescription { get; set; }
         public double Score { get; set; }
         public string FinishTypeDescription { get; set; }
-        public AuctionStatus Status { get; set; }
+        public string Status { get; set; }
+        public Guid? WinnersId { get; set; }
+        public string? WinnersUsername { get; set; }
     }
 }

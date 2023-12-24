@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, TemplateRef } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, TemplateRef } from '@angular/core';
 import { ChangeContext, Options } from 'ngx-slider-v2';
 import { CategoryModel } from 'src/app/models/categoryModel';
 import { AuctionsDeepLinkingService } from 'src/app/services/auctions-deep-linking.service';
@@ -10,16 +10,16 @@ import { CategoriesService } from 'src/app/services/categories.service';
 })
 export class AuctionFiltersComponent implements OnInit {
 
-  defaultSliderMin = 100;
-  defaultSliderMax = 400;
+  defaultSliderMin = 2 * 10e6;
+  defaultSliderMax = 8 * 10e6;
 
-  minStartPrice: number;
-  maxStartPrice: number;
+  minStartPrice = 0;
+  maxStartPrice = 10e7;
 
   startPriceChanged = false;
 
-  minCurrentBid: number;
-  maxCurrentBid: number;
+  minCurrentBid = 0;
+  maxCurrentBid = 10e7;
 
   currentBidChanged = false;
 
@@ -31,11 +31,15 @@ export class AuctionFiltersComponent implements OnInit {
 
   options: Options = {
     floor: 0,
-    ceil: 500,
+    ceil: 10e7,
+    step: 10e5,
     translate: (value: number): string => {
       return '$' + value;
     }
   };
+
+  @Output()
+  onFiltersChange = new EventEmitter<void>();
 
   constructor(private readonly auctionsDeeplinkingService: AuctionsDeepLinkingService,
     private readonly categoriesService: CategoriesService) {
@@ -98,12 +102,16 @@ export class AuctionFiltersComponent implements OnInit {
 
       await this.auctionsDeeplinkingService.setCategoryId(value);
     }
+
+    this.onFiltersChange.emit();
   }
 
   async onStartPriceFilterChange(changeContext: ChangeContext) {
     this.startPriceChanged = true;
 
     await this.auctionsDeeplinkingService.setStartPriceDiapason(this.minStartPrice, this.maxStartPrice);
+
+    this.onFiltersChange.emit();
   }
 
   async clearStartPrice() {
@@ -113,12 +121,16 @@ export class AuctionFiltersComponent implements OnInit {
     this.startPriceChanged = false;
 
     await this.auctionsDeeplinkingService.clearStartPriceDiapason();
+
+    this.onFiltersChange.emit();
   }
 
   async onCurrentBidFilterChange(changeContext: ChangeContext) {
     this.currentBidChanged = true;
 
     await this.auctionsDeeplinkingService.setCurrentBidDiapason(this.minCurrentBid, this.maxCurrentBid);
+
+    this.onFiltersChange.emit();
   }
 
   async clearCurrentBid() {
@@ -128,6 +140,8 @@ export class AuctionFiltersComponent implements OnInit {
     this.currentBidChanged = false;
 
     await this.auctionsDeeplinkingService.clearCurrentBidDiapason();
+
+    this.onFiltersChange.emit();
   }
 
   async onStatusChanged(status: any) {
@@ -142,5 +156,7 @@ export class AuctionFiltersComponent implements OnInit {
 
       await this.auctionsDeeplinkingService.setStatus(value);
     }
+
+    this.onFiltersChange.emit();
   }
 }

@@ -61,7 +61,7 @@ namespace BidMasterOnline.Application.Services
                 UserId = comment.UserId,
                 Username = comment.User.Username,
                 AuctionId = comment.AuctionId,
-                DateAndTime = comment.DateAndTime,
+                DateAndTime = comment.DateAndTime.ToString("yyyy-mm-dd HH:m"),
                 CommentText = comment.CommentText,
                 IsDeleted = comment.IsDeleted
             };
@@ -87,7 +87,7 @@ namespace BidMasterOnline.Application.Services
                     UserId = x.UserId,
                     Username = x.User.Username,
                     AuctionId = x.AuctionId,
-                    DateAndTime = x.DateAndTime,
+                    DateAndTime = x.DateAndTime.ToString("yyyy-mm-dd HH:m"),
                     CommentText = x.CommentText,
                     IsDeleted = x.IsDeleted
                 })
@@ -100,6 +100,9 @@ namespace BidMasterOnline.Application.Services
 
             if (user.UserStatus.Name == Enums.UserStatus.Blocked.ToString())
                 throw new ForbiddenException("Your account is blocked.");
+
+            if (user.Role.Name != Enums.UserRole.Customer.ToString())
+                throw new ForbiddenException("Only customer can set comments for aucitons.");
 
             if (!user.IsEmailConfirmed)
                 throw new ForbiddenException("Your email is not confirmed.");

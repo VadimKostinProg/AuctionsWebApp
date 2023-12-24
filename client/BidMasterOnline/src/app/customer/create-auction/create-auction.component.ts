@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { CategoryModel } from 'src/app/models/categoryModel';
+import { PublishAuctionModel } from 'src/app/models/publishAuctionModel';
 import { AuctionsService } from 'src/app/services/auctions.service';
 import { CategoriesService } from 'src/app/services/categories.service';
 
@@ -116,9 +117,12 @@ export class CreateAuctionComponent implements OnInit {
       lotDescription: formValue.lotDescription,
       finishType: formValue.finishType,
       auctionTime: `${formValue.auctionTimeDays}.${formValue.auctionTimeHours}:0:0`,
-      finishTimeInterval: `${formValue.finishTimeIntervalHours}:${formValue.finishTimeIntervalMinutes}:0`,
       startPrice: formValue.startPrice
-    };
+    } as PublishAuctionModel;
+
+    if (formValue.finishType == 'IncreasingFinishTime') {
+      auction.finishTimeInterval = `${formValue.finishTimeIntervalHours}:${formValue.finishTimeIntervalMinutes}:0`;
+    }
 
     this.spinnerService.show();
 

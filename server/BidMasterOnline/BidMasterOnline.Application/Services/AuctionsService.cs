@@ -43,7 +43,7 @@ namespace BidMasterOnline.Application.Services
 
             await this.PerformCancelingForAuctionAsync(auction);
 
-            _notificationsService.SendMessageOfCancelingAuctionToAuctionist(auction, request.CancelingReason);
+            _notificationsService.SendMessageOfCancelingAuctionToAuctionist(auction, request.CancelationReason);
         }
 
         public async Task CancelOwnAuctionAsync(Guid auctionId)
@@ -96,7 +96,7 @@ namespace BidMasterOnline.Application.Services
                 AuctionistId = auction.AuctionistId,
                 Auctionist = auction.Auctionist.Username,
                 AuctionTime = ConvertHelper.TimeSpanTicksToString(auction.AuctionTime),
-                FinishDateAndTime = auction.FinishDateTime,
+                FinishDateAndTime = auction.FinishDateTime.ToString("yyyy-mm-dd HH:m"),
                 StartPrice = auction.StartPrice,
                 CurrentBid = auction.Bids.Any() ? auction.Bids.Max(x => x.Amount) : 0,
                 ImageUrls = auction.Images.Select(x => x.Url).ToList()
@@ -120,16 +120,24 @@ namespace BidMasterOnline.Application.Services
                 AuctionistId = auction.AuctionistId,
                 Auctionist = auction.Auctionist.Username,
                 AuctionTime = ConvertHelper.TimeSpanTicksToString(auction.AuctionTime),
-                FinishDateAndTime = auction.FinishDateTime,
+                FinishDateAndTime = auction.FinishDateTime.ToString("yyyy-mm-dd HH:m"),
                 StartPrice = auction.StartPrice,
                 CurrentBid = auction.Bids.Any() ? auction.Bids.Max(x => x.Amount) : auction.StartPrice,
                 ImageUrls = auction.Images.Select(x => x.Url).ToList(),
-                StartDateAndTime = auction.StartDateTime,
+                StartDateAndTime = auction.StartDateTime.ToString("yyyy-mm-dd HH:m"),
                 LotDescription = auction.LotDescription,
                 Score = auction.Scores.Any() ? auction.Scores.Average(x => x.Score) : -1,
                 FinishTypeDescription = auction.FinishType.Description,
-                Status = Enum.Parse<Enums.AuctionStatus>(auction.Status.Name),
+                Status = auction.Status.Name,
             };
+
+            if (auction.Status.Name == Enums.AuctionStatus.Finished.ToString() && auction.Bids.Any())
+            {
+                var winningBid = auction.Bids.OrderByDescending(x => x.Amount).First();
+
+                auctionDetailsDTO.WinnersId = winningBid.BidderId;
+                auctionDetailsDTO.WinnersUsername = winningBid.Bidder.Username;
+            }
 
             return auctionDetailsDTO;
         }
@@ -162,7 +170,7 @@ namespace BidMasterOnline.Application.Services
                         AuctionistId = auction.AuctionistId,
                         Auctionist = auction.Auctionist.Username,
                         AuctionTime = ConvertHelper.TimeSpanTicksToString(auction.AuctionTime),
-                        FinishDateAndTime = auction.FinishDateTime,
+                        FinishDateAndTime = auction.FinishDateTime.ToString("yyyy-mm-dd HH:m"),
                         StartPrice = auction.StartPrice,
                         CurrentBid = auction.Bids.Any() ? auction.Bids.Max(x => x.Amount) : auction.StartPrice,
                         ImageUrls = auction.Images.Select(x => x.Url).ToList()

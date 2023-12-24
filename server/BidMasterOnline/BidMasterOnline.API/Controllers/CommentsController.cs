@@ -38,7 +38,7 @@ namespace BidMasterOnline.API.Controllers
         {
             await _commentsService.SetNewCommentAsync(comment);
 
-            return Ok("Comment has been set successfully.");
+            return Ok(new { Message = "Comment has been set successfully." });
         }
 
         [HttpDelete("{id}")]
@@ -47,7 +47,7 @@ namespace BidMasterOnline.API.Controllers
         {
             await _commentsService.DeleteCommentAsync(id);
 
-            return Ok("Comment has been deleted successfully.");
+            return Ok(new { Message = "Comment has been deleted successfully." });
         }
 
         [HttpDelete("own/{id}")]
@@ -56,7 +56,7 @@ namespace BidMasterOnline.API.Controllers
         {
             await _commentsService.DeleteOwnCommentAsync(id);
 
-            return Ok("Comment has been deleted successfully.");
+            return Ok(new { Message = "Comment has been deleted successfully." });
         }
     }
 }

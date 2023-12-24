@@ -1,6 +1,7 @@
 ﻿using BidMasterOnline.Application.Enums;
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace BidMasterOnline.Application.DTO
 {
@@ -26,6 +27,7 @@ namespace BidMasterOnline.Application.DTO
         [Required(ErrorMessage = "Auction time is required.")]
         public TimeSpan AuctionTime { get; set; }
 
+        [AllowNull]
         public TimeSpan? FinishTimeInterval { get; set; }
 
         [Required(ErrorMessage = "Start price is required.")]

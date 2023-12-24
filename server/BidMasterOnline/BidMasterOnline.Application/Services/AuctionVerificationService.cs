@@ -52,14 +52,14 @@ namespace BidMasterOnline.Application.Services
                 AuctionistId = auction.AuctionistId,
                 Auctionist = auction.Auctionist.Username,
                 AuctionTime = ConvertHelper.TimeSpanTicksToString(auction.AuctionTime),
-                FinishDateAndTime = auction.FinishDateTime,
+                FinishDateAndTime = auction.FinishDateTime.ToString("yyyy-mm-dd HH:m"),
                 StartPrice = auction.StartPrice,
                 CurrentBid = auction.Bids.Any() ? auction.Bids.Max(x => x.Amount) : auction.StartPrice,
                 ImageUrls = auction.Images.Select(x => x.Url).ToList(),
-                StartDateAndTime = auction.StartDateTime,
+                StartDateAndTime = auction.StartDateTime.ToString("yyyy-mm-dd HH:m"),
                 LotDescription = auction.LotDescription,
                 FinishTypeDescription = auction.FinishType.Description,
-                Status = Enum.Parse<Enums.AuctionStatus>(auction.Status.Name),
+                Status = auction.Status.Name,
             };
 
             return auctionDetailsDTO;
@@ -93,7 +93,7 @@ namespace BidMasterOnline.Application.Services
                         AuctionistId = auction.AuctionistId,
                         Auctionist = auction.Auctionist.Username,
                         AuctionTime = ConvertHelper.TimeSpanTicksToString(auction.AuctionTime),
-                        FinishDateAndTime = auction.FinishDateTime,
+                        FinishDateAndTime = auction.FinishDateTime.ToString("yyyy-mm-dd HH:m"),
                         StartPrice = auction.StartPrice,
                         CurrentBid = auction.Bids.Any() ? auction.Bids.Max(x => x.Amount) : auction.StartPrice,
                         ImageUrls = auction.Images.Select(x => x.Url).ToList()

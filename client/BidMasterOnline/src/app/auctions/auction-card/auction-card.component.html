@@ -1,12 +1,16 @@
-<div class="card">
+<div class="card auction-card">
     <img [src]="auction.imageUrls[0]"
          class="card-img-top">
     <div class="card-body">
         <h5 class="card-title">{{ auction.name }}</h5>
         <p class="card-text">
-            <span style="color: red;"> {{ auction.currentBid }} </span> / {{ auction.startPrice }}
+            <span class="current-bid"> ${{ auction.currentBid }} </span> / ${{ auction.startPrice }}
         </p>
-        <button class="btn btn-primary"
-                (click)="onDetailsClick()">Детальніше</button>
+        <p class="card-text">
+
+        </p>
+        <button class="btn default-btn-background w-100"
+                routerLink="/auction-details"
+                [queryParams]="{ 'auctionId': auction.id }">Детальніше</button>
     </div>
 </div>

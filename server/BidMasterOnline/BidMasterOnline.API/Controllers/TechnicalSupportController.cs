@@ -44,7 +44,7 @@ namespace BidMasterOnline.API.Controllers
         {
             await _technicalSupportRequestsService.SetTechnicalSupportRequestAsync(technicalSupportRequest);
 
-            return Ok("Your request has been successfully sent to the technical support team.");
+            return Ok(new { Message = "Your request has been successfully sent to the technical support team." });
         }
 
         [HttpPut("requests/{id}")]
@@ -54,7 +54,7 @@ namespace BidMasterOnline.API.Controllers
         {
             await _technicalSupportRequestsService.HandleTechnicalSupportRequestAsync(id);
 
-            return Ok("Technical support request is handled successfully.");
+            return Ok(new { Message = "Technical support request is handled successfully." });
         }
         #endregion
 
@@ -81,7 +81,7 @@ namespace BidMasterOnline.API.Controllers
         {
             await _complaintsService.SetNewComplaintAsync(complaint);
 
-            return Ok("Your complaint has been successfully sent the the technical support team.");
+            return Ok(new { Message = "Your complaint has been successfully sent to the technical support team." });
         }
 
         [HttpPut("complaints/{id}")]
@@ -90,7 +90,7 @@ namespace BidMasterOnline.API.Controllers
         {
             await _complaintsService.HandleComplaintAsync(id);
 
-            return Ok("Complaint is successfully handled.");
+            return Ok(new { Message = "Complaint is successfully handled." });
         }
         #endregion
     }

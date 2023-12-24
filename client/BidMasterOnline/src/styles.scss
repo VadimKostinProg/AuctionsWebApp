@@ -73,14 +73,20 @@ a {
     text-align: center;
 }
 
-.slider-popover {
-    width: 100vh;
+.popover {
+    max-width: 80vh;
+}
+
+.slider-container {
+    width: 70vh;
+    margin: 0 1vh 0 1vh;
 }
 
 .radio-container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    margin: 0 15px 0 15px;
 }
 
 .actions-container {
@@ -116,6 +122,11 @@ input[type="radio"]:checked {
     @extend .header-container;
 }
 
+.data-table-page-size-select {
+    width: 7vh;
+    height: 50px;
+}
+
 .logout-btn {
     margin-left: 2vh;
 }
@@ -132,12 +143,58 @@ input[type="radio"]:checked {
     border-radius: 20px;
 }
 
+.auction-card {
+    width: 300px;
+    margin-right: 5vh;
+
+    .current-bid {
+        color: red;
+        font-size: 28px;
+    }
+}
+
+.auction-details-property {
+    font-size: 1.25rem;
+}
+
+.comment {
+    h5 {
+        margin: 0;
+    }
+
+    span {
+        font-size: 20px;
+    }
+}
+
+.actions-button {
+    height: 5vh;
+    width: 5vh;
+    padding: 0;
+}
+
+.add-comment-button {
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+}
+
+.add-comment-button:hover {
+    color: rgb(106, 106, 106);
+}
+
 .user-info-container {
     @extend .radio-container;
 }
 
 .auction-info-container {
     @extend .radio-container;
+}
+
+.auction-cards-container {
+    display: flex;
+    justify-content: flex-start;
+    overflow: auto;
 }
 
 @media screen and (max-width: 990px) {

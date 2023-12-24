@@ -3,16 +3,20 @@
 
 <div *ngIf="popularAuctions.length > 0"
      class="cards-container">
-    <h4 class="mt-3">Popular</h4>
+     <h4 class="mt-3">Popular</h4>
 
-    <auction-card *ngFor="let auction of popularAuctions"
-                  [auction]="auction"></auction-card>
+     <div class="auction-cards-container">
+          <auction-card *ngFor="let auction of popularAuctions"
+                        [auction]="auction"></auction-card>
+     </div>
 </div>
 
 <div *ngIf="finishingAuctions.length > 0"
      class="cards-container mb-3">
-    <h4 class="mt-3">Finishing soon</h4>
-    
-    <auction-card *ngFor="let auction of finishingAuctions"
-                  [auction]="auction"></auction-card>
+     <h4 class="mt-3">Finishing soon</h4>
+
+     <div class="auction-cards-container">
+          <auction-card *ngFor="let auction of finishingAuctions"
+                        [auction]="auction"></auction-card>
+     </div>
 </div>

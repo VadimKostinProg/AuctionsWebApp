@@ -6,4 +6,6 @@ export class AuctionDetailsModel extends AuctionModel {
     public score: number;
     public finishTypeDescription: number;
     public status: string;
+    public winnersId: string | null;
+    public winnersUsername: string | null;
 }

@@ -67,16 +67,16 @@ namespace BidMasterOnline.API.Controllers
             return Ok(new { Message = "Your score for auction has been successfully set." });
         }
 
-        [HttpDelete("{id}")]
+        [HttpPut("cancel")]
         [Authorize(Roles = UserRoles.TechnicalSupportSpecialist)]
-        public async Task<ActionResult> CancelAuction([FromRoute] CancelAuctionDTO request)
+        public async Task<ActionResult> CancelAuction([FromBody] CancelAuctionDTO request)
         {
             await _auctionsService.CancelAuctionAsync(request);
 
             return Ok(new { Message = "Auction has been canceled successfully." });
         }
 
-        [HttpDelete("own/{id}")]
+        [HttpPut("own/{id}/cancel")]
         [Authorize(Roles = UserRoles.Customer)]
         public async Task<ActionResult> CancelOwnAuction([FromRoute] Guid id)
         {
@@ -85,7 +85,7 @@ namespace BidMasterOnline.API.Controllers
             return Ok(new { Message = "Auction has been canceled successfully." });
         }
 
-        [HttpPost("{id}/recover")]
+        [HttpPut("{id}/recover")]
         [Authorize(Roles = UserRoles.TechnicalSupportSpecialist)]
         public async Task<ActionResult> RecoverAuction([FromRoute] Guid id)
         {
@@ -102,7 +102,7 @@ namespace BidMasterOnline.API.Controllers
             return Ok(await _bidsService.GetBidsListForAuctionAsync(id, specifications));
         }
 
-        [HttpPost("{id}/bids")]
+        [HttpPost("bids")]
         [Authorize(Roles = UserRoles.Customer)]
         public async Task<ActionResult> SetNewBid([FromBody] SetBidDTO bid)
         {

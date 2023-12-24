@@ -10,16 +10,16 @@
                      class="account-image">
             </ng-template>
         </div>
-        <div class="col-9 user-info-container">
-            <h3>{{ user.username }}</h3>
+        <div class="col-9">
             <div class="row">
-                <div class="col-6 user-info-container">
+                <h3>{{ user.username }}</h3>
+                <div class="col-6  d-flex flex-column justify-content-between">
                     <span><b>Full name:</b> {{ user.fullName }}</span>
                     <span><b>Email:</b> {{ user.email }}</span>
                     <span><b>Date of birth:</b> {{ user.dateOfBirth }}</span>
                     <span><b>Status:</b> {{ user.status }}</span>
                 </div>
-                <div class="col-6 user-info-container">
+                <div class="col-6  d-flex flex-column justify-content-between">
                     <span><b>Total auctions:</b> {{ user.totalAuctions }}</span>
                     <span><b>Total bids:</b> {{ user.totalBids}}</span>
                     <span><b>Total wins:</b> {{ user.totalWins }}</span>

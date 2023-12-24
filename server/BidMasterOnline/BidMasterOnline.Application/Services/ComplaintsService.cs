@@ -49,7 +49,7 @@ namespace BidMasterOnline.Application.Services
                         Username = accusedComment.User.Username,
                         AuctionId = accusedComment.Auction.Id,
                         AuctionName = accusedComment.Auction.Name,
-                        DateAndTime = accusedComment.DateAndTime,
+                        DateAndTime = accusedComment.DateAndTime.ToString("yyyy-mm-dd HH:m"),
                         CommentText = accusedComment.CommentText,
                         IsDeleted = accusedComment.IsDeleted,
                     }
@@ -117,7 +117,7 @@ namespace BidMasterOnline.Application.Services
             var accusingUser = await _authService.GetAuthenticatedUserEntityAsync();
 
             if (request.ComplaintType == Enums.ComplaintType.ComplaintOnAuctionContent &&
-                auction.Id == accusingUser.Id)
+                auction.AuctionistId == accusingUser.Id)
                 throw new InvalidOperationException("You cannot set complaint for your auction.");
 
             if (!await _repository.AnyAsync<User>(x => x.Id == request.AccusedUserId))

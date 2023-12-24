@@ -16,6 +16,6 @@ namespace BidMasterOnline.Application.DTO
         public Guid AuctionId { get; set; }
 
         [Required]
-        public string CancelingReason { get; set; }
+        public string CancelationReason { get; set; }
     }
 }

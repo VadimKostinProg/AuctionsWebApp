@@ -48,7 +48,7 @@ namespace BidMasterOnline.Application.Services
                     AuctionName = x.Auction.Name,
                     BidderId = x.BidderId,
                     BidderUsername = x.Bidder.Username,
-                    DateAndTime = x.DateAndTime,
+                    DateAndTime = x.DateAndTime.ToString("yyyy-mm-dd HH:m"),
                     Amount = x.Amount
                 })
                 .ToList(),
@@ -91,7 +91,7 @@ namespace BidMasterOnline.Application.Services
                     AuctionName = x.Auction.Name,
                     BidderId = x.BidderId,
                     BidderUsername = x.Bidder.Username,
-                    DateAndTime = x.DateAndTime,
+                    DateAndTime = x.DateAndTime.ToString("yyyy-mm-dd HH:m"),
                     Amount = x.Amount
                 })
                 .ToList(),
@@ -129,8 +129,12 @@ namespace BidMasterOnline.Application.Services
             if (auction.AuctionistId == user.Id)
                 throw new InvalidOperationException("Cannot set a bid as an acutionist.");
 
-            if (auction.Bids.Any() && auction.Bids.Max(x => x.Amount) > bid.Amount)
+            var maxBid = auction.Bids.OrderByDescending(x => x.Amount).FirstOrDefault();
+
+            if (maxBid is not null && maxBid.Amount > bid.Amount)
                 throw new ArgumentException("Bid is less than previous one.");
+            else if (maxBid is not null && maxBid.BidderId == user.Id)
+                throw new InvalidOperationException("You have already placed the last bid at this auction.");
             else if (auction.StartPrice > bid.Amount)
                 throw new ArgumentException("Bid is less than start price.");
 

@@ -10,7 +10,7 @@
         public string AuctionName { get; set; }
         public Guid BidderId { get; set; }
         public string BidderUsername { get; set; }
-        public DateTime DateAndTime { get; set; }
+        public string DateAndTime { get; set; }
         public decimal Amount { get; set; }
     }
 }
