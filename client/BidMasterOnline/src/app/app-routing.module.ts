@@ -14,6 +14,11 @@ import { CreateAuctionComponent } from './customer/create-auction/create-auction
 import { AuctionCreationRequestsListComponent } from './admin/auction-creation-requests-list/auction-creation-requests-list.component';
 import { AuctionCreationRequestComponent } from './admin/auction-creation-request/auction-creation-request.component';
 import { AuctionDetailsComponent } from './auctions/auction-details/auction-details.component';
+import { ComplaintsComponent } from './technical-support/complaints/complaints.component';
+import { ComplaintDetailsComponent } from './technical-support/complain-details/complaint-details.component';
+import { TechnicalSupportRequestsListComponent } from './technical-support/technical-support-requests-list/technical-support-requests-list.component';
+import { TechnicalSupportRequestComponent } from './technical-support/technical-support-request/technical-support-request.component';
+import { TechnicalSupportComponent } from './customer/technical-support/technical-support.component';
 
 const routes: Routes = [
   {
@@ -79,8 +84,38 @@ const routes: Routes = [
     data: { expectedRoles: ['TechnicalSupportSpecialist'] }
   },
   {
+    path: 'complaints',
+    component: ComplaintsComponent,
+    canActivate: [CanActivateGuardService],
+    data: { expectedRoles: ['TechnicalSupportSpecialist'] }
+  },
+  {
+    path: 'complaint-details',
+    component: ComplaintDetailsComponent,
+    canActivate: [CanActivateGuardService],
+    data: { expectedRoles: ['TechnicalSupportSpecialist'] }
+  },
+  {
+    path: 'technical-support-requests',
+    component: TechnicalSupportRequestsListComponent,
+    canActivate: [CanActivateGuardService],
+    data: { expectedRoles: ['TechnicalSupportSpecialist'] }
+  },
+  {
+    path: 'technical-support-request',
+    component: TechnicalSupportRequestComponent,
+    canActivate: [CanActivateGuardService],
+    data: { expectedRoles: ['TechnicalSupportSpecialist'] }
+  },
+  {
     path: 'create-auction',
     component: CreateAuctionComponent,
+    canActivate: [CanActivateGuardService],
+    data: { expectedRoles: ['Customer'] }
+  },
+  {
+    path: 'technical-support',
+    component: TechnicalSupportComponent,
     canActivate: [CanActivateGuardService],
     data: { expectedRoles: ['Customer'] }
   },

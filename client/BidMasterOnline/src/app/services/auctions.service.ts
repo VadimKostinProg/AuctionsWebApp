@@ -10,6 +10,7 @@ import { AuctionDetailsModel } from '../models/auctionDetailsModel';
 import { DataTableOptionsModel } from '../models/dataTableOptionsModel';
 import { SetBidModel } from '../models/setBidModel';
 import { CancelAuctionModel } from '../models/cancelAuctionModel';
+import { AuctionParticipantEnum } from '../models/auctionParticipantEnum';
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +39,10 @@ export class AuctionsService {
     return this.httpClient.get<ListModel<AuctionModel>>(`${this.baseUrl}/list?status=Active&pageSize=10&pageNumber=1&sortField=dateAndTime`);
   }
 
+  getFinishedAuctionsWithNotConfirmedOptions(participant: AuctionParticipantEnum): Observable<AuctionModel[]> {
+    return this.httpClient.get<AuctionModel[]>(`${this.baseUrl}/not-confirmed?participant=${AuctionParticipantEnum[participant]}`);
+  }
+
   setBidOnAuction(bid: SetBidModel): Observable<any> {
     return this.httpClient.post(`${this.baseUrl}/bids`, bid);
   }
@@ -62,20 +67,17 @@ export class AuctionsService {
         {
           title: 'User',
           dataPropName: 'bidderUsername',
-          isOrderable: false,
-          width: 30,
+          isOrderable: false
         },
         {
           title: 'Date and time',
           dataPropName: 'dateAndTime',
-          isOrderable: false,
-          width: 50
+          isOrderable: false
         },
         {
           title: 'Amount',
           dataPropName: 'amount',
-          isOrderable: false,
-          width: 30
+          isOrderable: false
         },
       ]
     } as DataTableOptionsModel;
@@ -113,5 +115,43 @@ export class AuctionsService {
 
   recoverAuction(auctionId: string): Observable<any> {
     return this.httpClient.put(`${this.baseUrl}/${auctionId}/recover`, null);
+  }
+
+  getUsersAuctionsDataTableApiUrl() {
+    return `${this.baseUrl}/list`;
+  }
+
+  getUsersAuctionsDataTableOptions(title: string) {
+    var options = {
+      title: title,
+      resourceName: 'auction',
+      showIndexColumn: false,
+      allowCreating: false,
+      createFormOptions: null,
+      allowEdit: false,
+      editFormOptions: null,
+      allowDelete: false,
+      optionalAction: null,
+      emptyListDisplayLabel: '',
+      columnSettings: [
+        {
+          title: 'Name',
+          dataPropName: 'name',
+          isOrderable: false
+        },
+        {
+          title: 'Date and time',
+          dataPropName: 'finishDateAndTime',
+          isOrderable: false
+        },
+        {
+          title: 'Sell price',
+          dataPropName: 'currentBid',
+          isOrderable: false
+        },
+      ]
+    } as DataTableOptionsModel;
+
+    return options;
   }
 }

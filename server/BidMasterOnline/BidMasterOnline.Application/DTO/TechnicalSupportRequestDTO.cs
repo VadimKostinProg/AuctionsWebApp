@@ -9,7 +9,7 @@
         public Guid UserId { get; set; }
         public string Username { get; set; }
         public string RequestText { get; set; }
-        public DateTime DateAndTime { get; set; }
+        public string DateAndTime { get; set; }
         public bool IsHandled { get; set; }
     }
 }

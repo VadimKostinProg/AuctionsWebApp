@@ -19,10 +19,9 @@ namespace BidMasterOnline.Application.ServiceContracts
         /// Gets all bids of the specified user.
         /// </summary>
         /// <param name="userId">Identifier of the user to get bids.</param>
-        /// <param name="specifications">Specifications for filtering and pagination bids.</param>
-        /// <param name="showOnlyWinning">Flag the determines whether to show only winning bids.</param>
+        /// <param name="specifications">Specifications for pagination bids.</param>
         /// <returns>List of the bids for user.</returns>
-        Task<ListModel<BidDTO>> GetBidsListForUserAsync(Guid userId, BidSpecificationsDTO specifications);
+        Task<ListModel<BidDTO>> GetBidsListForUserAsync(Guid userId, SpecificationsDTO specifications);
 
         /// <summary>
         /// Sets new bid of the specified user to the specified auction.

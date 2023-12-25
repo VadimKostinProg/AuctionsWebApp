@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
@@ -6,6 +7,15 @@ namespace BidMasterOnline.Domain.Entities
 {
     public class User : EntityBase
     {
+        private readonly ILazyLoader _loader;
+
+        public User() { }
+
+        public User(ILazyLoader loader)
+        {
+            _loader = loader;
+        }
+
         [Required]
         [MaxLength(30)]
         public string Username { get; set; } = null!;
@@ -44,10 +54,21 @@ namespace BidMasterOnline.Domain.Entities
         [AllowNull]
         public string? ImagePublicId { get; set; }
 
-        [ForeignKey(nameof(RoleId))]
-        public virtual Role Role { get; set; }
+        #region NAVIGATION FIELDS
+        private Role _role;
+        private UserStatus _userStatus;
 
-        [ForeignKey(nameof(UserStatusId))]
-        public virtual UserStatus UserStatus { get; set; }
+        public Role Role
+        {
+            get => _loader.Load(this, ref _role);
+            set => _role = value;
+        }
+
+        public UserStatus UserStatus
+        {
+            get => _loader.Load(this, ref _userStatus);
+            set => _userStatus = value;
+        }
+        #endregion
     }
 }

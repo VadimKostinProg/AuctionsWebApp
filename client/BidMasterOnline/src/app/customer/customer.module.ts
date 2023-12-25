@@ -6,10 +6,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 import { CreateAuctionComponent } from './create-auction/create-auction.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { TechnicalSupportComponent } from './technical-support/technical-support.component';
 
 @NgModule({
   declarations: [
     CreateAuctionComponent,
+    TechnicalSupportComponent,
   ],
   imports: [
     CommonModule,
@@ -22,6 +24,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
   ],
   exports: [
     CreateAuctionComponent,
+    TechnicalSupportComponent,
   ]
 })
 export class CustomerModule { }

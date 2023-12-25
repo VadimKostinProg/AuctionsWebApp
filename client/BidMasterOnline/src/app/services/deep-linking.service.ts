@@ -3,14 +3,15 @@ import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { SortDirectionEnum } from '../models/sortDirectionEnum';
 import { PaginationModel } from '../models/paginationModel';
 import { SortingModel } from '../models/sortingModel';
+import { QueryStringParam } from '../models/queryStringParam';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DeepLinkingService {
 
-  constructor(private readonly route: ActivatedRoute,
-    private readonly router: Router) {
+  constructor(protected readonly route: ActivatedRoute,
+    protected readonly router: Router) {
 
   }
 
@@ -34,9 +35,38 @@ export class DeepLinkingService {
     await this.router.navigate([], navigationExtras);
   }
 
+  async setQueryParams(params: QueryStringParam[]) {
+    const existantParams = { ...this.route.snapshot.queryParams };
+
+    for (let param of params) {
+      existantParams[param.key] = param.value;
+    }
+
+    const navigationExtras: NavigationExtras = {
+      queryParams: existantParams,
+      queryParamsHandling: 'merge',
+    };
+
+    await this.router.navigate([], navigationExtras);
+  }
+
   async clearQueryParam(key: string) {
     const params = { ...this.route.snapshot.queryParams };
     params[key] = null;
+
+    const navigationExtras: NavigationExtras = {
+      queryParams: params,
+      queryParamsHandling: 'merge',
+    };
+
+    await this.router.navigate([], navigationExtras);
+  }
+
+  async clearQueryParams(keys: string[]) {
+    const params = { ...this.route.snapshot.queryParams };
+    for (let key of keys) {
+      params[key] = null;
+    }
 
     const navigationExtras: NavigationExtras = {
       queryParams: params,
@@ -66,13 +96,14 @@ export class DeepLinkingService {
   }
 
   async setSortingParams(sorting: SortingModel) {
-    await this.setQueryParam('sortField', sorting.sortField);
-    await this.setQueryParam('sortDirection', SortDirectionEnum[sorting.sortDirection]);
+    await this.setQueryParams([
+      { key: 'sortField', value: sorting.sortField },
+      { key: 'sortDirection', value: SortDirectionEnum[sorting.sortDirection] },
+    ]);
   }
 
   async clearSortingParams() {
-    await this.clearQueryParam('sortField');
-    await this.clearQueryParam('sortDirection');
+    await this.clearQueryParams(['sortField', 'sortDirection']);
   }
 
   async getPaginationParams(): Promise<PaginationModel> {
@@ -86,12 +117,13 @@ export class DeepLinkingService {
   }
 
   async setPaginationParams(pagination: PaginationModel) {
-    await this.setQueryParam('pageNumber', pagination.pageNumber);
-    await this.setQueryParam('pageSize', pagination.pageSize);
+    await this.setQueryParams([
+      { key: 'pageNumber', value: pagination.pageNumber },
+      { key: 'pageSize', value: pagination.pageSize },
+    ]);
   }
 
   async clearPaginationParams() {
-    await this.clearQueryParam('pageNumber');
-    await this.clearQueryParam('pageSize');
+    await this.clearQueryParams(['pageNumber', 'pageSize']);
   }
 }

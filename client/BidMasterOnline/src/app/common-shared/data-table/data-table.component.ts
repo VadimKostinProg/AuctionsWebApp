@@ -60,7 +60,7 @@ export class DataTableComponent implements OnInit {
     this.sorting = await this.deepLinkingService.getSortingParams();
     this.pagination = await this.deepLinkingService.getPaginationParams();
 
-    if (this.pagination.pageNumber == null) {
+    if (this.pagination.pageNumber == null || !this.pageSizeOptions.includes(this.pagination.pageSize)) {
       this.pagination = {
         pageNumber: 1,
         pageSize: 25

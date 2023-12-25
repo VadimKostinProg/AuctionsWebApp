@@ -106,14 +106,12 @@ export class CategoriesService {
         {
           title: 'Name',
           dataPropName: 'name',
-          isOrderable: true,
-          width: 30
+          isOrderable: true
         },
         {
           title: 'Description',
           dataPropName: 'description',
-          isOrderable: false,
-          width: 50
+          isOrderable: false
         },
       ]
     } as DataTableOptionsModel;

@@ -162,7 +162,7 @@ export class CommentsComponent implements OnInit {
       accusedUserId: this.choosenComment.userId,
       auctionId: this.auctionId,
       commentId: this.choosenComment.id,
-      complaintType: ComplaintTypeEnum.complaintOnUserComment,
+      complaintType: ComplaintTypeEnum.ComplaintOnUserComment,
       complaintText: complaintText
     } as SetComplaintModel;
 

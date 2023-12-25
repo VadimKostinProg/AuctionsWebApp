@@ -56,32 +56,27 @@ export class AuctionsVerificationService {
         {
           title: 'Name',
           dataPropName: 'name',
-          isOrderable: false,
-          width: 30
+          isOrderable: false
         },
         {
           title: 'Category',
           dataPropName: 'category',
-          isOrderable: false,
-          width: 30
+          isOrderable: false
         },
         {
           title: 'Auctionist',
           dataPropName: 'auctionist',
-          isOrderable: false,
-          width: 30
+          isOrderable: false
         },
         {
           title: 'Auction time',
           dataPropName: 'auctionTime',
-          isOrderable: false,
-          width: 30
+          isOrderable: false
         },
         {
           title: 'Start price',
           dataPropName: 'startPrice',
-          isOrderable: false,
-          width: 30
+          isOrderable: false
         },
       ]
     } as DataTableOptionsModel;

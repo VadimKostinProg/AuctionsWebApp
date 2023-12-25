@@ -1,10 +1,20 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BidMasterOnline.Domain.Entities
 {
     public class TechnicalSupportRequest : EntityBase
     {
+        private readonly ILazyLoader _loader;
+
+        public TechnicalSupportRequest() { }
+
+        public TechnicalSupportRequest(ILazyLoader loader)
+        {
+            _loader = loader;
+        }
+
         [Required]
         public Guid UserId { get; set; }
 
@@ -18,7 +28,14 @@ namespace BidMasterOnline.Domain.Entities
         [Required]
         public bool IsHandled { get; set; }
 
-        [ForeignKey(nameof(UserId))]
-        public virtual User User { get; set; }
+        #region NAVIGATION FIELDS
+        private User _user;
+
+        public User User
+        {
+            get => _loader.Load(this, ref _user);
+            set => _user = value;
+        }
+        #endregion
     }
 }

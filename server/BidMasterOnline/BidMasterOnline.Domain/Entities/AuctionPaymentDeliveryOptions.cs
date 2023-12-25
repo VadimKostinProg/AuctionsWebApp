@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
@@ -6,6 +7,15 @@ namespace BidMasterOnline.Domain.Entities
 {
     public class AuctionPaymentDeliveryOptions : EntityBase
     {
+        private ILazyLoader _loader;
+
+        public AuctionPaymentDeliveryOptions() { }
+
+        public AuctionPaymentDeliveryOptions(ILazyLoader loader)
+        {
+            _loader = loader;
+        }
+
         [Required]
         public Guid AuctionId { get; set; }
 
@@ -44,7 +54,14 @@ namespace BidMasterOnline.Domain.Entities
         [AllowNull]
         public string? Waybill { get; set; }
 
-        [ForeignKey(nameof(WinnerId))]  
-        public virtual User Winner { get; set; }
+        #region NAVIGATION FIELDS
+        private User _winner;
+
+        public User Winner
+        {
+            get => _loader.Load(this, ref _winner);
+            set => _winner = value;
+        }
+        #endregion
     }
 }

@@ -17,7 +17,8 @@ namespace BidMasterOnline.Application.DTO
         public Guid? CommentId { get; set; }
         public CommentDTO? Comment { get; set; }
         public ComplaintType ComplaintType { get; set; }
-        public DateTime DateAndTime { get; set; }
+        public string ComplaintTypeDescription { get; set; }
+        public string DateAndTime { get; set; }
         public string ComplaintText { get; set; }
     }
 }

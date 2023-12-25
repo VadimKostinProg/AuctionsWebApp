@@ -164,32 +164,27 @@ export class UsersService {
         {
           title: 'Username',
           dataPropName: 'username',
-          isOrderable: true,
-          width: 30
+          isOrderable: true
         },
         {
           title: 'Full name',
           dataPropName: 'fullName',
-          isOrderable: true,
-          width: 30
+          isOrderable: true
         },
         {
           title: 'Email',
           dataPropName: 'email',
-          isOrderable: true,
-          width: 30
+          isOrderable: true
         },
         {
           title: 'Date of birth',
           dataPropName: 'dateOfBirth',
-          isOrderable: true,
-          width: 30,
+          isOrderable: true
         },
         {
           title: 'Role',
           dataPropName: 'role',
-          isOrderable: true,
-          width: 30
+          isOrderable: true
         }
       ]
     } as DataTableOptionsModel;
@@ -217,32 +212,27 @@ export class UsersService {
         {
           title: 'Username',
           dataPropName: 'username',
-          isOrderable: true,
-          width: 30
+          isOrderable: true
         },
         {
           title: 'Full name',
           dataPropName: 'fullName',
-          isOrderable: true,
-          width: 30
+          isOrderable: true
         },
         {
           title: 'Email',
           dataPropName: 'email',
-          isOrderable: true,
-          width: 30
+          isOrderable: true
         },
         {
           title: 'Date of birth',
           dataPropName: 'dateOfBirth',
-          isOrderable: true,
-          width: 30,
+          isOrderable: true
         },
         {
           title: 'Status',
           dataPropName: 'status',
-          isOrderable: false,
-          width: 30
+          isOrderable: false
         }
       ]
     } as DataTableOptionsModel;
@@ -277,6 +267,49 @@ export class UsersService {
         message: 'Are you shure you want to unblock this user?'
       } as OptionalActionModel;
     }
+
+    return options;
+  }
+
+  getUserBidsDataTableApiUrl(userId: string) {
+    return `${this.baseUrl}/${userId}/bids/list`;
+  }
+
+  getUsersBidsDataTableOptions() {
+    var options = {
+      title: 'Users bids',
+      resourceName: 'bid',
+      showIndexColumn: true,
+      allowCreating: false,
+      createFormOptions: null,
+      allowEdit: false,
+      editFormOptions: null,
+      allowDelete: false,
+      optionalAction: null,
+      emptyListDisplayLabel: 'User has never placed a bid at the auction.',
+      columnSettings: [
+        {
+          title: 'Auction',
+          dataPropName: 'auctionName',
+          isOrderable: false,
+        },
+        {
+          title: 'Date and time',
+          dataPropName: 'dateAndTime',
+          isOrderable: false,
+        },
+        {
+          title: 'Amount',
+          dataPropName: 'amount',
+          isOrderable: false,
+        },
+        {
+          title: 'Is winning',
+          dataPropName: 'isWinning',
+          isOrderable: false,
+        }
+      ]
+    } as DataTableOptionsModel;
 
     return options;
   }

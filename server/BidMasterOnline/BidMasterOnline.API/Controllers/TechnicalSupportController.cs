@@ -59,7 +59,7 @@ namespace BidMasterOnline.API.Controllers
         #endregion
 
         #region COMPLAINTS
-        [HttpGet("complaints")]
+        [HttpGet("complaints/list")]
         [Authorize(Roles = UserRoles.TechnicalSupportSpecialist)]
         public async Task<ActionResult<ListModel<ComplaintDTO>>> GetComplaintsList(
             [FromQuery] ComplaintSpecificationsDTO specifications)

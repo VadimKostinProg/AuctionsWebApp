@@ -24,7 +24,6 @@ namespace BidMasterOnline.Infrastructure.DatabaseContext
 
         public ApplicationContext(DbContextOptions options) : base(options)
         {
-            this.ChangeTracker.LazyLoadingEnabled = true;
         }
 
         public ApplicationContext() { }

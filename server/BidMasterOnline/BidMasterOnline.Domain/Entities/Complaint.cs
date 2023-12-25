@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
@@ -6,6 +7,15 @@ namespace BidMasterOnline.Domain.Entities
 {
     public class Complaint : EntityBase
     {
+        private readonly ILazyLoader _loader;
+
+        public Complaint() { }
+
+        public Complaint(ILazyLoader loader)
+        {
+            _loader = loader;
+        }
+
         [Required]
         public Guid AccusingUserId { get; set; }
 
@@ -30,19 +40,42 @@ namespace BidMasterOnline.Domain.Entities
 
         public bool IsHandled { get; set; }
 
-        [ForeignKey(nameof(AccusedUserId))]
-        public virtual User AccusedUser { get; set; }
+        #region NAVIGATION FIELDS
+        private User _accusedUser;
+        private User _accusingUser;
+        private Auction _auction;
+        private AuctionComment _comment;
+        private ComplaintType _complaintType;
 
-        [ForeignKey(nameof(AccusingUserId))]
-        public virtual User AccusingUser { get; set; }
+        public User AccusedUser
+        {
+            get => _loader.Load(this, ref _accusedUser);
+            set => _accusedUser = value;
+        }
 
-        [ForeignKey(nameof(AuctionId))]
-        public virtual Auction Auction { get; set; }
+        public User AccusingUser
+        {
+            get => _loader.Load(this, ref _accusingUser);
+            set => _accusingUser = value;
+        }
 
-        [ForeignKey(nameof(CommentId))]
-        public virtual AuctionComment Comment { get; set; }
+        public virtual Auction Auction
+        {
+            get => _loader.Load(this, ref _auction);
+            set => _auction = value;
+        }
 
-        [ForeignKey(nameof(ComplaintTypeId))]
-        public virtual ComplaintType ComplaintType { get; set; }
+        public AuctionComment Comment
+        {
+            get => _loader.Load(this, ref _comment);
+            set => _comment = value;
+        }
+
+        public ComplaintType ComplaintType
+        {
+            get => _loader.Load(this, ref _complaintType);
+            set => _complaintType = value;
+        }
+        #endregion
     }
 }

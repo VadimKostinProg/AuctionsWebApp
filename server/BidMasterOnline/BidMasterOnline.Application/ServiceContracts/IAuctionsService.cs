@@ -1,4 +1,5 @@
 ﻿using BidMasterOnline.Application.DTO;
+using BidMasterOnline.Application.Enums;
 
 namespace BidMasterOnline.Application.ServiceContracts
 {
@@ -14,6 +15,14 @@ namespace BidMasterOnline.Application.ServiceContracts
         /// start price, current bid and status ty apply.</param>
         /// <returns>Auctions list with applyed specifications.</returns>
         Task<ListModel<AuctionDTO>> GetAuctionsListAsync(AuctionSpecificationsDTO specifications);
+
+        /// <summary>
+        /// Gets collection of the finished auctions with not yet confirmed payment and delivery options
+        /// for authenticated customer.
+        /// </summary>
+        /// <param name="participant">Participant of the auction.</param>
+        /// <returns>Collection IEnumerable of the auctions.</returns>
+        Task<IEnumerable<AuctionDTO>> GetFinishedAuctionsWithNotConfirmedOptionsAsync(AuctionParticipant participant);
 
         /// <summary>
         /// Gets auctions information by its identifier.

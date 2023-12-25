@@ -38,13 +38,14 @@ export class AuctionsDeepLinkingService extends DeepLinkingService {
   }
 
   async setStartPriceDiapason(min: number, max: number) {
-    await super.setQueryParam('minStartPrice', min);
-    await super.setQueryParam('maxStartPrice', max);
+    await super.setQueryParams([
+      { key: 'minStartPrice', value: min },
+      { key: 'maxStartPrice', value: max },
+    ]);
   }
 
   async clearStartPriceDiapason() {
-    await super.clearQueryParam('minStartPrice');
-    await super.clearQueryParam('maxStartPrice');
+    await super.clearQueryParams(['minStartPrice', 'maxStartPrice']);
   }
 
   getCurrentBidDiapason() {
@@ -55,13 +56,14 @@ export class AuctionsDeepLinkingService extends DeepLinkingService {
   }
 
   async setCurrentBidDiapason(min: number, max: number) {
-    await super.setQueryParam('minCurrentBid', min);
-    await super.setQueryParam('maxCurrentBid', max);
+    await super.setQueryParams([
+      { key: 'minCurrentBid', value: min },
+      { key: 'maxCurrentBid', value: max },
+    ]);
   }
 
   async clearCurrentBidDiapason() {
-    await super.clearQueryParam('minCurrentBid');
-    await super.clearQueryParam('maxCurrentBid');
+    await super.clearQueryParams(['minCurrentBid', 'maxCurrentBid']);
   }
 
   getStatus() {

@@ -96,7 +96,7 @@ namespace BidMasterOnline.Application.Services
                 AuctionistId = auction.AuctionistId,
                 Auctionist = auction.Auctionist.Username,
                 AuctionTime = ConvertHelper.TimeSpanTicksToString(auction.AuctionTime),
-                FinishDateAndTime = auction.FinishDateTime.ToString("yyyy-mm-dd HH:m"),
+                FinishDateAndTime = auction.FinishDateTime.ToString("yyyy-mm-dd HH:mm"),
                 StartPrice = auction.StartPrice,
                 CurrentBid = auction.Bids.Any() ? auction.Bids.Max(x => x.Amount) : 0,
                 ImageUrls = auction.Images.Select(x => x.Url).ToList()
@@ -120,11 +120,11 @@ namespace BidMasterOnline.Application.Services
                 AuctionistId = auction.AuctionistId,
                 Auctionist = auction.Auctionist.Username,
                 AuctionTime = ConvertHelper.TimeSpanTicksToString(auction.AuctionTime),
-                FinishDateAndTime = auction.FinishDateTime.ToString("yyyy-mm-dd HH:m"),
+                FinishDateAndTime = auction.FinishDateTime.ToString("yyyy-mm-dd HH:mm"),
                 StartPrice = auction.StartPrice,
                 CurrentBid = auction.Bids.Any() ? auction.Bids.Max(x => x.Amount) : auction.StartPrice,
                 ImageUrls = auction.Images.Select(x => x.Url).ToList(),
-                StartDateAndTime = auction.StartDateTime.ToString("yyyy-mm-dd HH:m"),
+                StartDateAndTime = auction.StartDateTime.ToString("yyyy-mm-dd HH:mm"),
                 LotDescription = auction.LotDescription,
                 Score = auction.Scores.Any() ? auction.Scores.Average(x => x.Score) : -1,
                 FinishTypeDescription = auction.FinishType.Description,
@@ -151,6 +151,18 @@ namespace BidMasterOnline.Application.Services
                 !await _repository.AnyAsync<Category>(x => x.Id == specifications.CategoryId && x.IsDeleted == false))
                 throw new KeyNotFoundException("Category with such id does not exists.");
 
+            if (specifications.AuctionistId is not null &&
+                !await _repository.AnyAsync<User>(x => x.Id == specifications.AuctionistId))
+                throw new KeyNotFoundException("User-auctionist with such id does not exist.");
+
+            if ((specifications.Status is null || specifications.Status.Value != Enums.AuctionStatus.Finished) &&
+                 specifications.WinnerId is not null)
+                throw new ArgumentException("Cannot filter by winner while status is not finished.");
+
+            if (specifications.WinnerId is not null &&
+                !await _repository.AnyAsync<User>(x => x.Id == specifications.WinnerId))
+                throw new KeyNotFoundException("User-winner with such id does not exist.");
+
             var specification = this.GetSpecification(specifications);
 
             var auctions = await _repository.GetAsync<Auction>(specification);
@@ -170,7 +182,7 @@ namespace BidMasterOnline.Application.Services
                         AuctionistId = auction.AuctionistId,
                         Auctionist = auction.Auctionist.Username,
                         AuctionTime = ConvertHelper.TimeSpanTicksToString(auction.AuctionTime),
-                        FinishDateAndTime = auction.FinishDateTime.ToString("yyyy-mm-dd HH:m"),
+                        FinishDateAndTime = auction.FinishDateTime.ToString("yyyy-mm-dd HH:mm"),
                         StartPrice = auction.StartPrice,
                         CurrentBid = auction.Bids.Any() ? auction.Bids.Max(x => x.Amount) : auction.StartPrice,
                         ImageUrls = auction.Images.Select(x => x.Url).ToList()
@@ -191,6 +203,9 @@ namespace BidMasterOnline.Application.Services
             if (specifications.CategoryId is not null)
                 builder.With(x => x.CategoryId == specifications.CategoryId);
 
+            if (specifications.AuctionistId is not null)
+                builder.With(x => x.AuctionistId == specifications.AuctionistId);
+
             if (specifications.MinStartPrice is not null)
                 builder.With(x => x.StartPrice >= specifications.MinStartPrice && x.StartPrice <= specifications.MaxStartPrice!.Value);
 
@@ -199,6 +214,9 @@ namespace BidMasterOnline.Application.Services
 
             if (specifications.Status is not null)
                 builder.With(x => x.Status.Name == specifications.Status.ToString());
+
+            if (specifications.WinnerId is not null)
+                builder.With(x => x.PaymentDeliveryOptions.WinnerId == specifications.WinnerId);
 
             if (!string.IsNullOrEmpty(specifications.SearchTerm))
                 builder.With(x => x.Name.Contains(specifications.SearchTerm));
@@ -266,7 +284,11 @@ namespace BidMasterOnline.Application.Services
                 FinishTypeId = finishType!.Id,
                 FinishInterval = request.FinishType == Enums.AuctionFinishType.IncreasingFinishTime ? request.FinishTimeInterval!.Value.Ticks : null,
                 StartPrice = request.StartPrice,
-                StatusId = status!.Id
+                StatusId = status!.Id,
+                Auctionist = auctionist,
+                Category = category,
+                FinishType = finishType,
+                Status = status,
             };
 
             await _repository.AddAsync(auction);
@@ -278,7 +300,7 @@ namespace BidMasterOnline.Application.Services
 
         private async Task UploadAuctionImagesAsync(Guid auctionId, List<IFormFile> files)
         {
-            foreach(var file in files)
+            foreach (var file in files)
             {
                 var uploadResponse = await _imagesService.AddImageAsync(file, Enums.ImageType.ImageForAuction);
 
@@ -437,13 +459,56 @@ namespace BidMasterOnline.Application.Services
             paymentDeliveryOptions.City =
             paymentDeliveryOptions.Waybill = null;
             paymentDeliveryOptions.AreDeliveryOptionsSet =
-            paymentDeliveryOptions.ArePaymentOptionsSet = 
-            paymentDeliveryOptions.IsDeliveryConfirmed = 
+            paymentDeliveryOptions.ArePaymentOptionsSet =
+            paymentDeliveryOptions.IsDeliveryConfirmed =
             paymentDeliveryOptions.IsPaymentConfirmed = false;
 
             await _repository.UpdateAsync(paymentDeliveryOptions);
 
             _notificationsService.SendMessageOfNoWinnersOfAuctionToAuctionist(auction);
+        }
+
+        public async Task<IEnumerable<AuctionDTO>> GetFinishedAuctionsWithNotConfirmedOptionsAsync(Enums.AuctionParticipant participant)
+        {
+            var user = await _authService.GetAuthenticatedUserAsync();
+
+            var builder = new SpecificationBuilder<Auction>()
+                .With(x => x.Status.Name == Enums.AuctionStatus.Finished.ToString());
+
+            switch (participant)
+            {
+                case Enums.AuctionParticipant.Auctionist:
+                    builder.With(x => x.AuctionistId == user.Id);
+                    break;
+                case Enums.AuctionParticipant.Auctioner:
+                    builder.With(x => x.PaymentDeliveryOptions.WinnerId == user.Id);
+                    break;
+            }
+
+            var specification = builder
+                .With(x => !x.PaymentDeliveryOptions.IsDeliveryConfirmed || !x.PaymentDeliveryOptions.IsDeliveryConfirmed)
+                .OrderBy(x => x.FinishDateTime, Enums.SortDirection.ASC)
+                .Build();
+
+            var auctions = await _repository.GetAsync<Auction>(specification);
+
+            var list = auctions
+                .Select(auction => new AuctionDTO
+                {
+                    Id = auction.Id,
+                    Name = auction.Name,
+                    Category = auction.Category.Name,
+                    AuctionistId = auction.AuctionistId,
+                    Auctionist = auction.Auctionist.Username,
+                    AuctionTime = ConvertHelper.TimeSpanTicksToString(auction.AuctionTime),
+                    FinishDateAndTime = auction.FinishDateTime.ToString("yyyy-mm-dd HH:mm"),
+                    StartPrice = auction.StartPrice,
+                    CurrentBid = auction.Bids.Any() ? auction.Bids.Max(x => x.Amount) : auction.StartPrice,
+                    ImageUrls = auction.Images.Select(x => x.Url).ToList()
+                })
+                .ToList();
+
+            return list;
         }
     }
 }

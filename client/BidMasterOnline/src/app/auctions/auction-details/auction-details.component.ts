@@ -10,7 +10,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthenticationModel } from 'src/app/models/authenticationModel';
 import { SetBidModel } from 'src/app/models/setBidModel';
 import { DataTableComponent } from 'src/app/common-shared/data-table/data-table.component';
-import { CommentsService } from 'src/app/services/comments.service';
 import { CancelAuctionModel } from 'src/app/models/cancelAuctionModel';
 import { ComplaintTypeEnum } from 'src/app/models/complaintTypeEnum';
 import { SetComplaintModel } from 'src/app/models/setComplaintModel';
@@ -114,7 +113,7 @@ export class AuctionDetailsComponent implements OnInit {
 
   auctionActionsAreEnabled() {
     return this.user != null &&
-      (this.user.role == 'TechnicalSupportSpecialist' || 
+      (this.user.role == 'TechnicalSupportSpecialist' ||
         (this.user.role == 'Customer' && this.auctionDetails.status != 'Canceled')
       );
   }
@@ -177,7 +176,7 @@ export class AuctionDetailsComponent implements OnInit {
     const complaint = {
       accusedUserId: this.auctionDetails.auctionistId,
       auctionId: this.auctionDetails.id,
-      complaintType: ComplaintTypeEnum.complaintOnAuctionContent,
+      complaintType: ComplaintTypeEnum.ComplaintOnAuctionContent,
       complaintText: complaintText
     } as SetComplaintModel;
 

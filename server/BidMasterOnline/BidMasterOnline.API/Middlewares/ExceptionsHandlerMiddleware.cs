@@ -1,4 +1,5 @@
 ﻿using BidMasterOnline.Application.Exceptions;
+using Newtonsoft.Json;
 using System.Net;
 
 namespace BidMasterOnline.API.Middlewares
@@ -27,7 +28,6 @@ namespace BidMasterOnline.API.Middlewares
         private Task HandleExceptionAsync(HttpContext httpContext, Exception exception)
         {
             var code = HttpStatusCode.InternalServerError;
-            var result = string.Empty;
             switch (exception)
             {
                 case KeyNotFoundException notFoundException:
@@ -44,12 +44,9 @@ namespace BidMasterOnline.API.Middlewares
 
             }
 
-            httpContext.Response.ContentType = "application/text";
+            httpContext.Response.ContentType = "application/json";
             httpContext.Response.StatusCode = (int)code;
-            if (result == string.Empty)
-            {
-                result = exception.Message;
-            }
+            var result = JsonConvert.SerializeObject(new { Message = exception.Message });
 
             return httpContext.Response.WriteAsync(result);
         }

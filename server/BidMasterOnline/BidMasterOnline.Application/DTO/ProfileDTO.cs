@@ -13,7 +13,6 @@ namespace BidMasterOnline.Application.DTO
     public class ProfileDTO : UserDTO
     {
         public int TotalAuctions { get; set; }
-        public int TotalBids { get; set; }
         public int TotalWins { get; set; }
     }
 }

@@ -14,7 +14,6 @@ namespace BidMasterOnline.Infrastructure
         {
             services.AddDbContext<ApplicationContext>(options =>
             {
-                options.UseLazyLoadingProxies();
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
 

@@ -12,10 +12,12 @@ namespace BidMasterOnline.API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserManager _userManager;
+        private readonly IBidsService _bidsService;
 
-        public UsersController(IUserManager userManager)
+        public UsersController(IUserManager userManager, IBidsService bidsService)
         {
             _userManager = userManager;
+            _bidsService = bidsService;
         }
 
         [HttpGet("staff/list")]
@@ -102,9 +104,16 @@ namespace BidMasterOnline.API.Controllers
             return Ok(new { Message = "User account has been deleted successfully." });
         }
 
+        [HttpGet("{id}/bids/list")]
+        [AllowAnonymous]
+        public async Task<ActionResult<ListModel<BidDTO>>> GetBidsOfUser([FromRoute] Guid id, [FromQuery] SpecificationsDTO specifications)
+        {
+            return Ok(await _bidsService.GetBidsListForUserAsync(id, specifications));
+        }
+
         [HttpPut("block")]
         [Authorize(Roles = $"{UserRoles.TechnicalSupportSpecialist}")]
-        public async Task<ActionResult> BlockUser([FromBody] BlockUserDTO request) 
+        public async Task<ActionResult> BlockUser([FromBody] BlockUserDTO request)
         {
             await _userManager.BlockUserAsync(request);
 

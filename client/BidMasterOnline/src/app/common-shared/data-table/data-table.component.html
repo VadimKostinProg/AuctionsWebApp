@@ -12,13 +12,12 @@
 
         <div *ngIf="tableData.list.length > 0; else emptyList"
              class="mt-3">
-            <div class="row">
+            <div class="row table-container">
                 <table class="table table-sm">
                     <tr>
                         <th *ngIf="options.showIndexColumn"></th>
 
-                        <th *ngFor="let column of options.columnSettings; let i = index"
-                            [ngStyle]="{ 'width': column.width }">
+                        <th *ngFor="let column of options.columnSettings; let i = index">
                             <div>
                                 <div *ngIf="column.isOrderable">
                                     <button (click)="onSortingChanged(column.dataPropName)"

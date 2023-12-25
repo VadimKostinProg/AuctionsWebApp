@@ -111,6 +111,14 @@ namespace BidMasterOnline.API.Controllers
             return Ok(new { Message = "New bid has been set successfully." });
         }
 
+        [HttpGet("not-confirmed")]
+        [Authorize(Roles = UserRoles.Customer)]
+        public async Task<ActionResult<IEnumerable<AuctionDTO>>> GetFinishedAuctionWithNotConfirmedOptions(
+            [FromQuery] Application.Enums.AuctionParticipant participant)
+        {
+            return Ok(await _auctionsService.GetFinishedAuctionsWithNotConfirmedOptionsAsync(participant));
+        }
+
         [HttpGet("not-approved/list")]
         [Authorize(Roles = UserRoles.Admin)]
         public async Task<ActionResult<ListModel<AuctionDTO>>> GetNotApprovedAuctionsList(

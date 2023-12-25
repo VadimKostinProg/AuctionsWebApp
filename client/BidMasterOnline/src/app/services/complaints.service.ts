@@ -3,6 +3,10 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { SetComplaintModel } from '../models/setComplaintModel';
 import { Observable } from 'rxjs';
+import { ComplaintTypeEnum } from '../models/complaintTypeEnum';
+import { FormControl, FormGroup } from '@angular/forms';
+import { DataTableOptionsModel } from '../models/dataTableOptionsModel';
+import { ComplaintModel } from '../models/complaintModel';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +17,90 @@ export class ComplaintsService {
 
   constructor(private readonly httpClient: HttpClient) { }
 
+  getComplaintById(complaintId: string): Observable<ComplaintModel> {
+    return this.httpClient.get<ComplaintModel>(`${this.baseUrl}/${complaintId}`);
+  }
+
   setComplaint(complaint: SetComplaintModel): Observable<any> {
     return this.httpClient.post(this.baseUrl, complaint);
+  }
+
+  handleComplaint(complaintId: string): Observable<any> {
+    return this.httpClient.put(`${this.baseUrl}/${complaintId}`, null);
+  }
+
+  getDataTableApiUrl() {
+    return `${this.baseUrl}/list`;
+  }
+
+  getDataTableOptions(type: ComplaintTypeEnum) {
+    const options = {
+      title: 'Complaints',
+      resourceName: 'complaint',
+      showIndexColumn: true,
+      allowCreating: false,
+      createFormOptions: null,
+      allowEdit: false,
+      editFormOptions: null,
+      allowDelete: false,
+      optionalAction: {
+        actionName: 'View',
+        form: null,
+        message: null,
+        properties: null,
+      },
+      emptyListDisplayLabel: 'The list of complaints is empty.',
+      columnSettings: null
+    } as DataTableOptionsModel;
+
+    switch (type) {
+      case ComplaintTypeEnum.ComplaintOnAuctionContent:        
+      case ComplaintTypeEnum.ComplaintOnUserComment:
+        options.columnSettings = [
+          {
+            title: 'Accusing user',
+            dataPropName: 'accusingUsername',
+            isOrderable: false
+          },
+          {
+            title: 'Auction',
+            dataPropName: 'auctionName',
+            isOrderable: false
+          },
+          {
+            title: 'Date and time',
+            dataPropName: 'dateAndTime',
+            isOrderable: false
+          }
+        ];
+        break;
+      case ComplaintTypeEnum.ComplaintOnUserNonPayemnt:
+      case ComplaintTypeEnum.ComplaintOnUserNonProvidingLot:
+        options.columnSettings = [
+          {
+            title: 'Accusing user',
+            dataPropName: 'accusingUsername',
+            isOrderable: false
+          },
+          {
+            title: 'Accused user',
+            dataPropName: 'accusedUsername',
+            isOrderable: false
+          },
+          {
+            title: 'Auction',
+            dataPropName: 'auctionName',
+            isOrderable: false
+          },
+          {
+            title: 'Date and time',
+            dataPropName: 'dateAndTime',
+            isOrderable: false
+          }
+        ];
+        break;
+    }
+
+    return options;
   }
 }

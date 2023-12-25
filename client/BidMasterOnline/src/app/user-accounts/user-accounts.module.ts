@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { ProfileComponent } from './profile/profile.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { CommonSharedModule } from '../common-shared/common-shared.module';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   ],
   imports: [
     CommonModule,
+    CommonSharedModule,
     ReactiveFormsModule,
     RouterModule,
     NgbModule,

@@ -48,6 +48,7 @@ a {
 
 .default-btn-background:hover {
     background-color: darkorange;
+    color: white;
 }
 
 .default-btn-background:focus {
@@ -157,6 +158,14 @@ input[type="radio"]:checked {
     font-size: 1.25rem;
 }
 
+.complaint-details-property {
+    @extend .auction-details-property;
+}
+
+.request-details-property {
+    @extend .auction-details-property;
+}
+
 .comment {
     h5 {
         margin: 0;
@@ -191,10 +200,49 @@ input[type="radio"]:checked {
     @extend .radio-container;
 }
 
+.complaint-info-container {
+    @extend .radio-container;
+    margin: 0;
+    padding: 0;
+}
+
+.request-info-container {
+    @extend .complaint-comment-container;
+}
+
+.complaint-comment-container {
+    border-radius: 10px;
+    padding: 3px;
+}
+
+.default-comment-container {
+    @extend .complaint-comment-container;
+    border:rgb(148, 161, 250) 1px solid;
+    background-color:rgb(203, 210, 255);
+}
+
+.deleted-comment-container {
+    @extend .complaint-comment-container;
+    border:rgb(255, 139, 22) 1px solid;
+    background-color:rgb(255, 208, 167);
+}
+
+.comment-info-container {
+    @extend .radio-container;
+}
+
+.request-info-container {
+    @extend .complaint-info-container;
+}
+
 .auction-cards-container {
     display: flex;
     justify-content: flex-start;
     overflow: auto;
+}
+
+.table-container {
+    padding: 0 18px 0 18px;
 }
 
 @media screen and (max-width: 990px) {

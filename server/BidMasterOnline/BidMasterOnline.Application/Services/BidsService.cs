@@ -58,7 +58,7 @@ namespace BidMasterOnline.Application.Services
             return list;
         }
 
-        public async Task<ListModel<BidDTO>> GetBidsListForUserAsync(Guid userId, BidSpecificationsDTO specifications)
+        public async Task<ListModel<BidDTO>> GetBidsListForUserAsync(Guid userId, SpecificationsDTO specifications)
         {
             if (specifications is null)
                 throw new ArgumentNullException("Specifications are null.");
@@ -70,9 +70,6 @@ namespace BidMasterOnline.Application.Services
                 .With(x => x.BidderId == userId)
                 .OrderBy(x => x.DateAndTime, Enums.SortDirection.DESC)
                 .WithPagination(specifications.PageSize, specifications.PageNumber);
-
-            if (specifications.OnlyWinning)
-                specificationBuilder.With(x => x.IsWinning == true);
 
             var specification = specificationBuilder.Build();
 
@@ -151,7 +148,8 @@ namespace BidMasterOnline.Application.Services
 
             if (auction.FinishType.Name == Enums.AuctionFinishType.IncreasingFinishTime.ToString())
             {
-                auction.FinishDateTime.Add(new TimeSpan(auction.FinishInterval!.Value));
+                auction.FinishDateTime = 
+                    auction.FinishDateTime.Add(new TimeSpan(auction.FinishInterval!.Value));
 
                 await _repository.UpdateAsync(auction);
             }

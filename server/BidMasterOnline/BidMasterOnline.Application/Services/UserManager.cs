@@ -190,7 +190,6 @@ namespace BidMasterOnline.Application.Services
 
             var usersBids = await _repository.GetFilteredAsync<Bid>(x => x.BidderId == user.Id);
 
-            var totalBids = usersBids.Count();
             var totalWins = usersBids.Count(x => x.IsWinning);
 
             return new ProfileDTO
@@ -204,7 +203,6 @@ namespace BidMasterOnline.Application.Services
                 ImageUrl = user.ImageUrl,
                 Status = user.UserStatus.Name,
                 TotalAuctions = (int)totalAuctions,
-                TotalBids = totalBids,
                 TotalWins = totalWins
             };
         }

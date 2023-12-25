@@ -4,8 +4,7 @@ import { DeepLinkingService } from 'src/app/services/deep-linking.service';
 
 @Component({
   selector: 'search-bar',
-  templateUrl: './search-bar.component.html',
-  styleUrls: ['./search-bar.component.scss']
+  templateUrl: './search-bar.component.html'
 })
 export class SearchBarComponent implements OnInit {
 
