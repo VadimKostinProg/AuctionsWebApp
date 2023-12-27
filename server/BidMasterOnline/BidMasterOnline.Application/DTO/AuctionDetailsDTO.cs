@@ -1,6 +1,4 @@
-﻿using BidMasterOnline.Application.Enums;
-
-namespace BidMasterOnline.Application.DTO
+﻿namespace BidMasterOnline.Application.DTO
 {
     /// <summary>
     /// DTO with detailed information of auction. (RESPONSE)
@@ -12,7 +10,7 @@ namespace BidMasterOnline.Application.DTO
         public double Score { get; set; }
         public string FinishTypeDescription { get; set; }
         public string Status { get; set; }
-        public Guid? WinnersId { get; set; }
-        public string? WinnersUsername { get; set; }
+        public Guid? WinnerId { get; set; }
+        public string? Winner { get; set; }
     }
 }

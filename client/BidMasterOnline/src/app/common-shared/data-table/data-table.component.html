@@ -50,7 +50,19 @@
                         </td>
 
                         <td *ngFor="let column of options.columnSettings">
-                            {{ row[column.dataPropName] }}
+                            <a *ngIf="column.isLink"
+                               [routerLink]="column.pageLink"
+                               [queryParams]="getQueryParams(column, row)">
+                                {{ row[column.dataPropName] }}
+                            </a>
+                            <span *ngIf="column.isBoolean">
+                                <i *ngIf="row[column.dataPropName]"
+                                   class="fa-regular fa-circle-check fa-xl m-3"
+                                   style="color: #94ef0b;"></i>
+                            </span>
+                            <span *ngIf="!column.isBoolean && !column.isLink">
+                                {{ row[column.dataPropName] }}
+                            </span>
                         </td>
 
                         <th *ngIf="options.allowEdit || options.allowDelete || options.optionalAction">

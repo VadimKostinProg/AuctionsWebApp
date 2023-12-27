@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from './services/auth.service';
-import { Router } from '@angular/router';
+import { AuctionsPaymentDeliveryOptionsService } from './services/auction-payment-delivery-options.service';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 export class AppComponent {
 
   constructor(private readonly authService: AuthService,
-    private readonly router: Router) {
+    private readonly paymentDeliveryOptionsService: AuctionsPaymentDeliveryOptionsService) {
     this.authService = authService;
   }
 

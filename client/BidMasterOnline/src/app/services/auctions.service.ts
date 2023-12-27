@@ -51,6 +51,10 @@ export class AuctionsService {
     return `${this.baseUrl}/${auctionId}/bids`;
   }
 
+  cancelLastBidOfAuction(auctionId: string): Observable<any> {
+    return this.httpClient.delete(`${this.baseUrl}/${auctionId}/bids`);
+  }
+
   getAuctionBidsDataTableOptions() {
     var options = {
       title: 'Bids',
@@ -67,7 +71,11 @@ export class AuctionsService {
         {
           title: 'User',
           dataPropName: 'bidderUsername',
-          isOrderable: false
+          isOrderable: false,
+          isLink: true,
+          pageLink: '/profile',
+          linkQueryParam: 'userId',
+          linkQueryDataPropName: 'bidderId'
         },
         {
           title: 'Date and time',
@@ -137,7 +145,11 @@ export class AuctionsService {
         {
           title: 'Name',
           dataPropName: 'name',
-          isOrderable: false
+          isOrderable: false,
+          isLink: true,
+          pageLink: '/auction-details',
+          linkQueryParam: 'auctionId',
+          linkQueryDataPropName: 'id'
         },
         {
           title: 'Date and time',

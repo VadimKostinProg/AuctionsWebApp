@@ -164,7 +164,10 @@ export class UsersService {
         {
           title: 'Username',
           dataPropName: 'username',
-          isOrderable: true
+          isOrderable: true,
+          isLink: true,
+          pageLink: '/profile',
+          linkQueryParam: 'userId'
         },
         {
           title: 'Full name',
@@ -212,7 +215,11 @@ export class UsersService {
         {
           title: 'Username',
           dataPropName: 'username',
-          isOrderable: true
+          isOrderable: true,
+          isLink: true,
+          pageLink: '/profile',
+          linkQueryParam: 'userId',
+          linkQueryDataPropName: 'id'
         },
         {
           title: 'Full name',
@@ -271,7 +278,7 @@ export class UsersService {
     return options;
   }
 
-  getUserBidsDataTableApiUrl(userId: string) {
+  getUsersBidsDataTableApiUrl(userId: string) {
     return `${this.baseUrl}/${userId}/bids/list`;
   }
 
@@ -292,6 +299,10 @@ export class UsersService {
           title: 'Auction',
           dataPropName: 'auctionName',
           isOrderable: false,
+          isLink: true,
+          pageLink: '/auction-details',
+          linkQueryParam: 'auctionId',
+          linkQueryDataPropName: 'auctionId'
         },
         {
           title: 'Date and time',
@@ -307,6 +318,7 @@ export class UsersService {
           title: 'Is winning',
           dataPropName: 'isWinning',
           isOrderable: false,
+          isBoolean: true
         }
       ]
     } as DataTableOptionsModel;

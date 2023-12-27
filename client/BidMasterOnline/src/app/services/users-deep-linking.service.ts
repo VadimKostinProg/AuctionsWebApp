@@ -7,6 +7,18 @@ import { NavigationExtras } from '@angular/router';
 })
 export class UsersDeepLinkingService extends DeepLinkingService {
 
+  getUserId() {
+    return super.getQueryParam('userId');
+  }
+
+  async setUserId(userId: string) {
+    return await super.setQueryParam('userId', userId);
+  }
+
+  async clearUserId() {
+    await super.clearQueryParam('userId');
+  }
+
   async setWinner(winnerId: string) {
     const params = { ...this.route.snapshot.queryParams };
     params['auctionistId'] = null;

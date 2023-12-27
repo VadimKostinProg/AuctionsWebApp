@@ -1,5 +1,4 @@
 ﻿using BidMasterOnline.Application.Exceptions;
-using Newtonsoft.Json;
 using System.Net;
 
 namespace BidMasterOnline.API.Middlewares
@@ -46,7 +45,7 @@ namespace BidMasterOnline.API.Middlewares
 
             httpContext.Response.ContentType = "application/json";
             httpContext.Response.StatusCode = (int)code;
-            var result = JsonConvert.SerializeObject(new { Message = exception.Message });
+            var result = exception.Message;
 
             return httpContext.Response.WriteAsync(result);
         }

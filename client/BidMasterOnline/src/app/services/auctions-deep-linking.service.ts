@@ -6,6 +6,18 @@ import { DeepLinkingService } from './deep-linking.service';
 })
 export class AuctionsDeepLinkingService extends DeepLinkingService {
 
+  getAuctionId() {
+    return super.getQueryParam('auctionId');
+  }
+
+  async setAuctionId(auctionId: string) {
+    await super.setQueryParam('auctionId', auctionId);
+  }
+
+  async clearAuctionId() {
+    await super.clearQueryParam('auctionId');
+  }
+
   getSearchTerm() {
     return super.getQueryParam('searchTerm');
   }

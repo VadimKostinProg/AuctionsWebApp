@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.IdentityModel.Tokens;
 using sib_api_v3_sdk.Client;
+using Stripe;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -76,6 +77,8 @@ builder.Services.AddVersionedApiExplorer(options =>
     options.GroupNameFormat = "'v'V";
     options.SubstituteApiVersionInUrl = true;
 });
+
+StripeConfiguration.ApiKey = builder.Configuration["StripeConfiguration:ApiKey"];
 
 // Configuring Brevo.API
 Configuration.Default.ApiKey.Add("api-key", builder.Configuration["BrevoSettings:APIKey"]);

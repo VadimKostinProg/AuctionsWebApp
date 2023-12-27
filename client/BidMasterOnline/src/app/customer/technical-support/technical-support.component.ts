@@ -114,7 +114,7 @@ export class TechnicalSupportComponent implements OnInit {
         const complaint = {
           accusedUserId: auctionDetails.auctionistId,
           auctionId: auctionDetails.id,
-          accusingUserId: auctionDetails.winnersId,
+          accusingUserId: auctionDetails.winnerId,
           commentId: null,
           complaintType: ComplaintTypeEnum.ComplaintOnUserNonProvidingLot,
           complaintText: formValue.complaintTextNoDelivery
@@ -142,7 +142,7 @@ export class TechnicalSupportComponent implements OnInit {
         var auctionDetails = response;
 
         const complaint = {
-          accusedUserId: auctionDetails.winnersId,
+          accusedUserId: auctionDetails.winnerId,
           auctionId: auctionDetails.id,
           accusingUserId: auctionDetails.auctionistId,
           commentId: null,

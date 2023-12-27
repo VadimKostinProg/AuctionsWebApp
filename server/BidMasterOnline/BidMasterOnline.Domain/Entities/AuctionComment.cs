@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BidMasterOnline.Domain.Entities
 {

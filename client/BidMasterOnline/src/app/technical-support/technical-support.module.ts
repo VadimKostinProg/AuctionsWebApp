@@ -9,6 +9,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { RouterModule } from '@angular/router';
 import { ComplaintDetailsComponent } from './complain-details/complaint-details.component';
 import { TechnicalSupportRequestComponent } from './technical-support-request/technical-support-request.component';
+import { PaymentDeliveryOptionsComponent } from './payment-delivery-options/payment-delivery-options.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { TechnicalSupportRequestComponent } from './technical-support-request/te
     ComplaintDetailsComponent,
     TechnicalSupportRequestsListComponent,
     TechnicalSupportRequestComponent,
+    PaymentDeliveryOptionsComponent,
   ],
   imports: [
     CommonModule,
@@ -31,6 +33,7 @@ import { TechnicalSupportRequestComponent } from './technical-support-request/te
     ComplaintDetailsComponent,
     TechnicalSupportRequestsListComponent,
     TechnicalSupportRequestComponent,
+    PaymentDeliveryOptionsComponent,
   ]
 })
 export class TechnicalSupportModule { }

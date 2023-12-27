@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace BidMasterOnline.Application.DTO
+﻿namespace BidMasterOnline.Application.DTO
 {
     /// <summary>
     /// DTO for comments. (RESPONSE)

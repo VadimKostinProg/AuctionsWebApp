@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UsersService } from '../../services/users.service';
 import { CreateUserModel } from '../../models/createUserModel';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-create-account',
@@ -16,8 +17,11 @@ export class CreateAccountComponent implements OnInit {
 
   error: string | undefined;
 
+  showAllErrors: boolean = false;
+
   constructor(private readonly usersService: UsersService,
-    private readonly router: Router) { }
+    private readonly router: Router,
+    private readonly toastrService: ToastrService) { }
 
   ngOnInit(): void {
     this.createAccountForm = new FormGroup({
@@ -65,8 +69,12 @@ export class CreateAccountComponent implements OnInit {
 
   onSubmit() {
     if (!this.createAccountForm.valid) {
+      this.showAllErrors = true;
+
       return;
     }
+
+    this.showAllErrors = false;
 
     this.error = undefined;
 
@@ -84,16 +92,13 @@ export class CreateAccountComponent implements OnInit {
 
     this.usersService.createCustomer(user)
       .subscribe(
-        (message) => {
-          console.log(message);
-
-          // TODO: create toaster
+        (response) => {
+          this.toastrService.success(response.message);
 
           this.router.navigate(['/sign-in']);
         },
         (error) => {
-          console.log(error);
-          this.error = error;
+          this.error = error.error;
         }
       );
   }

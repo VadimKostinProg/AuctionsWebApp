@@ -1,7 +1,6 @@
 ﻿using BidMasterOnline.Application.DTO;
 using BidMasterOnline.Application.ServiceContracts;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BidMasterOnline.API.Controllers

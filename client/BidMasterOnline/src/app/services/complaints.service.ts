@@ -33,7 +33,7 @@ export class ComplaintsService {
     return `${this.baseUrl}/list`;
   }
 
-  getDataTableOptions(type: ComplaintTypeEnum) {
+  getDataTableOptions() {
     const options = {
       title: 'Complaints',
       resourceName: 'complaint',
@@ -50,56 +50,41 @@ export class ComplaintsService {
         properties: null,
       },
       emptyListDisplayLabel: 'The list of complaints is empty.',
-      columnSettings: null
+      columnSettings: [
+        {
+          title: 'Accusing user',
+          dataPropName: 'accusingUsername',
+          isOrderable: false,
+          isLink: true,
+          pageLink: '/profile',
+          linkQueryParam: 'userId',
+          linkQueryDataPropName: 'accusingUserId'
+        },
+        {
+          title: 'Accused user',
+          dataPropName: 'accusedUsername',
+          isOrderable: false,
+          isLink: true,
+          pageLink: '/profile',
+          linkQueryParam: 'userId',
+          linkQueryDataPropName: 'accusedUserId'
+        },
+        {
+          title: 'Auction',
+          dataPropName: 'auctionName',
+          isOrderable: false,
+          isLink: true,
+          pageLink: '/auction-details',
+          linkQueryParam: 'auctionId',
+          linkQueryDataPropName: 'auctionId'
+        },
+        {
+          title: 'Date and time',
+          dataPropName: 'dateAndTime',
+          isOrderable: false
+        }
+      ]
     } as DataTableOptionsModel;
-
-    switch (type) {
-      case ComplaintTypeEnum.ComplaintOnAuctionContent:        
-      case ComplaintTypeEnum.ComplaintOnUserComment:
-        options.columnSettings = [
-          {
-            title: 'Accusing user',
-            dataPropName: 'accusingUsername',
-            isOrderable: false
-          },
-          {
-            title: 'Auction',
-            dataPropName: 'auctionName',
-            isOrderable: false
-          },
-          {
-            title: 'Date and time',
-            dataPropName: 'dateAndTime',
-            isOrderable: false
-          }
-        ];
-        break;
-      case ComplaintTypeEnum.ComplaintOnUserNonPayemnt:
-      case ComplaintTypeEnum.ComplaintOnUserNonProvidingLot:
-        options.columnSettings = [
-          {
-            title: 'Accusing user',
-            dataPropName: 'accusingUsername',
-            isOrderable: false
-          },
-          {
-            title: 'Accused user',
-            dataPropName: 'accusedUsername',
-            isOrderable: false
-          },
-          {
-            title: 'Auction',
-            dataPropName: 'auctionName',
-            isOrderable: false
-          },
-          {
-            title: 'Date and time',
-            dataPropName: 'dateAndTime',
-            isOrderable: false
-          }
-        ];
-        break;
-    }
 
     return options;
   }

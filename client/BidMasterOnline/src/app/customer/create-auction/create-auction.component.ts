@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CategoryModel } from 'src/app/models/categoryModel';
 import { PublishAuctionModel } from 'src/app/models/publishAuctionModel';
 import { AuctionsService } from 'src/app/services/auctions.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { CategoriesService } from 'src/app/services/categories.service';
 
 @Component({

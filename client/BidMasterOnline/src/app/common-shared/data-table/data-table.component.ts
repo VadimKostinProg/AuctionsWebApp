@@ -8,6 +8,7 @@ import { OptionalActionResultModel } from 'src/app/models/optionalActionResultMo
 import { PaginationModel } from 'src/app/models/paginationModel';
 import { SortDirectionEnum } from 'src/app/models/sortDirectionEnum';
 import { SortingModel } from 'src/app/models/sortingModel';
+import { TableColumnSettingsModel } from 'src/app/models/tableColumnSettingsModel';
 import { DeepLinkingService } from 'src/app/services/deep-linking.service';
 
 @Component({
@@ -108,21 +109,31 @@ export class DataTableComponent implements OnInit {
 
   onActionClick(item: any, modal: TemplateRef<any>) {
     this.choosenItem = item;
-    if (this.options.optionalAction?.form != null) {
-      this.options.optionalAction.form.controls['id'].setValue(this.choosenItem['id']);
-    } else if (this.options.optionalAction.message == null) {
-      var actionResult = {
-        actionName: this.options.optionalAction.actionName,
-        object: this.options.optionalAction.form != null ?
-          this.options.optionalAction.form.value : this.choosenItem
-      } as OptionalActionResultModel;
+    if (this.options.optionalAction != null) {
+      if (this.options.optionalAction.form != null) {
+        this.options.optionalAction.form.controls['id'].setValue(this.choosenItem['id']);
+      } else if (this.options.optionalAction.message == null) {
+        var actionResult = {
+          actionName: this.options.optionalAction.actionName,
+          object: this.options.optionalAction.form != null ?
+            this.options.optionalAction.form.value : this.choosenItem
+        } as OptionalActionResultModel;
 
-      this.onAction.emit(actionResult);
+        this.onAction.emit(actionResult);
 
-      return;
+        return;
+      }
     }
 
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' });
+  }
+
+  getQueryParams(column: TableColumnSettingsModel, row: any) {
+    const object = {
+      [column.linkQueryParam]: row[column.linkQueryDataPropName]
+    };
+
+    return object;
   }
 
   isTextType = (inputType: FormInputTypeEnum): boolean => inputType == FormInputTypeEnum.Text;

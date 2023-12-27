@@ -27,7 +27,7 @@ namespace BidMasterOnline.Domain.Entities
         public Guid CategoryId { get; set; }
 
         [Required]
-        [MaxLength(300)]
+        [MaxLength(1000)]
         public string LotDescription { get; set; } = null!;
 
         [Required]

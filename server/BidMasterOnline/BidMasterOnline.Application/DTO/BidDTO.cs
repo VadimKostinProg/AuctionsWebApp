@@ -12,5 +12,6 @@
         public string BidderUsername { get; set; }
         public string DateAndTime { get; set; }
         public decimal Amount { get; set; }
+        public bool IsWinning { get; set; }
     }
 }

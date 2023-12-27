@@ -111,6 +111,15 @@ namespace BidMasterOnline.API.Controllers
             return Ok(new { Message = "New bid has been set successfully." });
         }
 
+        [HttpDelete("{id}/bids")]
+        [Authorize(Roles = UserRoles.TechnicalSupportSpecialist)]
+        public async Task<ActionResult> CancelLastBidOfAuction([FromRoute] Guid id)
+        {
+            await _auctionsService.SetNextWinnerOfAuctionAsync(id);
+
+            return Ok(new { Message = "The last bid has been canceled successfully."});
+        }
+
         [HttpGet("not-confirmed")]
         [Authorize(Roles = UserRoles.Customer)]
         public async Task<ActionResult<IEnumerable<AuctionDTO>>> GetFinishedAuctionWithNotConfirmedOptions(
@@ -153,15 +162,15 @@ namespace BidMasterOnline.API.Controllers
         }
 
         [HttpGet("{id}/payment-delivery-options")]
-        [Authorize(Roles = UserRoles.TechnicalSupportSpecialist)]
+        [Authorize(Roles = $"{UserRoles.Customer}, {UserRoles.TechnicalSupportSpecialist}")]
         public async Task<ActionResult<AuctionPaymentDeliveryOptionsDTO>> GetPaymentDeliveryOptions([FromRoute] Guid id)
         {
-            return Ok(await _auctionSellDelivaryService.GetPaymentDeliveryOptionsForAuctionIdAsync(id));
+            return Ok(await _auctionSellDelivaryService.GetPaymentDeliveryOptionsForAuctionByIdAsync(id));
         }
 
         [HttpPost("payment-options")]
         [Authorize(Roles = UserRoles.Customer)]
-        public async Task<ActionResult> SetSellOptions([FromBody] SetPaymentOptionsDTO request)
+        public async Task<ActionResult> SetPaymentOptions([FromBody] SetPaymentOptionsDTO request)
         {
             await _auctionSellDelivaryService.SetPaymentOptionsForAuctionAsync(request);
 
@@ -177,7 +186,7 @@ namespace BidMasterOnline.API.Controllers
             return Ok(new { Message = "Delivery options for the auction has been successfully set." });
         }
 
-        [HttpPut("payemnt-options")]
+        [HttpPut("payment-options")]
         [Authorize(Roles = UserRoles.Customer)]
         public async Task<ActionResult> ConfirmPayment([FromQuery] Guid auctionId)
         {

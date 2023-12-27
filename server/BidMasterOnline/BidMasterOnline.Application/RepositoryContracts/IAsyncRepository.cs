@@ -1,5 +1,4 @@
-﻿using BidMasterOnline.Application.DTO;
-using BidMasterOnline.Application.Specifications;
+﻿using BidMasterOnline.Application.Specifications;
 using BidMasterOnline.Domain.Entities;
 using System.Linq.Expressions;
 

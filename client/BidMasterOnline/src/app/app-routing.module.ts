@@ -19,6 +19,14 @@ import { ComplaintDetailsComponent } from './technical-support/complain-details/
 import { TechnicalSupportRequestsListComponent } from './technical-support/technical-support-requests-list/technical-support-requests-list.component';
 import { TechnicalSupportRequestComponent } from './technical-support/technical-support-request/technical-support-request.component';
 import { TechnicalSupportComponent } from './customer/technical-support/technical-support.component';
+import { BidsHistoryComponent } from './customer/bids-history/bids-history.component';
+import { PaymentDeliveryOptionsComponent } from './technical-support/payment-delivery-options/payment-delivery-options.component';
+import { SetPaymentOptionsComponent } from './customer/set-payment-options/set-payment-options.component';
+import { SetDeliveryOptionsComponent } from './customer/set-delivery-options/set-delivery-options.component';
+import { ApplyDeliveryComponent } from './customer/apply-delivery/apply-delivery.component';
+import { ApplyPaymentComponent } from './customer/apply-payment/apply-payment.component';
+import { PaymentSuccessComponent } from './customer/payment-success/payment-success.component';
+import { PaymentCancelComponent } from './customer/payment-cancel/payment-cancel.component';
 
 const routes: Routes = [
   {
@@ -108,6 +116,12 @@ const routes: Routes = [
     data: { expectedRoles: ['TechnicalSupportSpecialist'] }
   },
   {
+    path: 'payment-delivery-options',
+    component: PaymentDeliveryOptionsComponent,
+    canActivate: [CanActivateGuardService],
+    data: { expectedRoles: ['TechnicalSupportSpecialist'] }
+  },
+  {
     path: 'create-auction',
     component: CreateAuctionComponent,
     canActivate: [CanActivateGuardService],
@@ -118,6 +132,44 @@ const routes: Routes = [
     component: TechnicalSupportComponent,
     canActivate: [CanActivateGuardService],
     data: { expectedRoles: ['Customer'] }
+  },
+  {
+    path: 'bids-history',
+    component: BidsHistoryComponent,
+    canActivate: [CanActivateGuardService],
+    data: { expectedRoles: ['Customer'] }
+  },
+  {
+    path: 'set-payment-options',
+    component: SetPaymentOptionsComponent,
+    canActivate: [CanActivateGuardService],
+    data: { expectedRoles: ['Customer'] }
+  },
+  {
+    path: 'set-delivery-options',
+    component: SetDeliveryOptionsComponent,
+    canActivate: [CanActivateGuardService],
+    data: { expectedRoles: ['Customer'] }
+  },
+  {
+    path: 'apply-delivery',
+    component: ApplyDeliveryComponent,
+    canActivate: [CanActivateGuardService],
+    data: { expectedRoles: ['Customer'] }
+  },
+  {
+    path: 'apply-payment',
+    component: ApplyPaymentComponent,
+    canActivate: [CanActivateGuardService],
+    data: { expectedRoles: ['Customer'] }
+  },
+  {
+    path: 'payment-success',
+    component: PaymentSuccessComponent,
+  },
+  {
+    path: 'payment-cancel',
+    component: PaymentCancelComponent,
   },
   {
     path: 'auction-creation-requests-list',

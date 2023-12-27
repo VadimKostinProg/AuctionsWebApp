@@ -6,7 +6,7 @@ import { FormInputTypeEnum } from '../models/formInputTypeEnum';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuctionDetailsModel } from '../models/auctionDetailsModel';
 import { Observable } from 'rxjs';
-import { RejectAuctionModel } from './rejectAuctionModel';
+import { RejectAuctionModel } from '../models/rejectAuctionModel';
 
 @Injectable({
   providedIn: 'root'
@@ -66,7 +66,11 @@ export class AuctionsVerificationService {
         {
           title: 'Auctionist',
           dataPropName: 'auctionist',
-          isOrderable: false
+          isOrderable: false,
+          isLink: true,
+          pageLink: '/profile',
+          linkQueryParam: 'userId',
+          linkQueryDataPropName: 'auctionistId'
         },
         {
           title: 'Auction time',

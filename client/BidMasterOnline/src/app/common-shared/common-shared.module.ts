@@ -7,6 +7,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     FormsModule,
     ReactiveFormsModule,
     FontAwesomeModule,
+    RouterModule
   ],
   exports: [
     SearchBarComponent,

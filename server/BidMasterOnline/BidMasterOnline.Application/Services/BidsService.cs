@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using BidMasterOnline.Application.DTO;
+﻿using BidMasterOnline.Application.DTO;
 using BidMasterOnline.Application.Exceptions;
 using BidMasterOnline.Application.RepositoryContracts;
 using BidMasterOnline.Application.ServiceContracts;
@@ -48,8 +47,9 @@ namespace BidMasterOnline.Application.Services
                     AuctionName = x.Auction.Name,
                     BidderId = x.BidderId,
                     BidderUsername = x.Bidder.Username,
-                    DateAndTime = x.DateAndTime.ToString("yyyy-mm-dd HH:m"),
-                    Amount = x.Amount
+                    DateAndTime = x.DateAndTime.ToString("yyyy-MM-dd HH:m"),
+                    Amount = x.Amount,
+                    IsWinning = x.IsWinning
                 })
                 .ToList(),
                 TotalPages = totalPages
@@ -88,8 +88,9 @@ namespace BidMasterOnline.Application.Services
                     AuctionName = x.Auction.Name,
                     BidderId = x.BidderId,
                     BidderUsername = x.Bidder.Username,
-                    DateAndTime = x.DateAndTime.ToString("yyyy-mm-dd HH:m"),
-                    Amount = x.Amount
+                    DateAndTime = x.DateAndTime.ToString("yyyy-MM-dd HH:m"),
+                    Amount = x.Amount,
+                    IsWinning = x.IsWinning
                 })
                 .ToList(),
                 TotalPages = totalPages

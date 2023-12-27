@@ -251,10 +251,27 @@ export class AuctionDetailsComponent implements OnInit {
     modal.close();
 
     this.auctionsService.recoverAuction(this.auctionDetails.id).subscribe(
+      (response) => {
+        this.toastrService.success(response.message, 'Success');
+
+        this.reloadAuctionDetails(this.auctionDetails.id);
+      },
+      (error) => {
+        this.toastrService.error(error.error, 'Error');
+      }
+    );
+  }
+
+  cancelLastBidOfAuction(modal: any) {
+    modal.close();
+
+    this.auctionsService.cancelLastBidOfAuction(this.auctionDetails.id).subscribe(
       async (response) => {
         this.toastrService.success(response.message, 'Success');
 
         this.reloadAuctionDetails(this.auctionDetails.id);
+
+        await this.bidsDataTable.reloadDatatable();
       },
       (error) => {
         this.toastrService.error(error.error, 'Error');

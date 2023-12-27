@@ -33,7 +33,7 @@ export class ComplaintsComponent implements OnInit {
 
     await this.deepLinkingService.setQueryParam('type', ComplaintTypeEnum[this.currentType]);
 
-    this.options = this.complaintsService.getDataTableOptions(this.currentType);
+    this.options = this.complaintsService.getDataTableOptions();
   }
 
   getComplaintsDataTableApiUrl() {
@@ -44,8 +44,6 @@ export class ComplaintsComponent implements OnInit {
     this.currentType = type;
 
     await this.deepLinkingService.setQueryParam('type', ComplaintTypeEnum[this.currentType]);
-
-    this.options = this.complaintsService.getDataTableOptions(this.currentType);
 
     await this.dataTable.reloadDatatable();
   }

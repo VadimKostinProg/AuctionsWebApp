@@ -83,6 +83,7 @@ namespace BidMasterOnline.Application.Services
             {
                 UserId = user.Id,
                 Role = user.Role.Name,
+                Status = user.UserStatus.Name,
                 Token = token
             };
         }

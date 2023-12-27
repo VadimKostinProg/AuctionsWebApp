@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
 namespace BidMasterOnline.Domain.Entities
@@ -40,6 +39,9 @@ namespace BidMasterOnline.Domain.Entities
 
         [AllowNull]
         public string? City { get; set; }
+
+        [AllowNull]
+        public string? ZipCode { get; set; }
 
         public bool IsPaymentConfirmed { get; set; }
 

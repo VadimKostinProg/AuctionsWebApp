@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
 namespace BidMasterOnline.Domain.Entities
@@ -35,7 +34,7 @@ namespace BidMasterOnline.Domain.Entities
         public DateTime DateAndTime { get; set; }
 
         [Required]
-        [MaxLength(300)]
+        [MaxLength(1000)]
         public string ComplaintText { get; set; } = null!;
 
         public bool IsHandled { get; set; }

@@ -12,7 +12,7 @@ namespace BidMasterOnline.Application.ServiceContracts
         /// </summary>
         /// <param name="auctionId">Identifier of auction to get sell an delivery options of.</param>
         /// <returns>Auctions sell and delivery options.</returns>
-        Task<AuctionPaymentDeliveryOptionsDTO> GetPaymentDeliveryOptionsForAuctionIdAsync(Guid auctionId);
+        Task<AuctionPaymentDeliveryOptionsDTO> GetPaymentDeliveryOptionsForAuctionByIdAsync(Guid auctionId);
 
         /// <summary>
         /// Sets the payment options of the auction.

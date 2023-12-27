@@ -51,7 +51,11 @@ export class TechnicalSupportRequestsService {
         {
           title: 'User',
           dataPropName: 'username',
-          isOrderable: false
+          isOrderable: false,
+          isLink: true,
+          pageLink: '/profile',
+          linkQueryParam: 'userId',
+          linkQueryDataPropName: 'userId'
         },
         {
           title: 'DateAndTime',

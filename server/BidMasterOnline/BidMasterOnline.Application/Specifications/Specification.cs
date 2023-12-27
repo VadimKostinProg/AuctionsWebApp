@@ -1,6 +1,6 @@
-﻿using BidMasterOnline.Domain.Entities;
+﻿using BidMasterOnline.Application.Enums;
+using BidMasterOnline.Domain.Entities;
 using System.Linq.Expressions;
-using BidMasterOnline.Application.Enums;
 
 namespace BidMasterOnline.Application.Specifications
 {

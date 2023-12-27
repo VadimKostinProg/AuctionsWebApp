@@ -29,7 +29,7 @@ namespace BidMasterOnline.Application.Services
                 Id = technicalSupportRequest.Id,
                 UserId = technicalSupportRequest.UserId,
                 Username = technicalSupportRequest.User.Username,
-                DateAndTime = technicalSupportRequest.DateAndTime.ToString("yyyy-mm-dd HH:mm"),
+                DateAndTime = technicalSupportRequest.DateAndTime.ToString("yyyy-MM-dd HH:mm"),
                 RequestText = technicalSupportRequest.RequestText,
                 IsHandled = technicalSupportRequest.IsHandled
             };
@@ -60,7 +60,7 @@ namespace BidMasterOnline.Application.Services
                         Id = x.Id,
                         UserId = x.UserId,
                         Username = x.User.Username,
-                        DateAndTime = x.DateAndTime.ToString("yyyy-mm-dd HH:mm"),
+                        DateAndTime = x.DateAndTime.ToString("yyyy-MM-dd HH:mm"),
                         RequestText = x.RequestText,
                         IsHandled = x.IsHandled,
                     })

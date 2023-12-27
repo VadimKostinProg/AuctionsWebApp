@@ -96,7 +96,7 @@ namespace BidMasterOnline.Application.Services
                 AuctionistId = auction.AuctionistId,
                 Auctionist = auction.Auctionist.Username,
                 AuctionTime = ConvertHelper.TimeSpanTicksToString(auction.AuctionTime),
-                FinishDateAndTime = auction.FinishDateTime.ToString("yyyy-mm-dd HH:mm"),
+                FinishDateAndTime = auction.FinishDateTime.ToString("yyyy-MM-dd HH:mm"),
                 StartPrice = auction.StartPrice,
                 CurrentBid = auction.Bids.Any() ? auction.Bids.Max(x => x.Amount) : 0,
                 ImageUrls = auction.Images.Select(x => x.Url).ToList()
@@ -120,13 +120,13 @@ namespace BidMasterOnline.Application.Services
                 AuctionistId = auction.AuctionistId,
                 Auctionist = auction.Auctionist.Username,
                 AuctionTime = ConvertHelper.TimeSpanTicksToString(auction.AuctionTime),
-                FinishDateAndTime = auction.FinishDateTime.ToString("yyyy-mm-dd HH:mm"),
+                FinishDateAndTime = auction.FinishDateTime.ToString("yyyy-MM-dd HH:mm"),
                 StartPrice = auction.StartPrice,
                 CurrentBid = auction.Bids.Any() ? auction.Bids.Max(x => x.Amount) : auction.StartPrice,
                 ImageUrls = auction.Images.Select(x => x.Url).ToList(),
-                StartDateAndTime = auction.StartDateTime.ToString("yyyy-mm-dd HH:mm"),
+                StartDateAndTime = auction.StartDateTime.ToString("yyyy-MM-dd HH:mm"),
                 LotDescription = auction.LotDescription,
-                Score = auction.Scores.Any() ? auction.Scores.Average(x => x.Score) : -1,
+                Score = auction.Scores.Any() ? Math.Round(auction.Scores.Average(x => x.Score), digits: 1) : 0,
                 FinishTypeDescription = auction.FinishType.Description,
                 Status = auction.Status.Name,
             };
@@ -135,8 +135,8 @@ namespace BidMasterOnline.Application.Services
             {
                 var winningBid = auction.Bids.OrderByDescending(x => x.Amount).First();
 
-                auctionDetailsDTO.WinnersId = winningBid.BidderId;
-                auctionDetailsDTO.WinnersUsername = winningBid.Bidder.Username;
+                auctionDetailsDTO.WinnerId = winningBid.BidderId;
+                auctionDetailsDTO.Winner = winningBid.Bidder.Username;
             }
 
             return auctionDetailsDTO;
@@ -182,7 +182,7 @@ namespace BidMasterOnline.Application.Services
                         AuctionistId = auction.AuctionistId,
                         Auctionist = auction.Auctionist.Username,
                         AuctionTime = ConvertHelper.TimeSpanTicksToString(auction.AuctionTime),
-                        FinishDateAndTime = auction.FinishDateTime.ToString("yyyy-mm-dd HH:mm"),
+                        FinishDateAndTime = auction.FinishDateTime.ToString("yyyy-MM-dd HH:mm"),
                         StartPrice = auction.StartPrice,
                         CurrentBid = auction.Bids.Any() ? auction.Bids.Max(x => x.Amount) : auction.StartPrice,
                         ImageUrls = auction.Images.Select(x => x.Url).ToList()
@@ -440,6 +440,15 @@ namespace BidMasterOnline.Application.Services
             var paymentDeliveryOptions = auction.PaymentDeliveryOptions;
 
             paymentDeliveryOptions!.WinnerId = newWinnersBid.BidderId;
+            paymentDeliveryOptions.IBAN =
+            paymentDeliveryOptions.Country =
+            paymentDeliveryOptions.City =
+            paymentDeliveryOptions.ZipCode =
+            paymentDeliveryOptions.Waybill = null;
+            paymentDeliveryOptions.AreDeliveryOptionsSet =
+            paymentDeliveryOptions.ArePaymentOptionsSet =
+            paymentDeliveryOptions.IsDeliveryConfirmed =
+            paymentDeliveryOptions.IsPaymentConfirmed = false;
 
             await _repository.UpdateAsync(paymentDeliveryOptions);
 
@@ -457,6 +466,7 @@ namespace BidMasterOnline.Application.Services
             paymentDeliveryOptions.IBAN =
             paymentDeliveryOptions.Country =
             paymentDeliveryOptions.City =
+            paymentDeliveryOptions.ZipCode =
             paymentDeliveryOptions.Waybill = null;
             paymentDeliveryOptions.AreDeliveryOptionsSet =
             paymentDeliveryOptions.ArePaymentOptionsSet =

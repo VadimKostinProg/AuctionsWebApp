@@ -38,9 +38,10 @@ namespace BidMasterOnline.Application.Services
                              "<br><br>Here is winners delivery information:<br>" +
                              $"County: {paymentDeliveryOptions.Country}<br>" +
                              $"City: {paymentDeliveryOptions.City}<br>" +
+                             $"ZIP code: {paymentDeliveryOptions.ZipCode}<br>" +
                              $"Name: {paymentDeliveryOptions.Winner.FullName}<br>" +
                              $"Email: {paymentDeliveryOptions.Winner.Email}<br>" +
-                             $"<br><br>To proove the delivery, please enter the waybill <a href=\"{_clientUrl}/apply-delivery?userId={auction.Auctionist.Id}\">here</a>.<br>" +
+                             $"<br><br>To proove the delivery, please enter the waybill <a href=\"{_clientUrl}/apply-delivery?auctionId={auction.Id}\">here</a>.<br>" +
                              "<br><br>BidMasterOnline Technical Support Team.";
 
             _emailSender.SendEmail(auction.Auctionist.Email, auction.Auctionist.FullName, title, message);
@@ -59,7 +60,7 @@ namespace BidMasterOnline.Application.Services
                              $"Category: {auction.Category.Name}<br>" +
                              $"Start date and time: {auction.StartDateTime}" +
                              $"Finish date and time: {auction.FinishDateTime}" +
-                             $"<br><br>To perform payment <a href=\"{_clientUrl}/apply-payment?userId={winner.Id}\">click here</a>." +
+                             $"<br><br>To perform payment <a href=\"{_clientUrl}/apply-payment?auctionId={auction.Id}\">click here</a>." +
                              "<br><br>BidMasterOnline Technical Support Team.";
 
             _emailSender.SendEmail(winner.Email, winner.FullName, title, message);
@@ -181,7 +182,7 @@ namespace BidMasterOnline.Application.Services
                              $"Finish date and time: {auction.FinishDateTime}<br>" +
                              "<br>The next step is to set a delivery information to let auctionist send you the lot." +
                              "<br><br>Please set the delivery information in next 3 days, or your winning bid will be canceled. " +
-                             $"To set a delivery information <a hreaf=\"{_clientUrl}/set-delivery-options?userId={auction.AuctionistId}\">click here</a>." +
+                             $"To set a delivery information <a href=\"{_clientUrl}/set-delivery-options?auctionId={auction.Id}\">click here</a>." +
                              "<br><br>Later you will receive the bill to pay for the auctions lot." +
                              "<br><br>BidMasterOnline Technical Support Team.";
 
@@ -249,7 +250,7 @@ namespace BidMasterOnline.Application.Services
                              $"Finish date and time: {auction.FinishDateTime}<br>" +
                              "<br>The next step is to set a payment account to let winner of the auction pay for the lot." +
                              "<br><br>Please set the payment account in next 3 days." +
-                             $"To set a payment account <a hreaf=\"{_clientUrl}/set-payment-options?userId={auction.AuctionistId}\">click here</a>." +
+                             $"To set a payment account <a href=\"{_clientUrl}/set-payment-options?auctionId={auction.Id}\">click here</a>." +
                              "<br><br>Later you will receive the message with delivery information of the winner to send him the lot of the auciton." +
                              "<br><br>BidMasterOnline Technical Support Team.";
 

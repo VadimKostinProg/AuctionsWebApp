@@ -1,5 +1,4 @@
-﻿using BidMasterOnline.Application.Enums;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
 namespace BidMasterOnline.Application.DTO

@@ -4,7 +4,6 @@ using BidMasterOnline.Application.RepositoryContracts;
 using BidMasterOnline.Application.ServiceContracts;
 using BidMasterOnline.Application.Specifications;
 using BidMasterOnline.Domain.Entities;
-using System.Xml.Linq;
 
 namespace BidMasterOnline.Application.Services
 {
@@ -61,7 +60,7 @@ namespace BidMasterOnline.Application.Services
                 UserId = comment.UserId,
                 Username = comment.User.Username,
                 AuctionId = comment.AuctionId,
-                DateAndTime = comment.DateAndTime.ToString("yyyy-mm-dd HH:m"),
+                DateAndTime = comment.DateAndTime.ToString("yyyy-MM-dd HH:m"),
                 CommentText = comment.CommentText,
                 IsDeleted = comment.IsDeleted
             };
@@ -87,7 +86,7 @@ namespace BidMasterOnline.Application.Services
                     UserId = x.UserId,
                     Username = x.User.Username,
                     AuctionId = x.AuctionId,
-                    DateAndTime = x.DateAndTime.ToString("yyyy-mm-dd HH:m"),
+                    DateAndTime = x.DateAndTime.ToString("yyyy-MM-dd HH:m"),
                     CommentText = x.CommentText,
                     IsDeleted = x.IsDeleted
                 })

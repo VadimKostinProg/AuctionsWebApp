@@ -37,6 +37,12 @@
                                 (click)="open(deleteAccountModal)">
                             Delete account
                         </button>
+                        <a *ngIf="ownProfile && user.role == 'Customer'"
+                           class="btn"
+                           routerLink="/bids-history"
+                           [queryParams]="{ userId: user.id }">
+                            Bids history
+                        </a>
                     </div>
                 </ng-template>
 

@@ -245,6 +245,10 @@ input[type="radio"]:checked {
     padding: 0 18px 0 18px;
 }
 
+.score-bar-container {
+    height: 20px;
+}
+
 @media screen and (max-width: 990px) {
     .header-container {
         flex-direction: column;

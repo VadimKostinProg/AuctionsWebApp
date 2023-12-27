@@ -49,14 +49,14 @@ namespace BidMasterOnline.Application.Services
                         Username = accusedComment.User.Username,
                         AuctionId = accusedComment.Auction.Id,
                         AuctionName = accusedComment.Auction.Name,
-                        DateAndTime = accusedComment.DateAndTime.ToString("yyyy-mm-dd HH:mm"),
+                        DateAndTime = accusedComment.DateAndTime.ToString("yyyy-MM-dd HH:mm"),
                         CommentText = accusedComment.CommentText,
                         IsDeleted = accusedComment.IsDeleted,
                     }
                     : null,
                 ComplaintType = Enum.Parse<Enums.ComplaintType>(complaint.ComplaintType.Name),
                 ComplaintTypeDescription = complaint.ComplaintType.Description,
-                DateAndTime = complaint.DateAndTime.ToString("yyyy-mm-dd HH:mm"),
+                DateAndTime = complaint.DateAndTime.ToString("yyyy-MM-dd HH:mm"),
                 ComplaintText = complaint.ComplaintText,
             };
 

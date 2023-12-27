@@ -5,7 +5,7 @@ import { DeepLinkingService } from 'src/app/services/deep-linking.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { RejectAuctionModel } from 'src/app/services/rejectAuctionModel';
+import { RejectAuctionModel } from 'src/app/models/rejectAuctionModel';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({

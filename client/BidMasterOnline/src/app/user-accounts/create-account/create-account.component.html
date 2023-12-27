@@ -33,7 +33,7 @@
                            formControlName="username" />
                 </div>
 
-                <div *ngIf="!username?.valid && (username?.dirty || username?.touched)">
+                <div *ngIf="!username?.valid && (username?.dirty || username?.touched || showAllErrors)">
                     <span class="text-danger">Username is required.</span>
                 </div>
             </div>
@@ -51,7 +51,7 @@
                            formControlName="name" />
                 </div>
 
-                <div *ngIf="!name?.valid && (name?.dirty || name?.touched)">
+                <div *ngIf="!name?.valid && (name?.dirty || name?.touched || showAllErrors)">
                     <span class="text-danger">Name is required.</span>
                 </div>
             </div>
@@ -69,7 +69,7 @@
                            formControlName="surname" />
                 </div>
 
-                <div *ngIf="!surname?.valid && (surname?.dirty || surname?.touched)">
+                <div *ngIf="!surname?.valid && (surname?.dirty || surname?.touched || showAllErrors)">
                     <span class="text-danger">Surname is required.</span>
                 </div>
             </div>
@@ -87,7 +87,7 @@
                            formControlName="email" />
                 </div>
 
-                <div *ngIf="!email?.valid && (email?.dirty || email?.touched)">
+                <div *ngIf="!email?.valid && (email?.dirty || email?.touched || showAllErrors)">
                     <div *ngIf="email?.errors?.['required']">
                         <span class="text-danger">Email is required.</span>
                     </div>
@@ -117,7 +117,7 @@
                     </button>
                 </div>
 
-                <div *ngIf="!dateOfBirth?.valid && (dateOfBirth?.dirty || dateOfBirth?.touched)">
+                <div *ngIf="!dateOfBirth?.valid && (dateOfBirth?.dirty || dateOfBirth?.touched || showAllErrors)">
                     <div *ngIf="dateOfBirth?.errors?.['required']">
                         <span class="text-danger">Date of birth is required.</span>
                     </div>
@@ -137,7 +137,7 @@
                            formControlName="password" />
                 </div>
 
-                <div *ngIf="!password?.valid && (password?.dirty || password?.touched)">
+                <div *ngIf="!password?.valid && (password?.dirty || password?.touched || showAllErrors)">
                     <span class="text-danger">Password is required.</span>
                 </div>
             </div>
@@ -155,7 +155,7 @@
                            formControlName="confirmPassword" />
                 </div>
 
-                <div *ngIf="!confirmPassword?.valid && (confirmPassword?.dirty || confirmPassword?.touched)">
+                <div *ngIf="!confirmPassword?.valid && (confirmPassword?.dirty || confirmPassword?.touched || showAllErrors)">
                     <span class="text-danger">Confirmed password is required.</span>
                 </div>
 

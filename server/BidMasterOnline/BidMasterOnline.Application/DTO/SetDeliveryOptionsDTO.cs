@@ -15,5 +15,8 @@ namespace BidMasterOnline.Application.DTO
 
         [Required(ErrorMessage = "Your city is required.")]
         public string City { get; set; }
+
+        [Required(ErrorMessage = "Your ZIP code is required.")]
+        public string ZipCode { get; set; }
     }
 }
