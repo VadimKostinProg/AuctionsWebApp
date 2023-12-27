@@ -38,7 +38,7 @@
                         <h3> {{ auctionDetails.name }}</h3>
                         <div *ngIf="auctionDetails.status != 'Canceled'"
                              class="mt-3">
-                            <app-score *ngIf="user.role == 'Customer'"
+                            <app-score *ngIf="user && user.role == 'Customer'"
                                        [auctionId]="auctionDetails.id"
                                        (onScoreSet)="reloadAuctionDetails(auctionDetails.id)"></app-score>
 
