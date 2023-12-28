@@ -14,8 +14,8 @@
                     class="btn default-btn-background w-75"
                     placement="bottom"
                     [ngbPopover]="startPricePopContent"
-                    container="body"
-                    popoverClass="slider-popover">
+                    [autoClose]="'outside'"
+                    container="body">
                 Start price
             </button>
         </div>
@@ -25,8 +25,8 @@
                     class="btn default-btn-background w-75"
                     placement="bottom"
                     [ngbPopover]="currentBidPopContent"
-                    container="body"
-                    popoverClass="slider-popover">
+                    [autoClose]="'outside'"
+                    container="body">
                 Current bid
             </button>
         </div>
@@ -56,12 +56,20 @@
 </ng-template>
 
 <ng-template #startPricePopContent>
-    <div class="slider-container">
-        <ngx-slider [(value)]="minStartPrice"
-                    [(highValue)]="maxStartPrice"
-                    [options]="options"
-                    (userChange)="onStartPriceFilterChange($event)">
-        </ngx-slider>
+    <div>
+        <input class="form-control"
+               type="number"
+               [min]="100"
+               [max]="10e7"
+               [(ngModel)]="minStartPrice"
+               (change)="onStartPriceFilterChange()" />
+
+        <input class="form-control mt-3"
+               type="number"
+               [min]="100"
+               [max]="10e7"
+               [(ngModel)]="maxStartPrice"
+               (change)="onStartPriceFilterChange()" />
 
         <button *ngIf="startPriceChanged"
                 class="btn"
@@ -72,12 +80,20 @@
 </ng-template>
 
 <ng-template #currentBidPopContent>
-    <div class="slider-container">
-        <ngx-slider [(value)]="minCurrentBid"
-                    [(highValue)]="maxCurrentBid"
-                    [options]="options"
-                    (userChange)="onCurrentBidFilterChange($event)">
-        </ngx-slider>
+    <div>
+        <input class="form-control"
+               type="number"
+               [min]="100"
+               [max]="10e7"
+               [(ngModel)]="minCurrentBid"
+               (change)="onCurrentBidFilterChange()" />
+
+        <input class="form-control mt-3"
+               type="number"
+               [min]="100"
+               [max]="10e7"
+               [(ngModel)]="maxCurrentBid"
+               (change)="onCurrentBidFilterChange()" />
 
         <button *ngIf="currentBidChanged"
                 class="btn"

@@ -26,11 +26,9 @@ namespace BidMasterOnline.API.Controllers
         {
             var auctionDetails = await _auctionService.GetAuctionDetailsByIdAsync(auctionId);
 
-            var allowedOriginsSection = _configuration.GetSection("AllowedOrigins");
-
             var token = Guid.NewGuid();
 
-            var domain = allowedOriginsSection.GetChildren().FirstOrDefault()!.Value!;
+            var domain = _configuration["AllowedOrigins"];
             var options = new SessionCreateOptions
             {
                 LineItems = new List<SessionLineItemOptions>

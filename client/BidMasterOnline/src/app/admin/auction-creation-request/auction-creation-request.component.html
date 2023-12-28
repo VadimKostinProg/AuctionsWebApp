@@ -36,15 +36,15 @@
             <div class="auction-info-container">
                 <span class="h5"><b>Category:</b> {{ auction.category }}</span>
                 <span class="h5">
-                    <b>Auctionist:</b>
+                    <b class="auction-details-property">Auctionist:</b>
                     <a routerLink="/profile"
                        [queryParams]="{ userId: auction.auctionistId }">
                         {{ auction.auctionist }}
                     </a>
                 </span>
-                <span class="h5"><b>Start price:</b> {{ auction.startPrice }}</span>
-                <span class="h5"><b>Auction time:</b> {{ auction.auctionTime }}</span>
-                <span class="h5"><b>Finish type:</b> {{ auction.finishTypeDescription }}</span>
+                <span class="h5"><b class="auction-details-property">Start price:</b> {{ auction.startPrice }}$</span>
+                <span class="h5"><b class="auction-details-property">Auction time:</b> {{ auction.auctionTime }}</span>
+                <span class="h5"><b class="auction-details-property">Finish type:</b> {{ auction.finishTypeDescription }}</span>
 
                 <h4 class="mt-3">Lot description</h4>
                 <span>{{ auction.lotDescription }}</span>

@@ -26,7 +26,7 @@
 
             <ng-template #actionsPopContent>
                 <div class="actions-container">
-                    <button *ngIf="comment.userId != user.userId"
+                    <button *ngIf="user.role == 'Customer' && comment.userId != user.userId"
                             class="btn"
                             (click)="openActionModal(complaintOnCommentModal, comment)">
                         Complain

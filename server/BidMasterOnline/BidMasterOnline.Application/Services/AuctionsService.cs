@@ -229,7 +229,7 @@ namespace BidMasterOnline.Application.Services
                         builder.OrderBy(x => x.Bids.Count(), specifications.SortDirection ?? Enums.SortDirection.ASC);
                         break;
                     case "dateAndTime":
-                        builder.OrderBy(x => x.FinishDateTime, specifications.SortDirection ?? Enums.SortDirection.DESC);
+                        builder.OrderBy(x => x.FinishDateTime, specifications.SortDirection ?? Enums.SortDirection.ASC);
                         break;
                 }
             }

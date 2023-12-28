@@ -3,9 +3,11 @@ using BidMasterOnline.API.Middlewares;
 using BidMasterOnline.Application;
 using BidMasterOnline.Application.Initializers;
 using BidMasterOnline.Infrastructure;
+using BidMasterOnline.Infrastructure.DatabaseContext;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using sib_api_v3_sdk.Client;
 using Stripe;
@@ -17,11 +19,13 @@ builder.Services.AddCors(options => {
     options.AddDefaultPolicy(policyBuilder =>
     {
         policyBuilder
-        .WithOrigins("http://localhost:4200")
+        .WithOrigins(builder.Configuration.GetValue<string>("AllowedOrigins"))
         .WithHeaders("Authorization", "origin", "accept", "content-type")
         .WithMethods("GET", "POST", "PUT", "DELETE");
     });
 });
+
+Console.WriteLine(builder.Configuration.GetValue<string>("AllowedOrigins"));
 
 builder.Services.AddControllers(config =>
 {
@@ -85,8 +89,6 @@ Configuration.Default.ApiKey.Add("api-key", builder.Configuration["BrevoSettings
 
 var app = builder.Build();
 
-app.UseHsts();
-app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 if (app.Environment.IsDevelopment())
@@ -104,13 +106,17 @@ app.MapControllers();
 
 app.UseExceptionsHandler();
 
-SeedData();
+await SeedData();
 
 app.Run();
 
-void SeedData()
+async Task SeedData()
 {
     using var scope = app.Services.CreateScope();
+
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
+
+    await context.Database.MigrateAsync();
 
     var usersInitializer = scope.ServiceProvider.GetRequiredService<UsersInitializer>();
 

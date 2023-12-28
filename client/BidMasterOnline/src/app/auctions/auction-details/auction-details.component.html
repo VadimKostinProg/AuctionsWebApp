@@ -253,7 +253,7 @@
     </div>
     <div class="modal-footer">
         <button type="button"
-                class="btn btn-outline-dark"
+                class="btn default-btn-background"
                 (click)="complaintOnAuction(modal)">Submit</button>
     </div>
 </ng-template>
@@ -286,10 +286,10 @@
                 </div>
 
                 <div class="flex-1">
-                    <input type="text"
-                           id="cancelationReason"
-                           class="form-control"
-                           formControlName="cancelationReason" />
+                    <textarea type="text"
+                              id="cancelationReason"
+                              class="form-control"
+                              formControlName="cancelationReason"></textarea>
                 </div>
             </div>
         </form>

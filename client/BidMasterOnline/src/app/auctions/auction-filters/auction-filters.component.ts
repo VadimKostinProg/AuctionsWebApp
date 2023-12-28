@@ -1,5 +1,4 @@
 import { Component, EventEmitter, OnInit, Output, TemplateRef } from '@angular/core';
-import { ChangeContext, Options } from 'ngx-slider-v2';
 import { CategoryModel } from 'src/app/models/categoryModel';
 import { AuctionsDeepLinkingService } from 'src/app/services/auctions-deep-linking.service';
 import { CategoriesService } from 'src/app/services/categories.service';
@@ -28,15 +27,6 @@ export class AuctionFiltersComponent implements OnInit {
   chosenCategoryId: string;
 
   chosenStatus: string;
-
-  options: Options = {
-    floor: 0,
-    ceil: 10e7,
-    step: 10e5,
-    translate: (value: number): string => {
-      return '$' + value;
-    }
-  };
 
   @Output()
   onFiltersChange = new EventEmitter<void>();
@@ -106,7 +96,7 @@ export class AuctionFiltersComponent implements OnInit {
     this.onFiltersChange.emit();
   }
 
-  async onStartPriceFilterChange(changeContext: ChangeContext) {
+  async onStartPriceFilterChange() {
     this.startPriceChanged = true;
 
     await this.auctionsDeeplinkingService.setStartPriceDiapason(this.minStartPrice, this.maxStartPrice);
@@ -125,7 +115,7 @@ export class AuctionFiltersComponent implements OnInit {
     this.onFiltersChange.emit();
   }
 
-  async onCurrentBidFilterChange(changeContext: ChangeContext) {
+  async onCurrentBidFilterChange() {
     this.currentBidChanged = true;
 
     await this.auctionsDeeplinkingService.setCurrentBidDiapason(this.minCurrentBid, this.maxCurrentBid);
