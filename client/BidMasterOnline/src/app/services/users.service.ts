@@ -201,7 +201,7 @@ export class UsersService {
 
   getCustomersDataTableOptions(areBlocked: boolean = false) {
     var options = {
-      title: null,
+      title: 'Customers',
       resourceName: 'user',
       showIndexColumn: true,
       allowCreating: false,

@@ -226,7 +226,7 @@ namespace BidMasterOnline.Application.Services
                 switch (specifications.SortField)
                 {
                     case "popularity":
-                        builder.OrderBy(x => x.Bids.Count(), specifications.SortDirection ?? Enums.SortDirection.ASC);
+                        builder.OrderBy(x => x.Bids.Count(), specifications.SortDirection ?? Enums.SortDirection.DESC);
                         break;
                     case "dateAndTime":
                         builder.OrderBy(x => x.FinishDateTime, specifications.SortDirection ?? Enums.SortDirection.ASC);
