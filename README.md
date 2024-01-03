@@ -8,5 +8,25 @@ Admin - is main manager of the system, he can manage the staff and must verify u
 
 There are some external web services that has been integrated into the app: Cloudinary - for keeping the images of auctions and profiles; Brevo - for sending notifications via the email; Stripe - for applying payment for the auction lots.
 
-Main page:
+## The application has the following interface:
+
+### Main page:
 ![plot](./reports/UI-screens/auction-creation-requests.png)
+
+### Search page:
+![plot](./reports/UI-screens/search.png)
+
+### Auction page:
+![plot](./reports/UI-screens/auction.png)
+
+### Sign In page:
+![plot](./reports/UI-screens/sign-in.png)
+
+### Create Account page:
+![plot](./reports/UI-screens/create-account.png)
+
+### Profile page:
+![plot](./reports/UI-screens/profile.png)
+
+### Categories Management page for admin:
+![plot](./reports/UI-screens/categories.png)
