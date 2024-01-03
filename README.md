@@ -28,5 +28,20 @@ There are some external web services that has been integrated into the app: Clou
 ### Profile page:
 ![plot](./reports/UI-screens/profile.png)
 
+### Technical Support page
+![plot](./reports/UI-screens/technical-support.png)
+
 ### Categories Management page for admin:
 ![plot](./reports/UI-screens/categories.png)
+
+### Staff Management page for admin
+![plot](./reports/UI-screens/staff.png)
+
+### Auction Creation Requests page for admin
+![plot](./reports/UI-screens/auction-creation-requests.png)
+
+### Complaints Management for technical support specialist
+![plot](./reports/UI-screens/complaints.png)
+
+### Customers Management for technical support specialist
+![plot](./reports/UI-screens/customers.png)
